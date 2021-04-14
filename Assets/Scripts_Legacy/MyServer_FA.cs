@@ -20,6 +20,7 @@ public class MyServer_FA : MonoBehaviourPun
     public Controller_FA controller_pf;
     public Spawners_FA spawner;
     public UIController_FA UI_controller;
+    public GameController_FA gameController;
 
     Dictionary<Player, Character_FA> _dicModels = new Dictionary<Player, Character_FA>();
     Dictionary<Player, CharSelect_FA> _dicSelectionModel = new Dictionary<Player, CharSelect_FA>();
@@ -157,6 +158,7 @@ public class MyServer_FA : MonoBehaviourPun
         StartCoroutine(WaitForLevel(() => {
             spawner = FindObjectOfType<Spawners_FA>();
             UI_controller = FindObjectOfType<UIController_FA>();
+            gameController = FindObjectOfType<GameController_FA>();
             isGameOn = true;
         }));
 
@@ -188,15 +190,15 @@ public class MyServer_FA : MonoBehaviourPun
     [PunRPC]
     void RPCEnterLobbyAgain(Player player)
     {
-        if (_dicEnterLobby.ContainsKey(player) == true) return;
+        if (_dicEnterLobby.ContainsKey(player)) return;
 
         _dicEnterLobby[player] = true;
 
-        if(_dicEnterLobby.Count == playersNeededToPlay)
-        {
-            PhotonNetwork.LoadLevel(2);
-            StartCoroutine(WaitForLevel(() => { photonView.RPC("RPCReloadLobbyAndEnterPlayer", RpcTarget.Others); lobby = FindObjectOfType<LobbyController_FA>(); }));            
-        }
+        //if(_dicEnterLobby.Count == playersNeededToPlay)
+        //{
+            PhotonNetwork.LoadLevel(1);
+            StartCoroutine(WaitForLevel(() => { lobby = FindObjectOfType<LobbyController_FA>(); }));            
+        //}
     }
 
     [PunRPC]
@@ -295,7 +297,11 @@ public class MyServer_FA : MonoBehaviourPun
         photonView.RPC("Move", _server, player, dir);
     }
 
-
+    public void RequestWin(Player localPlayer)
+    {
+        photonView.RPC("RPCCheckIfEndGame", _server, localPlayer);
+    }
+    
     [PunRPC]
     void Move(Player player, Vector3 dir)
     {
@@ -324,6 +330,37 @@ public class MyServer_FA : MonoBehaviourPun
     void CreatePlayerModel(Player player)
     {
         _dicModels[player] = PhotonNetwork.Instantiate("SpawnPlayerTest", spawner.transform.position, Quaternion.identity).GetComponent<Character_FA>().SetInitialParameters(player);
+    }
+    
+    [PunRPC]
+    void RPCCheckIfEndGame(Player player)
+    {
+        //si la condicion de victoria se cumple...
+        //podriamos tener algo como GameController.IsThereAWinner?
+        //Gamecontroller.Stopgame
+
+        if (gameController.IsGameFinished())
+        {
+            ClearSettings();
+            PhotonNetwork.LoadLevel(1);
+
+            //photonView.RPC("SetServer", RpcTarget.AllBuffered, PhotonNetwork.LocalPlayer, 1);
+
+            StartCoroutine(WaitForLevel(() => {
+                lobby = FindObjectOfType<LobbyController_FA>();
+                isGameOn = false;
+            }));
+
+            StartCoroutine(WaitForLevelSettings(() => lobby != null, () => photonView.RPC("SetServer", RpcTarget.Others, PhotonNetwork.LocalPlayer, 1)));
+        }
+        
+    }
+
+    [PunRPC]
+    void RPC_RequestEnterLobbyFromGame()
+    {
+        Debug.Log("local player pide volver al lobby");
+        RequestEnterLobbyAgain(PhotonNetwork.LocalPlayer);
     }
 
     #endregion

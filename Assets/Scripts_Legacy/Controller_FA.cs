@@ -20,6 +20,11 @@ public class Controller_FA : MonoBehaviourPun
         
         while(true)
         {
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                MyServer_FA.Instance.RequestWin(PhotonNetwork.LocalPlayer);
+            }
+            
             var h = Input.GetAxis("Horizontal");
             var v = Input.GetAxis("Vertical");
 
