@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9bcb74e387180444902a8c831cb4554, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterTest_PF: {fileID: 2060968447972228111, guid: 61c7dba4988f3f644852a00cefafa257,
+  characterTest_PF: {fileID: 1046158952671294652, guid: 5f39cfaa267eddb4e9ffe0654b562b1a,
     type: 3}
   lobby: {fileID: 0}
   controller_pf: {fileID: 8651489961225182942, guid: 809c734b8dcf59e428512e70c4c2ddc7,

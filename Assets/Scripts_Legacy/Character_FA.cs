@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
@@ -10,16 +11,31 @@ public class Character_FA : MonoBehaviourPun
     public Player _owner{ get; private set;}
     
     UIController_FA uiController;
+    [SerializeField] private CharacterController controller;
+    public float speed;
+    [SerializeField] private Camera myCam;
 
     public void Move(Vector3 dir, float speed)
     {
-        transform.position += dir * speed * Time.deltaTime;
+        dir = (transform.forward * dir.z).normalized;
+        
+        controller.Move(dir * speed * Time.deltaTime);
+        //transform.position += dir * speed * Time.deltaTime;
     }
 
 
+    public void Rotate(float xRotation, float mouseX)
+    {
+        myCam.transform.localRotation = Quaternion.Euler(xRotation, 0, 0f);
+        transform.Rotate(Vector3.up * mouseX);
+    }
+    
     public Character_FA SetInitialParameters(Player localPlayer)
     {
+        Debug.Log("entro aca como server?");
         _owner = localPlayer;
+        
+        controller = GetComponent<CharacterController>();
         photonView.RPC("SetLocalParams", localPlayer);
         return this;
     }
@@ -27,8 +43,7 @@ public class Character_FA : MonoBehaviourPun
     [PunRPC]
     void SetLocalParams()
     {
+        //myCam = GetComponentInChildren<Camera>();
         uiController = FindObjectOfType<UIController_FA>();
     }
-    
-    
 }

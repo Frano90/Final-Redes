@@ -306,6 +306,11 @@ public class MyServer_FA : MonoBehaviourPun
         photonView.RPC("RPCCheckIfEndGame", _server, localPlayer);
     }
     
+    public void RequestRotation(Player localPlayer, float xRotation, float mouseX)
+    {
+        photonView.RPC("RPC_RequestRotation", _server, localPlayer, xRotation, mouseX);
+    }
+    
     [PunRPC]
     void Move(Player player, Vector3 dir)
     {
@@ -326,14 +331,23 @@ public class MyServer_FA : MonoBehaviourPun
             //
             //
             //
-            // _dicModels[player].Move(dir, _dicModels[player].speed);
+             _dicModels[player].Move(dir, _dicModels[player].speed);
         }
     }
 
     [PunRPC]
+    void RPC_RequestRotation(Player player, float xRotation, float mouseX)
+    {
+        if (_dicModels.ContainsKey(player))
+        {
+            _dicModels[player].Rotate(xRotation, mouseX);
+        }
+    }
+    
+    [PunRPC]
     void CreatePlayerModel(Player player)
     {
-        _dicModels[player] = PhotonNetwork.Instantiate("SpawnPlayerTest", spawner.transform.position, Quaternion.identity).GetComponent<Character_FA>().SetInitialParameters(player);
+        _dicModels[player] = PhotonNetwork.Instantiate("RatTest", spawner.transform.position, Quaternion.identity).GetComponent<Character_FA>().SetInitialParameters(player);
     }
     
     [PunRPC]

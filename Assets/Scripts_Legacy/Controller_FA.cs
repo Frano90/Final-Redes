@@ -6,6 +6,9 @@ using Photon.Realtime;
 
 public class Controller_FA : MonoBehaviourPun
 {
+    [SerializeField] private float mouseSensitivity;
+    private float xRotation;
+
     private void Start()
     {
         
@@ -30,15 +33,25 @@ public class Controller_FA : MonoBehaviourPun
 
             //Lo deje para probar y que me quede el ejemplo
             
+            
             if( h != 0 || v != 0)
             {
-                var dir = new Vector3(h, v, 0);
-                MyServer_FA.Instance.RequestMove(PhotonNetwork.LocalPlayer, dir.normalized);
+                Vector3 move = transform.right * h + transform.forward * v;
+                MyServer_FA.Instance.RequestMove(PhotonNetwork.LocalPlayer, move.normalized);
             }
             else
             {
                 MyServer_FA.Instance.RequestMove(PhotonNetwork.LocalPlayer, Vector3.zero);
             }
+            
+            
+            float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
+            float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
+
+            xRotation -= mouseY;
+            xRotation = Mathf.Clamp(xRotation, -20f, 15f);
+
+            MyServer_FA.Instance.RequestRotation(PhotonNetwork.LocalPlayer, xRotation, mouseX);
             
             yield return new WaitForSeconds(1 / MyServer_FA.Instance.PackagePerSecond);
         }
