@@ -175,7 +175,7 @@ public class MyServer_FA : MonoBehaviourPun
     void RPCEnterLobby(Player player)
     {
         Debug.Log("registre a un jugador");
-        //_dicTeams.Add(player, Team.NotAssigned);
+        
         lobby.SetInitialParams(player, playersConnected);
         _dicSelectionModel.Add(player, lobby.characterSelections[playersConnected]);
 
@@ -190,21 +190,25 @@ public class MyServer_FA : MonoBehaviourPun
     [PunRPC]
     void RPCEnterLobbyAgain(Player player)
     {
+        Debug.Log("ya entaste? " + _dicEnterLobby.ContainsKey(player));
         if (_dicEnterLobby.ContainsKey(player)) return;
 
         _dicEnterLobby[player] = true;
 
+        Debug.Log("logre meterme aca. Voy a cambiar de escena");
         //if(_dicEnterLobby.Count == playersNeededToPlay)
         //{
-            PhotonNetwork.LoadLevel(1);
+            //PhotonNetwork.LoadLevel(1);
+            photonView.RPC("RPC_ReloadLobbyAndEnterPlayer", player);
             StartCoroutine(WaitForLevel(() => { lobby = FindObjectOfType<LobbyController_FA>(); }));            
         //}
     }
 
     [PunRPC]
-    void RPCReloadLobbyAndEnterPlayer()
+    void RPC_ReloadLobbyAndEnterPlayer()
     {
-        PhotonNetwork.LoadLevel(2);
+        Debug.Log("el jugador " + PhotonNetwork.LocalPlayer.NickName + " va a entrar al lobby");
+        PhotonNetwork.LoadLevel(1);
 
         StartCoroutine(WaitForLevel(() => photonView.RPC("RPCEnterLobby", _server, PhotonNetwork.LocalPlayer)));
     }
@@ -349,9 +353,10 @@ public class MyServer_FA : MonoBehaviourPun
             StartCoroutine(WaitForLevel(() => {
                 lobby = FindObjectOfType<LobbyController_FA>();
                 isGameOn = false;
+                photonView.RPC("RPC_RequestEnterLobbyFromGame", RpcTarget.Others);
             }));
 
-            StartCoroutine(WaitForLevelSettings(() => lobby != null, () => photonView.RPC("SetServer", RpcTarget.Others, PhotonNetwork.LocalPlayer, 1)));
+            //StartCoroutine(WaitForLevelSettings(() => lobby != null, () => photonView.RPC("SetServer", RpcTarget.Others, PhotonNetwork.LocalPlayer, 1)));
         }
         
     }
@@ -367,8 +372,8 @@ public class MyServer_FA : MonoBehaviourPun
 
 
     #region UI 
-
     // private void Update()
+
     // {
     //     if (!photonView.IsMine) return;
     //
