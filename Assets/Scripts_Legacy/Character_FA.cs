@@ -27,6 +27,13 @@ public class Character_FA : MonoBehaviourPun
         myCam.transform.localRotation = Quaternion.Euler(xRotation, 0, 0f);
         transform.Rotate(Vector3.up * mouseX);
     }
+
+    public void ResetCharacter(Vector3 initialPos)
+    {
+        controller.enabled = false;
+        transform.position = initialPos;
+        controller.enabled = true;
+    }
     
     public Character_FA SetInitialParameters(Player localPlayer)
     {

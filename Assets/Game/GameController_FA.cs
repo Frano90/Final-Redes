@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
+using Photon.Realtime;
 using UnityEngine;
 
 public class GameController_FA : MonoBehaviourPun
@@ -9,6 +10,8 @@ public class GameController_FA : MonoBehaviourPun
     private float currentTime = 300f;
     private UIController_FA UI_controller;
 
+    Dictionary<Player, Character_FA> _dicModels = new Dictionary<Player, Character_FA>();
+    
     public bool IsGameFinished()
     {
         return true;
@@ -22,6 +25,21 @@ public class GameController_FA : MonoBehaviourPun
         currentTime = 300f;
     }
 
+    public void AddModel(Player player, Character_FA character)
+    {
+        if (!_dicModels.ContainsKey(player))
+        {
+            _dicModels.Add(player, character);
+        }
+    }
+
+    public void OnTrapTrigger(Player player)
+    {
+        Debug.Log(player);
+        Debug.Log(player.NickName);
+        _dicModels[player].ResetCharacter(Vector3.zero);
+    }
+    
     private void Update()
 
     {

@@ -295,6 +295,11 @@ public class MyServer_FA : MonoBehaviourPun
 
     #region Player actions
 
+    public void OnTouchedTrap(Player player)
+    {
+        _dicModels[player].ResetCharacter(Vector3.zero);
+    }
+    
     public void RequestMove(Player player, Vector3 dir)
     {
         Debug.Log("se hace el request");
@@ -348,6 +353,7 @@ public class MyServer_FA : MonoBehaviourPun
     void CreatePlayerModel(Player player)
     {
         _dicModels[player] = PhotonNetwork.Instantiate("RatTest", spawner.transform.position, Quaternion.identity).GetComponent<Character_FA>().SetInitialParameters(player);
+        gameController.AddModel(player, _dicModels[player]); // lo agrego al controlador del juego
     }
     
     [PunRPC]
