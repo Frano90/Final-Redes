@@ -18,9 +18,7 @@ public class Character_FA : MonoBehaviourPun
     public void Move(Vector3 dir, float speed)
     {
         dir = (transform.forward * dir.z).normalized;
-        
         controller.Move(dir * speed * Time.deltaTime);
-        //transform.position += dir * speed * Time.deltaTime;
     }
 
 
@@ -32,9 +30,7 @@ public class Character_FA : MonoBehaviourPun
     
     public Character_FA SetInitialParameters(Player localPlayer)
     {
-        Debug.Log("entro aca como server?");
         _owner = localPlayer;
-        
         controller = GetComponent<CharacterController>();
         photonView.RPC("SetLocalParams", localPlayer);
         return this;
@@ -43,7 +39,6 @@ public class Character_FA : MonoBehaviourPun
     [PunRPC]
     void SetLocalParams()
     {
-        //myCam = GetComponentInChildren<Camera>();
         uiController = FindObjectOfType<UIController_FA>();
     }
 }

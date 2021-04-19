@@ -386,26 +386,7 @@ public class MyServer_FA : MonoBehaviourPun
 
 
     #region UI 
-    // private void Update()
-
-    // {
-    //     if (!photonView.IsMine) return;
-    //
-    //     if (!isGameOn) return;
-    //     
-    //     currentTime -= Time.deltaTime;
-    //
-    //     int minutes = Mathf.FloorToInt(currentTime / 60F);
-    //     int seconds = Mathf.FloorToInt(currentTime - minutes * 60);
-    //
-    //     if(UI_controller != null)
-    //         UI_controller.RefreshTime(string.Format("Time: {0:0}:{1:00}", minutes, seconds));
-    //
-    //     if (currentTime <= 0)
-    //     {
-    //         FinishGame();
-    //     }
-    // }
+    
     
 
     void FinishGame()

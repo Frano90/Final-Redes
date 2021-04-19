@@ -4,11 +4,12 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.UI;
+using TMPro;
 
 
 public class UIController_FA : MonoBehaviourPun
 {
-    [SerializeField] Text time;
+    [SerializeField] TMP_Text time;
     //[SerializeField] Text b_score;
     //[SerializeField] Text y_score;
     //[SerializeField] GameObject finishPanel;
