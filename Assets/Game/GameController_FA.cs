@@ -12,6 +12,8 @@ public class GameController_FA : MonoBehaviourPun
     private UIController_FA UI_controller;
 
     Dictionary<Player, Character_FA> _dicModels = new Dictionary<Player, Character_FA>();
+
+    [SerializeField] private List<GameItem_DATA> gameItems = new List<GameItem_DATA>();
     
     public bool IsGameFinished()
     {
@@ -21,6 +23,7 @@ public class GameController_FA : MonoBehaviourPun
     private void Start()
     {
         if (!photonView.IsMine) return;
+        
         
         UI_controller = FindObjectOfType<UIController_FA>();
         currentTime = 300f;
@@ -34,12 +37,7 @@ public class GameController_FA : MonoBehaviourPun
         }
     }
 
-    public void OnTrapTrigger(Player player)
-    {
-        Debug.Log(player);
-        Debug.Log(player.NickName);
-        _dicModels[player].ResetCharacter(Vector3.zero);
-    }
+    public void OnTrapTrigger(Player player){_dicModels[player].ResetCharacter(Vector3.zero);}
     
     private void Update()
 
@@ -47,7 +45,6 @@ public class GameController_FA : MonoBehaviourPun
         if (!photonView.IsMine) return;
     
         //if (!isGameOn) return;
-        Debug.Log("entro aca????");
         HandleGameTime();
 
         // if (currentTime <= 0)
@@ -65,5 +62,17 @@ public class GameController_FA : MonoBehaviourPun
 
         if (UI_controller != null)
             UI_controller.RefreshTime(string.Format("Time: {0:0}:{1:00}", minutes, seconds));
+    }
+
+    public void OnPickUpGameItem(Player player, GameItem_FA item)
+    {
+        for (int i = 0; i < gameItems.Count; i++)
+        {
+            if (gameItems[i].type.Equals(item.itemType))
+            {
+                _dicModels[player].PickUpItem(gameItems[i]);
+                break;
+            }
+        }
     }
 }

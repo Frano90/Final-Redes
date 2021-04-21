@@ -24,6 +24,9 @@ public class Character_FA : MonoBehaviourPun
     [SerializeField] float groundDistance;
     [SerializeField] private LayerMask groundMask;
 
+
+    private ItemPickerView pickerContainer;
+
     public void Move(Vector3 dir, float speed)
     {
         if (movementLocked) return;
@@ -57,6 +60,8 @@ public class Character_FA : MonoBehaviourPun
         _owner = localPlayer;
         controller = GetComponent<CharacterController>();
         _impactRecivier = GetComponent<ImpactReceiver>();
+        pickerContainer = new ItemPickerView(this.transform);
+        
         photonView.RPC("SetLocalParams", localPlayer);
         return this;
     }
@@ -101,5 +106,10 @@ public class Character_FA : MonoBehaviourPun
     public void ResumeMovement()
     {
         movementLocked = false;
+    }
+
+    public void PickUpItem(GameItem_DATA itemData)
+    {
+        
     }
 }
