@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using FranoW;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
@@ -47,17 +48,22 @@ public class GameController_FA : MonoBehaviourPun
     
         //if (!isGameOn) return;
         Debug.Log("entro aca????");
-        currentTime -= Time.deltaTime;
-    
-        int minutes = Mathf.FloorToInt(currentTime / 60F);
-        int seconds = Mathf.FloorToInt(currentTime - minutes * 60);
-    
-        if(UI_controller != null)
-            UI_controller.RefreshTime(string.Format("Time: {0:0}:{1:00}", minutes, seconds));
-    
+        HandleGameTime();
+
         // if (currentTime <= 0)
         // {
         //     //FinishGame();
         // }
+    }
+
+    private void HandleGameTime()
+    {
+        currentTime -= Time.deltaTime;
+
+        int minutes = Mathf.FloorToInt(currentTime / 60F);
+        int seconds = Mathf.FloorToInt(currentTime - minutes * 60);
+
+        if (UI_controller != null)
+            UI_controller.RefreshTime(string.Format("Time: {0:0}:{1:00}", minutes, seconds));
     }
 }

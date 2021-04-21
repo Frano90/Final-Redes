@@ -14,5 +14,13 @@ namespace FranoW
             cc.Move(velocity * Time.deltaTime);
             return velocity;
         }
+        
+        public static Vector3 ApplyDefault(Vector3 velocity, CharacterController cc)
+        {
+            velocity.y += defaultScaler * defaultValue * Time.deltaTime;
+            
+            cc.Move(velocity * Time.deltaTime);
+            return velocity;
+        }
     }
 }

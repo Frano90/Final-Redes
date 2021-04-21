@@ -416,4 +416,46 @@ public class MyServer_FA : MonoBehaviourPun
         playersReadyToPlay = 0;
         _dicEnterLobby.Clear();
     }
+
+    public void RequestDash(Player localPlayer)
+    {
+        photonView.RPC("RPC_DoDash", _server, localPlayer);
+    }
+
+    [PunRPC]
+    void RPC_DoDash(Player player)
+    {
+        if (_dicModels.ContainsKey(player))
+        {
+            _dicModels[player].Dash();
+        }
+    }
+
+    public void RequestStopMovement(Player localPlayer)
+    {
+        photonView.RPC("RPC_StopMovement", _server, localPlayer);
+    }
+    
+    [PunRPC]
+    void RPC_StopMovement(Player player)
+    {
+        if (_dicModels.ContainsKey(player))
+        {
+            _dicModels[player].StopMovement();
+        }
+    }
+
+    public void RequestResumeMovement(Player localPlayer)
+    {
+        photonView.RPC("RPC_ResumeMovement", _server, localPlayer);
+    }
+    
+    [PunRPC]
+    void RPC_ResumeMovement(Player player)
+    {
+        if (_dicModels.ContainsKey(player))
+        {
+            _dicModels[player].ResumeMovement();
+        }
+    }
 }
