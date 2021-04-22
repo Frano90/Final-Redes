@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: Cheese
   m_EditorClassIdentifier: 
   type: 0
-  model: {fileID: 0}
+  model: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  mat: {fileID: 2100000, guid: 8a5015d5a6a8bbd4a9169b8357912c42, type: 2}

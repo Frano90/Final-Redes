@@ -25,7 +25,7 @@ public class Character_FA : MonoBehaviourPun
     [SerializeField] private LayerMask groundMask;
 
 
-    private ItemPickerView pickerContainer;
+    [SerializeField]private ItemPickerView pickerContainer;
 
     public void Move(Vector3 dir, float speed)
     {
@@ -60,7 +60,7 @@ public class Character_FA : MonoBehaviourPun
         _owner = localPlayer;
         controller = GetComponent<CharacterController>();
         _impactRecivier = GetComponent<ImpactReceiver>();
-        pickerContainer = new ItemPickerView(this.transform);
+        //pickerContainer = new ItemPickerView(this.transform);
         
         photonView.RPC("SetLocalParams", localPlayer);
         return this;
@@ -70,6 +70,8 @@ public class Character_FA : MonoBehaviourPun
     void SetLocalParams()
     {
         uiController = FindObjectOfType<UIController_FA>();
+        pickerContainer = new ItemPickerView(transform);
+        pickerContainer.SetItemRegistry(FindObjectOfType<GameController_FA>());
     }
 
     public void Dash()
@@ -110,6 +112,17 @@ public class Character_FA : MonoBehaviourPun
 
     public void PickUpItem(GameItem_DATA itemData)
     {
-        
+        photonView.RPC("RPC_PickItemView", RpcTarget.Others, itemData.type);
+    }
+
+    [PunRPC]
+    void RPC_PickItemView(GameItem_DATA.ItemType itemData)
+    {
+        pickerContainer.SetCurrentModel(itemData);
+    }
+
+    public void ReleaseItem()
+    {
+        pickerContainer.ReleaseItem();
     }
 }

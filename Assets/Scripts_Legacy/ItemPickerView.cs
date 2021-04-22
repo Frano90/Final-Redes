@@ -2,16 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class ItemPickerView
 {
     private Transform _t;
     //private Mesh _currentModel;
     //private Material _currentMaterial;
 
-    private GameObject _container;
+    [SerializeField] private GameObject _container;
 
-    private MeshRenderer renderer;
-    private MeshFilter filter;
+    [SerializeField] private MeshRenderer renderer;
+    [SerializeField] private MeshFilter filter;
+
+    [SerializeField] private List<GameItem_DATA> itemsData = new List<GameItem_DATA>();
     
     public ItemPickerView(Transform transform)
     {
@@ -23,18 +26,33 @@ public class ItemPickerView
 
         renderer = _container.AddComponent<MeshRenderer>();
         filter = _container.AddComponent<MeshFilter>();
+        
+        
 
     }
 
-    // public void OnUpdate()
-    // {
-    //     renderer.material = _currentMaterial;
-    // }
-
-    public void SetCurrentModel(GameItem_DATA itemdata)
+    public void SetCurrentModel(GameItem_DATA.ItemType itemdata)
     {
-        renderer.material = itemdata.mat;
-        filter.mesh = itemdata.model;
+        GameItem_DATA data = GetItemDataFromLocalRegistry(itemdata);
+
+        if (data == null) return;
+        
+        renderer.material = data.mat;
+        filter.mesh = data.model;
+        TurnOn();
+    }
+
+    private GameItem_DATA GetItemDataFromLocalRegistry(GameItem_DATA.ItemType itemdata)
+    {
+        for (int i = 0; i < itemsData.Count; i++)
+        {
+            if (itemdata.Equals(itemsData[i].type))
+            {
+                return itemsData[i];
+            }
+        }
+
+        return null;
     }
 
     public void TurnOff()
@@ -46,5 +64,14 @@ public class ItemPickerView
     {
         _container.SetActive(true);
     }
-    
+
+    public void ReleaseItem()
+    {
+        TurnOff();
+    }
+
+    public void SetItemRegistry(GameController_FA gameController)
+    {
+        itemsData = gameController.GetGameItems;
+    }
 }

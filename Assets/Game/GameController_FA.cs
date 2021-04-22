@@ -14,6 +14,8 @@ public class GameController_FA : MonoBehaviourPun
     Dictionary<Player, Character_FA> _dicModels = new Dictionary<Player, Character_FA>();
 
     [SerializeField] private List<GameItem_DATA> gameItems = new List<GameItem_DATA>();
+
+    public List<GameItem_DATA> GetGameItems => gameItems;
     
     public bool IsGameFinished()
     {
