@@ -27,6 +27,8 @@ public class Character_FA : MonoBehaviourPun
 
     [SerializeField]private ItemPickerView pickerContainer;
 
+    public bool IsCarryingItem => pickerContainer.carrying;
+    
     public void Move(Vector3 dir, float speed)
     {
         if (movementLocked) return;
@@ -122,6 +124,12 @@ public class Character_FA : MonoBehaviourPun
     }
 
     public void ReleaseItem()
+    {
+        photonView.RPC("RCP_ReleaseItemView", RpcTarget.Others);
+    }
+
+    [PunRPC]
+    void RCP_ReleaseItemView()
     {
         pickerContainer.ReleaseItem();
     }

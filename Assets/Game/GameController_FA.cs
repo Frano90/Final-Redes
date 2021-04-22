@@ -77,4 +77,9 @@ public class GameController_FA : MonoBehaviourPun
             }
         }
     }
+
+    public void ReleaseItemFromPlayer(Player owner)
+    {
+        _dicModels[owner].ReleaseItem();
+    }
 }
