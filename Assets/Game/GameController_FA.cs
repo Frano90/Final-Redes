@@ -12,6 +12,7 @@ public class GameController_FA : MonoBehaviourPun
     private UIController_FA UI_controller;
 
     Dictionary<Player, Character_FA> _dicModels = new Dictionary<Player, Character_FA>();
+    //Dictionary<Player, GameItem_DATA> _dicCarryItems = new Dictionary<Player, GameItem_DATA>();
 
     [SerializeField] private List<GameItem_DATA> gameItems = new List<GameItem_DATA>();
 

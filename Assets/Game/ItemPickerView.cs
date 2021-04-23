@@ -16,8 +16,6 @@ public class ItemPickerView
 
     [SerializeField] private List<GameItem_DATA> itemsData = new List<GameItem_DATA>();
 
-    public bool carrying;
-    
     public ItemPickerView(Transform transform)
     {
         _t = transform;
@@ -59,13 +57,11 @@ public class ItemPickerView
 
     public void TurnOff()
     {
-        carrying = false;
         _container.SetActive(false);
     }
     
     public void TurnOn()
     {
-        carrying = true;
         _container.SetActive(true);
     }
 

@@ -24,10 +24,14 @@ public class Character_FA : MonoBehaviourPun
     [SerializeField] float groundDistance;
     [SerializeField] private LayerMask groundMask;
 
+    private GameItem_DATA itemCarrying;
+    
 
     [SerializeField]private ItemPickerView pickerContainer;
 
-    public bool IsCarryingItem => pickerContainer.carrying;
+    private bool _carryngItem;
+
+    public bool IsCarryingItem => _carryngItem;
     
     public void Move(Vector3 dir, float speed)
     {
@@ -114,6 +118,8 @@ public class Character_FA : MonoBehaviourPun
 
     public void PickUpItem(GameItem_DATA itemData)
     {
+        _carryngItem = true;
+        itemCarrying = itemData;
         photonView.RPC("RPC_PickItemView", RpcTarget.Others, itemData.type);
     }
 
@@ -125,6 +131,8 @@ public class Character_FA : MonoBehaviourPun
 
     public void ReleaseItem()
     {
+        _carryngItem = false;
+        itemCarrying = null;
         photonView.RPC("RCP_ReleaseItemView", RpcTarget.Others);
     }
 
