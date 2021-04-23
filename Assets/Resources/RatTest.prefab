@@ -297,7 +297,6 @@ MonoBehaviour:
     filter: {fileID: 0}
     itemsData:
     - {fileID: 11400000, guid: 1bbdae4bfbb84364abf10189463149a3, type: 2}
-    carrying: 0
 --- !u!1001 &3155389659695537128
 PrefabInstance:
   m_ObjectHideFlags: 0

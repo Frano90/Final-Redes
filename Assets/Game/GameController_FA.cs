@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using FranoW;
+using FranoW.DevelopTools;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
@@ -11,24 +12,35 @@ public class GameController_FA : MonoBehaviourPun
     private float currentTime = 300f;
     private UIController_FA UI_controller;
 
+
+    public int CheeseRecoveredAmount { get; private set; }  
+    
     Dictionary<Player, Character_FA> _dicModels = new Dictionary<Player, Character_FA>();
     //Dictionary<Player, GameItem_DATA> _dicCarryItems = new Dictionary<Player, GameItem_DATA>();
 
     [SerializeField] private List<GameItem_DATA> gameItems = new List<GameItem_DATA>();
 
     public List<GameItem_DATA> GetGameItems => gameItems;
-    
+    public int CheeseAmountToWin { get; set; }
+
+
     public bool IsGameFinished()
     {
         return true;
     }
 
-    private void Start()
+    private void Awake()
     {
         if (!photonView.IsMine) return;
         
-        
         UI_controller = FindObjectOfType<UIController_FA>();
+    }
+
+    private void Start()
+    {
+        if (!photonView.IsMine) return;
+
+        CheeseAmountToWin = 15;
         currentTime = 300f;
     }
 
@@ -79,8 +91,10 @@ public class GameController_FA : MonoBehaviourPun
         }
     }
 
-    public void ReleaseItemFromPlayer(Player owner)
+    public void CashItemFromPlayer(Player owner)
     {
+        CheeseRecoveredAmount++;
+        MyServer_FA.Instance.eventManager.TriggerEvent(GameEvent.cheeeseDelivered);
         _dicModels[owner].ReleaseItem();
     }
 }

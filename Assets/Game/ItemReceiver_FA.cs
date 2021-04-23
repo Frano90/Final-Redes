@@ -23,7 +23,7 @@ public class ItemReceiver_FA : MonoBehaviourPun
             if (player.IsCarryingItem)
             {
                 Debug.Log("tercero");
-                MyServer_FA.Instance.gameController.ReleaseItemFromPlayer(player._owner);
+                MyServer_FA.Instance.gameController.CashItemFromPlayer(player._owner);
             }
                 
         }

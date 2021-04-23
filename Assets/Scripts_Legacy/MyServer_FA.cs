@@ -4,6 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using System;
+using FranoW.DevelopTools;
 using UnityEngine.UI;
 
 public class MyServer_FA : MonoBehaviourPun
@@ -21,6 +22,7 @@ public class MyServer_FA : MonoBehaviourPun
     public Spawners_FA spawner;
     public UIController_FA UI_controller;
     public GameController_FA gameController;
+    public EventManager eventManager = new EventManager();
 
     Dictionary<Player, Character_FA> _dicModels = new Dictionary<Player, Character_FA>();
     Dictionary<Player, CharSelect_FA> _dicSelectionModel = new Dictionary<Player, CharSelect_FA>();

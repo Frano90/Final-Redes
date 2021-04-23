@@ -26,9 +26,6 @@ public class ItemPickerView
 
         renderer = _container.AddComponent<MeshRenderer>();
         filter = _container.AddComponent<MeshFilter>();
-        
-        
-
     }
 
     public void SetCurrentModel(GameItem_DATA.ItemType itemdata)
