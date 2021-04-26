@@ -1,6 +1,8 @@
 ﻿public enum GameEvent
 {
     cheesePicked,
-    cheeeseDelivered
+    cheeeseDelivered,
+    
+    gameFinished
 }
 

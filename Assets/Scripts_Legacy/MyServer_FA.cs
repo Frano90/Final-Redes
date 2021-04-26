@@ -36,6 +36,8 @@ public class MyServer_FA : MonoBehaviourPun
 
     public bool isGameOn = false;
 
+    
+    public int PlayersWantingToReturnLobby { get; private set; }
     public int PackagePerSecond { get; private set; }
 
     public enum Team { Yellow, Blue, NotAssigned}
@@ -308,11 +310,6 @@ public class MyServer_FA : MonoBehaviourPun
         photonView.RPC("Move", _server, player, dir);
     }
 
-    public void RequestWin(Player localPlayer)
-    {
-        photonView.RPC("RPCCheckIfEndGame", _server, localPlayer);
-    }
-    
     public void RequestRotation(Player localPlayer, float xRotation, float mouseX)
     {
         photonView.RPC("RPC_RequestRotation", _server, localPlayer, xRotation, mouseX);
@@ -380,6 +377,19 @@ public class MyServer_FA : MonoBehaviourPun
 
             //StartCoroutine(WaitForLevelSettings(() => lobby != null, () => photonView.RPC("SetServer", RpcTarget.Others, PhotonNetwork.LocalPlayer, 1)));
         }
+        
+    }
+
+    public void ReloadLobby()
+    {
+        ClearSettings();
+        PhotonNetwork.LoadLevel(1);
+
+        StartCoroutine(WaitForLevel(() => {
+            lobby = FindObjectOfType<LobbyController_FA>();
+            isGameOn = false;
+            //photonView.RPC("RPC_RequestEnterLobbyFromGame", RpcTarget.Others);
+        }));
         
     }
 

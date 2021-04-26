@@ -12,7 +12,7 @@ public class UIController_FA : MonoBehaviourPun
     [SerializeField] TMP_Text time;
     //[SerializeField] Text b_score;
     //[SerializeField] Text y_score;
-    //[SerializeField] GameObject finishPanel;
+    [SerializeField] FinishPanel_UI finishPanel;
     //[SerializeField] Text winnerTeam;
     //[SerializeField] Button lobbyButton;
     //[SerializeField] Text mineAmmo;
@@ -21,10 +21,11 @@ public class UIController_FA : MonoBehaviourPun
     
     private void Start()
     {
+        finishPanel.AddEventToContinueButton(OnLocalPlayerPressContinueButton);
+        finishPanel.gameObject.SetActive(false);
+        
         if (!photonView.IsMine) return;
         
-       
-        //photonView.RPC("RPC_RefreshCheeseScore", RpcTarget.Others, 0, MyServer_FA.Instance.gameController.CheeseAmountToWin);
         StartCoroutine(InitSettings());
     }
 
@@ -36,7 +37,29 @@ public class UIController_FA : MonoBehaviourPun
         }
         photonView.RPC("RPC_RefreshCheeseScore", RpcTarget.Others, 0, MyServer_FA.Instance.gameController.CheeseAmountToWin);
         
+        
+        
         MyServer_FA.Instance.eventManager.SubscribeToEvent(GameEvent.cheeeseDelivered, RefreshCheeseScore);
+        MyServer_FA.Instance.eventManager.SubscribeToEvent(GameEvent.gameFinished, OnFinishGame);
+    }
+
+    void OnLocalPlayerPressContinueButton()
+    {
+        Debug.Log("apreto boton");
+        MyServer_FA.Instance.RequestEnterLobbyAgain(PhotonNetwork.LocalPlayer);
+    }
+    
+    private void OnFinishGame()
+    {
+        MyServer_FA.Instance.eventManager.UnsubscribeToEvent(GameEvent.cheeeseDelivered, RefreshCheeseScore);
+        MyServer_FA.Instance.eventManager.UnsubscribeToEvent(GameEvent.gameFinished, OnFinishGame);
+        photonView.RPC("RPC_OnFinishGame", RpcTarget.Others);
+    }
+
+    [PunRPC]
+    void RPC_OnFinishGame()
+    {
+        finishPanel.gameObject.SetActive(true);
     }
 
     public void RefreshTime(string newTime)

@@ -23,10 +23,10 @@ public class Controller_FA : MonoBehaviourPun
         
         while(true)
         {
-            if (Input.GetKeyDown(KeyCode.O))
-            {
-                MyServer_FA.Instance.RequestWin(PhotonNetwork.LocalPlayer);
-            }
+            // if (Input.GetKeyDown(KeyCode.O))
+            // {
+            //     //MyServer_FA.Instance.RequestWin(PhotonNetwork.LocalPlayer);
+            // }
             
             HandleMovementInput();
 

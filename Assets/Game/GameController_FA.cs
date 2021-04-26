@@ -40,7 +40,7 @@ public class GameController_FA : MonoBehaviourPun
     {
         if (!photonView.IsMine) return;
 
-        CheeseAmountToWin = 15;
+        CheeseAmountToWin = 1;
         currentTime = 300f;
     }
 
@@ -96,5 +96,17 @@ public class GameController_FA : MonoBehaviourPun
         CheeseRecoveredAmount++;
         MyServer_FA.Instance.eventManager.TriggerEvent(GameEvent.cheeeseDelivered);
         _dicModels[owner].ReleaseItem();
+
+        OnCheeseDelivered();
+    }
+
+    private void OnCheeseDelivered()
+    {
+        if(CheeseRecoveredAmount >= CheeseAmountToWin)
+        {
+            MyServer_FA.Instance.eventManager.TriggerEvent(GameEvent.gameFinished);
+            MyServer_FA.Instance.ReloadLobby();
+        }
+            
     }
 }
