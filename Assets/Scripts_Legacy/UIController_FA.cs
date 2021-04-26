@@ -35,6 +35,8 @@ public class UIController_FA : MonoBehaviourPun
             yield return new WaitForEndOfFrame();
         }
         photonView.RPC("RPC_RefreshCheeseScore", RpcTarget.Others, 0, MyServer_FA.Instance.gameController.CheeseAmountToWin);
+        
+        MyServer_FA.Instance.eventManager.SubscribeToEvent(GameEvent.cheeeseDelivered, RefreshCheeseScore);
     }
 
     public void RefreshTime(string newTime)
