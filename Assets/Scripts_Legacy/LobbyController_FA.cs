@@ -9,16 +9,13 @@ public class LobbyController_FA : MonoBehaviourPun
 {
     public CharSelect_FA[] characterSelections;
 
-    Dictionary<int, Player> playerRegistry = new Dictionary<int, Player>();
+    //Dictionary<int, Player> playerRegistry = new Dictionary<int, Player>();
 
     private void Start()
     {
         if(photonView.IsMine)
         {
-            for (int i = 0; i < characterSelections.Length; i++)
-            {
-                
-            }
+
         }
         else
         {
@@ -28,7 +25,7 @@ public class LobbyController_FA : MonoBehaviourPun
                 characterSelections[i].ToggleTeamButton(false);
 
                 Debug.Log("subscribo eventos");
-                characterSelections[i].onPressed_ChangeTeam_btt = (index) => MyServer_FA.Instance.RequestChangeTeam(PhotonNetwork.LocalPlayer);
+                characterSelections[i].onPressed_ChangeTeam_btt = (index) => RequestChangeCharacterData(index);
                 characterSelections[i].onPressed_Ready_btt = (index) => MyServer_FA.Instance.RequestReadyToPlay(PhotonNetwork.LocalPlayer);
             }
         }
@@ -36,26 +33,46 @@ public class LobbyController_FA : MonoBehaviourPun
 
     public void SetInitialView(int selectionMenu, Player player)
     {
-        photonView.RPC("RPCSetInitialView", RpcTarget.AllBuffered, selectionMenu, player);
+        photonView.RPC("RPCSetInitialView", RpcTarget.OthersBuffered, selectionMenu, player);
         photonView.RPC("RPCEnableButtons", player, selectionMenu);
 
     }
 
+    void RequestChangeCharacterData(int index)
+    {
+        photonView.RPC("RPC_ChangeCharacterData", MyServer_FA.Instance.GetServer, index);
+    }
+
+    [PunRPC]
+    void RPC_ChangeCharacterData(int index)
+    {
+        photonView.RPC("RPC_SetNextCharacter", RpcTarget.OthersBuffered, index);
+    }
+
+    [PunRPC]
+    void RPC_SetNextCharacter(int index)
+    {
+        characterSelections[index].ChangeCharacter();
+    }
+    
     public void SetInitialParams(Player player, int index)
     {
-        playerRegistry.Add(index, player);
-        characterSelections[index].SetInitialParams(index);
-        photonView.RPC("RPCRegisterButtons", player, index, player);
+        //playerRegistry.Add(index, player);
+        //characterSelections[index].SetInitialParams(index);
+        photonView.RPC("RPCRegisterButtons", RpcTarget.OthersBuffered, index, player);
+        SetInitialView(index, player);
     }
 
     public void RequestRefreshView(int index, Player player, bool isReady)
     {
+        
         photonView.RPC("RPCRefreshView",RpcTarget.OthersBuffered, index , isReady);
     }
 
     [PunRPC]
     public void RPCRegisterButtons(int index, Player player)
     {
+        
         characterSelections[index].SetInitialParams(index);
     }
 
@@ -69,7 +86,7 @@ public class LobbyController_FA : MonoBehaviourPun
     public void RPCSetInitialView(int index, Player player)
     {
         Debug.Log("el index es " + index + " y el nombre del player es " + player.NickName);
-        characterSelections[index].SetInitialView(player.NickName);
+        characterSelections[index].SetInitialView(player.NickName, index);
     }
 
     [PunRPC]

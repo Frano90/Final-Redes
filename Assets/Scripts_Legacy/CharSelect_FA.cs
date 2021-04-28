@@ -9,20 +9,18 @@ using static MyServer_FA;
 
 public class CharSelect_FA : MonoBehaviour
 {
-    //public Player _owner = null;
-
-    [SerializeField] Image character_Image;
-    [SerializeField] Sprite[] imagesPool;
-
-    [SerializeField] Image teamColor_Image;
-    //[SerializeField] Button changeTeam_btt;
+    
+    [SerializeField] Button changeTeam_btt;
     [SerializeField] Button ready_btt;
     [SerializeField] Text nickname_text;
+    [SerializeField] Image portrait_img;
 
     public Action<int> onPressed_ChangeTeam_btt;
     public Action<int> onPressed_Ready_btt;
 
-    //public Team currentTeamSelected = Team.NotAssigned;
+
+    private LobbySelectorData currentData;
+    
     public int playerIndex;
 
     public bool imReady = false;
@@ -31,19 +29,22 @@ public class CharSelect_FA : MonoBehaviour
     {
         playerIndex = index;
         Debug.Log("suscribo eventos en selector");
-        //changeTeam_btt.onClick.AddListener(() => OnPressed_changeTeam(playerIndex));
-        ready_btt.onClick.AddListener(() => OnPressed_ready(playerIndex));
+        changeTeam_btt.onClick.AddListener(() => OnPressed_changeTeam(index));
+        ready_btt.onClick.AddListener(() => OnPressed_ready(index));
 
 
+        currentData = MyServer_FA.Instance.lobySelectorDatas[playerIndex];
+        
         return this;
     }
 
-    void OnPressed_changeTeam(int index) {onPressed_ChangeTeam_btt?.Invoke(index); Debug.Log("se invoca en el selector"); }
+    void OnPressed_changeTeam(int index) {onPressed_ChangeTeam_btt?.Invoke(index);}
     void OnPressed_ready(int index) => onPressed_Ready_btt?.Invoke(index);
 
-    public void SetInitialView(string playerName)
+    public void SetInitialView(string playerName, int indexPlayer)
     {
         nickname_text.text = playerName;
+        portrait_img.sprite = MyServer_FA.Instance.lobySelectorDatas[indexPlayer].portrait;
         ChangeReadyButtonColor(false);
     }
 
@@ -52,15 +53,10 @@ public class CharSelect_FA : MonoBehaviour
         ready_btt.interactable = value;
     }
 
-    public void ToggleTeamButton(bool value)
-    {
-        //changeTeam_btt.interactable = value;
-    }
-
-    public void ChangeName(string newName)
-    {
-        nickname_text.text = newName;
-    }
+    // public void ChangeName(string newName)
+    // {
+    //     nickname_text.text = newName;
+    // }
 
     public void ChangeReadyButtonColor(bool isReady)
     {
@@ -90,4 +86,33 @@ public class CharSelect_FA : MonoBehaviour
         ready_btt.colors = colors;
     }
 
+    public void ChangeCharacter()
+    {
+        var datas = MyServer_FA.Instance.lobySelectorDatas;
+        for (int i = 0; i < datas.Count; i++)
+        {
+            if (datas[i].Equals(currentData))
+            {
+                if (i + 1 >= datas.Count)
+                {
+                    currentData = datas[0];
+                }
+                else
+                {
+                    currentData = datas[i + 1];
+                }
+
+                break;
+            }
+        }
+        Debug.Log(portrait_img + "portrait");
+        Debug.Log(currentData + "data");
+        
+        portrait_img.sprite = currentData.portrait;
+    }
+
+    public void ToggleTeamButton(bool b)
+    {
+        changeTeam_btt.interactable = b;
+    }
 }

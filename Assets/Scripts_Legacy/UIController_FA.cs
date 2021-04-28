@@ -16,6 +16,8 @@ public class UIController_FA : MonoBehaviourPun
     //[SerializeField] Text winnerTeam;
     //[SerializeField] Button lobbyButton;
     //[SerializeField] Text mineAmmo;
+    [SerializeField] private Transform playerUIContainer;
+    private List<RatUIViewer> playerUIs = new List<RatUIViewer>();
 
     [SerializeField] private CheeseScoreHandler _cheeseScoreHandler;
     
@@ -23,10 +25,24 @@ public class UIController_FA : MonoBehaviourPun
     {
         finishPanel.AddEventToContinueButton(OnLocalPlayerPressContinueButton);
         finishPanel.gameObject.SetActive(false);
+
+        FetchPlayerUI();
         
         if (!photonView.IsMine) return;
         
         StartCoroutine(InitSettings());
+    }
+
+    private void FetchPlayerUI()
+    {
+        foreach (Transform v in playerUIContainer)
+        {
+            RatUIViewer ratUI = v.GetComponent<RatUIViewer>();
+            if (ratUI != null)
+            {
+                playerUIs.Add(ratUI);
+            }
+        }
     }
 
     IEnumerator InitSettings()
@@ -105,4 +121,13 @@ public class UIController_FA : MonoBehaviourPun
     }
 
 
+    public void RatTrapped(Player player)
+    {
+        
+    }
+
+    public void RegisterPlayerUI(Player player)
+    {
+        
+    }
 }

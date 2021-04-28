@@ -44,15 +44,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9bcb74e387180444902a8c831cb4554, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterTest_PF: {fileID: 1046158952671294652, guid: 5f39cfaa267eddb4e9ffe0654b562b1a,
-    type: 3}
   lobby: {fileID: 0}
   controller_pf: {fileID: 8651489961225182942, guid: 809c734b8dcf59e428512e70c4c2ddc7,
     type: 3}
   spawner: {fileID: 0}
   UI_controller: {fileID: 0}
   gameController: {fileID: 0}
-  isGameOn: 0
+  lobySelectorDatas:
+  - {fileID: 11400000, guid: 42c9ba9181c822b4783e2f6ddd8b9385, type: 2}
+  - {fileID: 11400000, guid: 27f2c7b3d081ec34b8a1667ce59c6167, type: 2}
+  - {fileID: 11400000, guid: 53536975a33241a47b067dd661f61d6e, type: 2}
+  - {fileID: 11400000, guid: 2e532305e039cc743859d02d9eb2e0c7, type: 2}
 --- !u!114 &3534587359375516104
 MonoBehaviour:
   m_ObjectHideFlags: 0

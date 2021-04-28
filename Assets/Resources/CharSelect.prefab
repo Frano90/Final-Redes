@@ -50,11 +50,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 471f835898d08fa4eb83225391e3a54b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  character_Image: {fileID: 3731466335434035905}
-  imagesPool: []
-  teamColor_Image: {fileID: 3731466336533879887}
+  changeTeam_btt: {fileID: 3731466334873240665}
   ready_btt: {fileID: 6556294899352814809}
   nickname_text: {fileID: 3731466335327636200}
+  portrait_img: {fileID: 3731466335434035905}
   playerIndex: 0
   imReady: 0
 --- !u!1 &3731466334873240615
@@ -70,7 +69,7 @@ GameObject:
   - component: {fileID: 3731466334873240664}
   - component: {fileID: 3731466334873240665}
   m_Layer: 5
-  m_Name: Button
+  m_Name: ChangeCharacter_btt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -93,8 +92,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -33, y: -89}
-  m_SizeDelta: {x: 193.22, y: 36.2}
+  m_AnchoredPosition: {x: -31.9, y: -89}
+  m_SizeDelta: {x: 143.47093, y: 36.2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3731466334873240667
 CanvasRenderer:
@@ -266,7 +265,7 @@ GameObject:
   - component: {fileID: 3731466335434035904}
   - component: {fileID: 3731466335434035905}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Portrait
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -471,19 +470,19 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 11e56bd1f6e278945a88835881b3508c, type: 3}
+    m_Font: {fileID: 12800000, guid: e00995507c2406448b4c8429136104dd, type: 3}
     m_FontSize: 14
     m_FontStyle: 0
     m_BestFit: 1
-    m_MinSize: 10
-    m_MaxSize: 26
+    m_MinSize: 14
+    m_MaxSize: 32
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Change Team
+  m_Text: Change character
 --- !u!1 &3731466336533879885
 GameObject:
   m_ObjectHideFlags: 0
