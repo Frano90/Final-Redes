@@ -65,7 +65,6 @@ public class LobbyController_FA : MonoBehaviourPun
 
     public void RequestRefreshView(int index, Player player, bool isReady)
     {
-        
         photonView.RPC("RPCRefreshView",RpcTarget.OthersBuffered, index , isReady);
     }
 
@@ -95,5 +94,5 @@ public class LobbyController_FA : MonoBehaviourPun
         characterSelections[index].ToggleReadyButton(true);
         characterSelections[index].ToggleTeamButton(true);
     }
-
+    
 }

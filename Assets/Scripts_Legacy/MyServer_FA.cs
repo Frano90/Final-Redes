@@ -24,6 +24,7 @@ public class MyServer_FA : MonoBehaviourPun
     Dictionary<Player, CharSelect_FA> _dicSelectionModel = new Dictionary<Player, CharSelect_FA>();
     Dictionary<Player, CharView_FA> _dicViews = new Dictionary<Player, CharView_FA>();
     Dictionary<Player, bool> _dicEnterLobby = new Dictionary<Player, bool>();
+    Dictionary<Player, LobbySelectorData> _dicCharacterLobbyData = new Dictionary<Player, LobbySelectorData>();
 
     public List<LobbySelectorData> lobySelectorDatas = new List<LobbySelectorData>();
 
@@ -33,6 +34,8 @@ public class MyServer_FA : MonoBehaviourPun
     public int PackagePerSecond { get; private set; }
     public Player GetServer => _server;
 
+    public Dictionary<Player, LobbySelectorData> GetCharacterLobbyDataDictionary => _dicCharacterLobbyData;
+    
     #region ServerInitializer
 
     private void Awake()
@@ -135,7 +138,7 @@ public class MyServer_FA : MonoBehaviourPun
         
         lobby.SetInitialParams(player, playersConnected);
         _dicSelectionModel.Add(player, lobby.characterSelections[playersConnected]);
-
+        _dicCharacterLobbyData.Add(player, lobySelectorDatas[playersConnected]);
         //lobby.SetInitialView(playersConnected, player);
 
 
@@ -197,7 +200,10 @@ public class MyServer_FA : MonoBehaviourPun
         Debug.Log("entra aca 4" + playersReadyToPlay);
 
         if (playersReadyToPlay == playersNeededToPlay)
+        {
+            
             SetGameplay(player);
+        }
     }
     
     public void RequestReadyToPlay(Player player)
@@ -224,12 +230,26 @@ public class MyServer_FA : MonoBehaviourPun
         Debug.Log(_dicSelectionModel[player].playerIndex + " dejo de estar listo");
         _dicSelectionModel[player].imReady = false;
         lobby.RequestRefreshView(_dicSelectionModel[player].playerIndex, player, false);
-        ;
+        
         playersReadyToPlay--;
 
         Debug.Log("entra aca 5" + playersReadyToPlay);
     }
 
+    public void RefreshPlayerLobbyData(int index)
+    {
+        photonView.RPC("RPC_RefreshPlayerLobbyData", _server, index, PhotonNetwork.LocalPlayer);
+    }
+
+    [PunRPC]
+    void RPC_RefreshPlayerLobbyData(int index, Player player)
+    {
+        Debug.Log("el server registra");
+        _dicCharacterLobbyData[player] = lobySelectorDatas[index];
+        
+        Debug.Log("el server tiene " + _dicCharacterLobbyData.Count);
+    }
+    
     #endregion
     
     #region Player actions (van al gamecontroller)

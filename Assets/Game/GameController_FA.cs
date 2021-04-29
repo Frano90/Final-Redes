@@ -62,14 +62,8 @@ public class GameController_FA : MonoBehaviourPun
 
     {
         if (!photonView.IsMine) return;
-    
-        //if (!isGameOn) return;
+        
         HandleGameTime();
-
-        // if (currentTime <= 0)
-        // {
-        //     //FinishGame();
-        // }
     }
 
     private void HandleGameTime()

@@ -11,11 +11,18 @@ public class RatUIViewer : MonoBehaviour
     [SerializeField] private Image portrait;
     
     public bool IsOcupied { get; private set; }
-    void SetPlayerUI(Sprite portrait, string nickname, string lifeCount)
+    public void SetPlayerUI(Sprite portrait, string nickname, string lifeCount)
     {
         this.portrait.sprite = portrait;
         nickName.text = nickname;
         lifeRemain.text = $"x {lifeCount}";
+
+        IsOcupied = true;
+    }
+
+    public void SetOcupied()
+    {
+        IsOcupied = true;
     }
 
     public void GainLife()

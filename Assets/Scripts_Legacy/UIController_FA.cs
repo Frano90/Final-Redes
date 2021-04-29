@@ -17,8 +17,8 @@ public class UIController_FA : MonoBehaviourPun
     //[SerializeField] Button lobbyButton;
     //[SerializeField] Text mineAmmo;
     [SerializeField] private Transform playerUIContainer;
-    private List<RatUIViewer> playerUIs = new List<RatUIViewer>();
-
+    [SerializeField] private List<RatUIViewer> playerUIs = new List<RatUIViewer>();
+    [SerializeField] private Dictionary<Player, RatUIViewer> _dicPlayerUis = new Dictionary<Player, RatUIViewer>();
     [SerializeField] private CheeseScoreHandler _cheeseScoreHandler;
     
     private void Start()
@@ -95,11 +95,6 @@ public class UIController_FA : MonoBehaviourPun
         photonView.RPC("RPCOpenWinnerPlate", RpcTarget.Others, winner);
     }
 
-    public void RefreshMine(int cant)
-    {
-        //mineAmmo.text = cant.ToString();
-    }
-
     [PunRPC]
     public void RPCOpenWinnerPlate(string winner)
     {
@@ -126,8 +121,50 @@ public class UIController_FA : MonoBehaviourPun
         
     }
 
+    //esto anda mal. tengo que ver como cambiarlo
     public void RegisterPlayerUI(Player player)
     {
+        LobbySelectorData data = MyServer_FA.Instance.GetCharacterLobbyDataDictionary[player];
+
+        int playerUIIndex = 0;
+        int playerdataIndex = 0;
         
+        for (int i = 0; i < playerUIs.Count; i++)
+        {
+            if(playerUIs[i].IsOcupied)
+                continue;
+            
+            if(data.team == LobbySelectorData.Team.cat)
+                continue;
+
+            if (_dicPlayerUis.ContainsKey(player)) continue;
+            
+            playerUIs[i].SetOcupied();
+            playerUIIndex = i;
+            _dicPlayerUis.Add(player, playerUIs[i]);
+            
+        }
+
+        for (int i = 0; i < MyServer_FA.Instance.lobySelectorDatas.Count; i++)
+        {
+            
+            if (MyServer_FA.Instance.GetCharacterLobbyDataDictionary[player]
+                .Equals(MyServer_FA.Instance.lobySelectorDatas[i]))
+            {
+                Debug.Log(i + " numero del player");
+                playerdataIndex = i;
+                photonView.RPC("RPC_SetPlayerUI", RpcTarget.OthersBuffered, playerdataIndex, playerUIIndex, player);
+                break;
+            }
+        }
+
+    }
+
+    [PunRPC]
+    void RPC_SetPlayerUI(int playerDataIndex, int playerUIIndex, Player player)
+    {
+        Debug.Log(playerDataIndex + " data");
+        LobbySelectorData data = MyServer_FA.Instance.lobySelectorDatas[playerDataIndex];
+        playerUIs[playerUIIndex].SetPlayerUI(data.portrait, player.NickName, "3");
     }
 }
