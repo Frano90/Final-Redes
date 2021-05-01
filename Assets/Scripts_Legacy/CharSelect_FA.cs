@@ -53,11 +53,6 @@ public class CharSelect_FA : MonoBehaviour
         ready_btt.interactable = value;
     }
 
-    // public void ChangeName(string newName)
-    // {
-    //     nickname_text.text = newName;
-    // }
-
     public void ChangeReadyButtonColor(bool isReady)
     {
         if (ready_btt == null) return;

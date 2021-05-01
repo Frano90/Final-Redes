@@ -21,7 +21,7 @@ public class MyServer_FA : MonoBehaviourPun
     public EventManager eventManager = new EventManager();
 
     Dictionary<Player, Character_FA> _dicModels = new Dictionary<Player, Character_FA>();
-    Dictionary<Player, CharSelect_FA> _dicSelectionModel = new Dictionary<Player, CharSelect_FA>();
+    Dictionary<Player, bool> _dicPlayersReadyToPlay = new Dictionary<Player, bool>();
     Dictionary<Player, CharView_FA> _dicViews = new Dictionary<Player, CharView_FA>();
     Dictionary<Player, bool> _dicEnterLobby = new Dictionary<Player, bool>();
     Dictionary<Player, LobbySelectorData> _dicCharacterLobbyData = new Dictionary<Player, LobbySelectorData>();
@@ -30,11 +30,12 @@ public class MyServer_FA : MonoBehaviourPun
 
     int playersConnected = 0;
     int playersReadyToPlay = 0;
-    int playersNeededToPlay = 1;
+    int playersNeededToPlay = 2;
     public int PackagePerSecond { get; private set; }
     public Player GetServer => _server;
 
     public Dictionary<Player, LobbySelectorData> GetCharacterLobbyDataDictionary => _dicCharacterLobbyData;
+    public Dictionary<Player, bool> GetPlayersReadyDictionary => _dicPlayersReadyToPlay;
     
     #region ServerInitializer
 
@@ -137,12 +138,8 @@ public class MyServer_FA : MonoBehaviourPun
         Debug.Log("registre a un jugador");
         
         lobby.SetInitialParams(player, playersConnected);
-        _dicSelectionModel.Add(player, lobby.characterSelections[playersConnected]);
+        _dicPlayersReadyToPlay.Add(player, false);
         _dicCharacterLobbyData.Add(player, lobySelectorDatas[playersConnected]);
-        //lobby.SetInitialView(playersConnected, player);
-
-
-        //Debug.Log("soy el jugador " + _dicSelectionModel[player].playerIndex);
 
         playersConnected++;
     }
@@ -161,7 +158,7 @@ public class MyServer_FA : MonoBehaviourPun
     [PunRPC]
     void RPC_ReloadLobbyAndEnterPlayer()
     {
-        Debug.Log("el jugador " + PhotonNetwork.LocalPlayer.NickName + " va a entrar al lobby");
+        //Debug.Log("el jugador " + PhotonNetwork.LocalPlayer.NickName + " va a entrar al lobby");
         PhotonNetwork.LoadLevel(1);
 
         StartCoroutine(WaitForLevel(() => photonView.RPC("RPCEnterLobby", _server, PhotonNetwork.LocalPlayer)));
@@ -170,7 +167,7 @@ public class MyServer_FA : MonoBehaviourPun
     void ClearSettings()
     {
         _dicModels.Clear();
-        _dicSelectionModel.Clear();
+        _dicPlayersReadyToPlay.Clear();
         _dicViews.Clear();
         playersConnected = 0;
         playersReadyToPlay = 0;
@@ -182,33 +179,29 @@ public class MyServer_FA : MonoBehaviourPun
     #region ActionsInLobby
 
     [PunRPC]
-    void ReadyToPlay(Player player)
+    void RPC_ReadyToPlay(Player player)
     {
-        if (_dicSelectionModel[player].imReady == true)
+        if (_dicPlayersReadyToPlay[player])
         {
-            NOT_ReadyToPlay(player);
+            _dicPlayersReadyToPlay[player] = false;
             return;
         }
 
-        Debug.Log(_dicSelectionModel[player].playerIndex + " esta listo");
+        _dicPlayersReadyToPlay[player] = true;
 
-        _dicSelectionModel[player].imReady = true;
-        lobby.RequestRefreshView(_dicSelectionModel[player].playerIndex, player, true);
-
-        playersReadyToPlay++;
-
-        Debug.Log("entra aca 4" + playersReadyToPlay);
-
-        if (playersReadyToPlay == playersNeededToPlay)
+        if (playersConnected != playersNeededToPlay) return;
+        
+        foreach (bool pValue in _dicPlayersReadyToPlay.Values)
         {
-            
-            SetGameplay(player);
+            if(!pValue) return;
         }
+        
+        SetGameplay(player);
     }
     
     public void RequestReadyToPlay(Player player)
     {
-        photonView.RPC("ReadyToPlay", _server, player);
+        photonView.RPC("RPC_ReadyToPlay", _server, player);
     }
 
     public void Request_NOT_ReadyToPlay(Player player)
@@ -223,19 +216,6 @@ public class MyServer_FA : MonoBehaviourPun
         
         PhotonNetwork.LoadLevel(2);
     }
-
-    [PunRPC]
-    void NOT_ReadyToPlay(Player player)
-    {
-        Debug.Log(_dicSelectionModel[player].playerIndex + " dejo de estar listo");
-        _dicSelectionModel[player].imReady = false;
-        lobby.RequestRefreshView(_dicSelectionModel[player].playerIndex, player, false);
-        
-        playersReadyToPlay--;
-
-        Debug.Log("entra aca 5" + playersReadyToPlay);
-    }
-
     public void RefreshPlayerLobbyData(int index)
     {
         photonView.RPC("RPC_RefreshPlayerLobbyData", _server, index, PhotonNetwork.LocalPlayer);

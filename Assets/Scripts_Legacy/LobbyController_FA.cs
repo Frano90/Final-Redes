@@ -26,11 +26,18 @@ public class LobbyController_FA : MonoBehaviourPun
 
                 Debug.Log("subscribo eventos");
                 characterSelections[i].onPressed_ChangeTeam_btt = (index) => RequestChangeCharacterData(index);
-                characterSelections[i].onPressed_Ready_btt = (index) => MyServer_FA.Instance.RequestReadyToPlay(PhotonNetwork.LocalPlayer);
+                characterSelections[i].onPressed_Ready_btt = (index) => OnPressReadyButton(index);
             }
         }
     }
 
+    void OnPressReadyButton(int index)
+    {
+        MyServer_FA.Instance.RequestReadyToPlay(PhotonNetwork.LocalPlayer);
+        photonView.RPC("RPC_RefreshView",MyServer_FA.Instance.GetServer, index, PhotonNetwork.LocalPlayer);
+        
+    }
+    
     public void SetInitialView(int selectionMenu, Player player)
     {
         photonView.RPC("RPCSetInitialView", RpcTarget.OthersBuffered, selectionMenu, player);
@@ -57,15 +64,8 @@ public class LobbyController_FA : MonoBehaviourPun
     
     public void SetInitialParams(Player player, int index)
     {
-        //playerRegistry.Add(index, player);
-        //characterSelections[index].SetInitialParams(index);
         photonView.RPC("RPCRegisterButtons", RpcTarget.OthersBuffered, index, player);
         SetInitialView(index, player);
-    }
-
-    public void RequestRefreshView(int index, Player player, bool isReady)
-    {
-        photonView.RPC("RPCRefreshView",RpcTarget.OthersBuffered, index , isReady);
     }
 
     [PunRPC]
@@ -76,11 +76,19 @@ public class LobbyController_FA : MonoBehaviourPun
     }
 
     [PunRPC]
-    public void RPCRefreshView(int index, bool isReady)
+    public void RPC_RefreshView(int index, Player player)
     {
-        characterSelections[index].ChangeReadyButtonColor(isReady);
+        Debug.Log("que es esto?" + MyServer_FA.Instance.GetPlayersReadyDictionary[player]);
+        photonView.RPC("RPC_RefreshReadyButton", RpcTarget.OthersBuffered, index, MyServer_FA.Instance.GetPlayersReadyDictionary[player]);
+        
     }
 
+    [PunRPC]
+    void RPC_RefreshReadyButton(int index, bool playerReady)
+    {
+        characterSelections[index].ChangeReadyButtonColor(playerReady);
+    }
+    
     [PunRPC]
     public void RPCSetInitialView(int index, Player player)
     {
