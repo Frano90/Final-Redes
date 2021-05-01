@@ -188,7 +188,7 @@ public class MyServer_FA : MonoBehaviourPun
         }
 
         _dicPlayersReadyToPlay[player] = true;
-
+        
         if (playersConnected != playersNeededToPlay) return;
         
         foreach (bool pValue in _dicPlayersReadyToPlay.Values)
@@ -196,8 +196,16 @@ public class MyServer_FA : MonoBehaviourPun
             if(!pValue) return;
         }
         
-        SetGameplay(player);
+        StartCoroutine(WaitAndStartGame(player));
     }
+
+    IEnumerator WaitAndStartGame(Player player)
+    {
+        yield return new WaitForSeconds(.5f);
+            
+            SetGameplay(player);
+    }
+    
     
     public void RequestReadyToPlay(Player player)
     {
@@ -216,19 +224,35 @@ public class MyServer_FA : MonoBehaviourPun
         
         PhotonNetwork.LoadLevel(2);
     }
-    public void RefreshPlayerLobbyData(int index)
+    public void RefreshPlayerLobbyData(Player player)
     {
-        photonView.RPC("RPC_RefreshPlayerLobbyData", _server, index, PhotonNetwork.LocalPlayer);
+        for (int i = 0; i < lobySelectorDatas.Count; i++)
+        {
+            if (_dicCharacterLobbyData[player].Equals(lobySelectorDatas[i]))
+            {
+                if (i + 1 >= lobySelectorDatas.Count)
+                {
+                    _dicCharacterLobbyData[player] = lobySelectorDatas[0];
+                  
+                }
+                else
+                {
+                    _dicCharacterLobbyData[player] = lobySelectorDatas[i + 1];
+        
+                }
+                break;
+            }
+        }
     }
 
-    [PunRPC]
-    void RPC_RefreshPlayerLobbyData(int index, Player player)
-    {
-        Debug.Log("el server registra");
-        _dicCharacterLobbyData[player] = lobySelectorDatas[index];
-        
-        Debug.Log("el server tiene " + _dicCharacterLobbyData.Count);
-    }
+    // [PunRPC]
+    // void RPC_RefreshPlayerLobbyData(int index, Player player)
+    // {
+    //     Debug.Log("el server registra");
+    //     _dicCharacterLobbyData[player] = lobySelectorDatas[index];
+    //     
+    //     Debug.Log("jugador " + player.NickName + " tiene de data " + _dicCharacterLobbyData[player].name);
+    // }
     
     #endregion
     

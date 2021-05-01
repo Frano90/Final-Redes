@@ -83,7 +83,7 @@ public class CharSelect_FA : MonoBehaviour
 
     public void ChangeCharacter()
     {
-        int currentIndex = 0;
+        //int currentIndex = 0;
         var datas = MyServer_FA.Instance.lobySelectorDatas;
         for (int i = 0; i < datas.Count; i++)
         {
@@ -92,14 +92,14 @@ public class CharSelect_FA : MonoBehaviour
                 if (i + 1 >= datas.Count)
                 {
                     currentData = datas[0];
-                    currentIndex = 0;
+                    //currentIndex = 0;
                 }
                 else
                 {
                     currentData = datas[i + 1];
-                    currentIndex = i + 1;
+                    //currentIndex = i + 1;
                 }
-                MyServer_FA.Instance.RefreshPlayerLobbyData(currentIndex);
+                //MyServer_FA.Instance.RefreshPlayerLobbyData(currentIndex);
                 break;
             }
         }

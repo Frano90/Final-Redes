@@ -126,45 +126,41 @@ public class UIController_FA : MonoBehaviourPun
     {
         LobbySelectorData data = MyServer_FA.Instance.GetCharacterLobbyDataDictionary[player];
 
-        int playerUIIndex = 0;
-        int playerdataIndex = 0;
+        if (data.team == LobbySelectorData.Team.cat) return;
         
-        for (int i = 0; i < playerUIs.Count; i++)
-        {
-            if(playerUIs[i].IsOcupied)
-                continue;
-            
-            if(data.team == LobbySelectorData.Team.cat)
-                continue;
-
-            if (_dicPlayerUis.ContainsKey(player)) continue;
-            
-            playerUIs[i].SetOcupied();
-            playerUIIndex = i;
-            _dicPlayerUis.Add(player, playerUIs[i]);
-            
-        }
+        int index = 0;
 
         for (int i = 0; i < MyServer_FA.Instance.lobySelectorDatas.Count; i++)
         {
+            if(MyServer_FA.Instance.lobySelectorDatas[i].team == LobbySelectorData.Team.cat) continue;
             
-            if (MyServer_FA.Instance.GetCharacterLobbyDataDictionary[player]
-                .Equals(MyServer_FA.Instance.lobySelectorDatas[i]))
+            if (MyServer_FA.Instance.lobySelectorDatas[i].Equals(data))
             {
-                Debug.Log(i + " numero del player");
-                playerdataIndex = i;
-                photonView.RPC("RPC_SetPlayerUI", RpcTarget.OthersBuffered, playerdataIndex, playerUIIndex, player);
+                index = i;
+                Debug.Log("la data de la lista es " + MyServer_FA.Instance.lobySelectorDatas[i].name);
+                Debug.Log("la data del player es " + data.name);
                 break;
             }
+        }
+
+        for (int i = 0; i < playerUIs.Count; i++)
+        {
+            if(playerUIs[i].IsOcupied) continue;
+            
+            playerUIs[i].SetOcupied();
+            photonView.RPC("RPC_SetPlayerUI", RpcTarget.OthersBuffered, i, index, player);
+            Debug.Log("el jugador " + player.NickName + " tiene el i en " + i + " y el index en " + index);
+            break;
         }
 
     }
 
     [PunRPC]
-    void RPC_SetPlayerUI(int playerDataIndex, int playerUIIndex, Player player)
+    void RPC_SetPlayerUI(int playerUIIndex, int playerDataIndex, Player player)
     {
-        Debug.Log(playerDataIndex + " data");
-        LobbySelectorData data = MyServer_FA.Instance.lobySelectorDatas[playerDataIndex];
-        playerUIs[playerUIIndex].SetPlayerUI(data.portrait, player.NickName, "3");
+        playerUIs[playerUIIndex].SetPlayerUI(MyServer_FA.Instance.lobySelectorDatas[playerDataIndex].portrait, player.NickName, "3");
+        // Debug.Log(playerDataIndex + " data");
+        // LobbySelectorData data = MyServer_FA.Instance.lobySelectorDatas[playerDataIndex];
+        // playerUIs[playerUIIndex].SetPlayerUI(data.portrait, player.NickName, "3");
     }
 }

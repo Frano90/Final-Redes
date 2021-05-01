@@ -47,12 +47,13 @@ public class LobbyController_FA : MonoBehaviourPun
 
     void RequestChangeCharacterData(int index)
     {
-        photonView.RPC("RPC_ChangeCharacterData", MyServer_FA.Instance.GetServer, index);
+        photonView.RPC("RPC_ChangeCharacterData", MyServer_FA.Instance.GetServer, index, PhotonNetwork.LocalPlayer);
     }
 
     [PunRPC]
-    void RPC_ChangeCharacterData(int index)
+    void RPC_ChangeCharacterData(int index, Player player)
     {
+        MyServer_FA.Instance.RefreshPlayerLobbyData(player);
         photonView.RPC("RPC_SetNextCharacter", RpcTarget.OthersBuffered, index);
     }
 
