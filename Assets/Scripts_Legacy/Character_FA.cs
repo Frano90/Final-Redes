@@ -17,7 +17,7 @@ public class Character_FA : MonoBehaviourPun
     public float speed;
     [SerializeField] private Camera myCam;
     [SerializeField] private Transform groundCheck;
-
+    
     private bool _imDashing;
     bool movementLocked = false;
     public bool grounded;
@@ -69,15 +69,22 @@ public class Character_FA : MonoBehaviourPun
         //pickerContainer = new ItemPickerView(this.transform);
         
         photonView.RPC("SetLocalParams", localPlayer);
+        photonView.RPC("RPC_SetItemPickerViewer", RpcTarget.OthersBuffered);
         return this;
     }
 
     [PunRPC]
-    void SetLocalParams()
+    void RPC_SetItemPickerViewer()
     {
-        uiController = FindObjectOfType<UIController_FA>();
         pickerContainer = new ItemPickerView(transform);
         pickerContainer.SetItemRegistry(FindObjectOfType<GameController_FA>());
+    }
+    
+    [PunRPC]
+    void SetLocalParams()
+    {
+        myCam.gameObject.SetActive(true);
+        uiController = FindObjectOfType<UIController_FA>();
     }
 
     public void Dash()

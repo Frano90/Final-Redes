@@ -20,14 +20,8 @@ public class Controller_FA : MonoBehaviourPun
 
     IEnumerator SendPackage()
     {
-        
         while(true)
         {
-            // if (Input.GetKeyDown(KeyCode.O))
-            // {
-            //     //MyServer_FA.Instance.RequestWin(PhotonNetwork.LocalPlayer);
-            // }
-            
             HandleMovementInput();
 
             HandleRotationInput();

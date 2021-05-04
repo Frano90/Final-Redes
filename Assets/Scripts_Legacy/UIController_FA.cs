@@ -120,8 +120,7 @@ public class UIController_FA : MonoBehaviourPun
     {
         
     }
-
-    //esto anda mal. tengo que ver como cambiarlo
+    
     public void RegisterPlayerUI(Player player)
     {
         LobbySelectorData data = MyServer_FA.Instance.GetCharacterLobbyDataDictionary[player];
@@ -159,8 +158,5 @@ public class UIController_FA : MonoBehaviourPun
     void RPC_SetPlayerUI(int playerUIIndex, int playerDataIndex, Player player)
     {
         playerUIs[playerUIIndex].SetPlayerUI(MyServer_FA.Instance.lobySelectorDatas[playerDataIndex].portrait, player.NickName, "3");
-        // Debug.Log(playerDataIndex + " data");
-        // LobbySelectorData data = MyServer_FA.Instance.lobySelectorDatas[playerDataIndex];
-        // playerUIs[playerUIIndex].SetPlayerUI(data.portrait, player.NickName, "3");
     }
 }
