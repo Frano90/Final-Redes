@@ -19,7 +19,7 @@ public class LobbyController_FA : MonoBehaviourPun
         }
         else
         {
-            photonView.RPC("RPC_SetInitialParams", MyServer_FA.Instance.GetServer, PhotonNetwork.LocalPlayer);
+            
             
             for (int i = 0; i < characterSelections.Length; i++)
             {
@@ -32,8 +32,6 @@ public class LobbyController_FA : MonoBehaviourPun
             }
         }
     }
-    
-    
 
     void OnPressReadyButton(int index)
     {
@@ -67,11 +65,9 @@ public class LobbyController_FA : MonoBehaviourPun
         characterSelections[index].ChangeCharacter();
     }
     
-    [PunRPC]
-    public void RPC_SetInitialParams(Player player)
+    public void SetInitialParams(Player player, int index)
     {
-        int index = MyServer_FA.Instance.PlayersConnected;
-        photonView.RPC("RPCRegisterButtons", RpcTarget.Others, index, player);
+        photonView.RPC("RPCRegisterButtons", RpcTarget.OthersBuffered, index, player);
         SetInitialView(index, player);
     }
 
@@ -85,7 +81,9 @@ public class LobbyController_FA : MonoBehaviourPun
     [PunRPC]
     public void RPC_RefreshView(int index, Player player)
     {
+        Debug.Log("que es esto?" + MyServer_FA.Instance.GetPlayersReadyDictionary[player]);
         photonView.RPC("RPC_RefreshReadyButton", RpcTarget.OthersBuffered, index, MyServer_FA.Instance.GetPlayersReadyDictionary[player]);
+        
     }
 
     [PunRPC]

@@ -143,7 +143,7 @@ public class MyServer_FA : MonoBehaviourPun
     {
         Debug.Log("registre a un jugador");
         
-        //lobby.SetInitialParams(player, playersConnected);
+        lobby.SetInitialParams(player, playersConnected);
         _dicPlayersReadyToPlay.Add(player, false);
         _dicCharacterLobbyData.Add(player, lobySelectorDatas[playersConnected]);
 
@@ -251,15 +251,6 @@ public class MyServer_FA : MonoBehaviourPun
         }
     }
 
-    // [PunRPC]
-    // void RPC_RefreshPlayerLobbyData(int index, Player player)
-    // {
-    //     Debug.Log("el server registra");
-    //     _dicCharacterLobbyData[player] = lobySelectorDatas[index];
-    //     
-    //     Debug.Log("jugador " + player.NickName + " tiene de data " + _dicCharacterLobbyData[player].name);
-    // }
-    
     #endregion
     
     #region Player actions (van al gamecontroller)
