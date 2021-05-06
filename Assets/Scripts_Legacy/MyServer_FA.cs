@@ -29,7 +29,7 @@ public class MyServer_FA : MonoBehaviourPun
 
     int playersConnected = 0;
     int playersReadyToPlay = 0;
-    int playersNeededToPlay = 2;
+    int playersNeededToPlay = 4;
 
     public int PlayersConnected
     {
@@ -144,8 +144,7 @@ public class MyServer_FA : MonoBehaviourPun
         Debug.Log("registre a un jugador");
 
         lobby.RegisterLocalData(player, playersConnected);
-        
-        //lobby.SetInitialParams(player, playersConnected);
+
         _dicPlayersReadyToPlay.Add(player, false);
         _dicCharacterLobbyData.Add(player, lobySelectorDatas[playersConnected]);
 
@@ -205,7 +204,24 @@ public class MyServer_FA : MonoBehaviourPun
         {
             if(!pValue) return;
         }
+
+        int cats = 0;
+        int rats = 0;
         
+        foreach (var playerTeam in _dicCharacterLobbyData.Values)
+        {
+            if (playerTeam.team == LobbySelectorData.Team.cat) cats++;
+            
+            if (playerTeam.team == LobbySelectorData.Team.rat) rats++;
+        }
+
+        if (cats != 1 && rats != 3)
+        {
+            lobby.ShowPanel(LobbyController_FA.LobbyPanelType.NotCorrectTeams);
+            return;
+        }
+        
+        lobby.ShowPanel(LobbyController_FA.LobbyPanelType.StartingGame);
         StartCoroutine(WaitAndStartGame(player));
     }
 

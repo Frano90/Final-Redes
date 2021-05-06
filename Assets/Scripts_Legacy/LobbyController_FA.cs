@@ -9,6 +9,8 @@ public class LobbyController_FA : MonoBehaviourPun
 {
     public CharSelect_FA[] characterSelections;
 
+    [SerializeField] private GameObject notCorrectTeamPanel, startingGamePanel;
+    
     Dictionary<int, Player> playerRegistry = new Dictionary<int, Player>();
 
     private void Start()
@@ -137,6 +139,7 @@ public class LobbyController_FA : MonoBehaviourPun
     public void RPC_RefreshView(int index, Player player)
     {
         photonView.RPC("RPC_RefreshReadyButton", RpcTarget.Others, index, MyServer_FA.Instance.GetPlayersReadyDictionary[player]);
+        photonView.RPC("RPC_RefreshChangeTeamButton", player, index, MyServer_FA.Instance.GetPlayersReadyDictionary[player]);
     }
 
     [PunRPC]
@@ -144,6 +147,39 @@ public class LobbyController_FA : MonoBehaviourPun
     {
         characterSelections[index].ChangeReadyButtonColor(playerReady);
     }
+    
+    [PunRPC]
+    void RPC_RefreshChangeTeamButton(int index, bool playerReady)
+    {
+        characterSelections[index].ToggleTeamButton(!playerReady);
+    }
 
     #endregion
+
+    public void ShowPanel(LobbyPanelType panelType)
+    {
+        photonView.RPC("RPC_ShowPanel", RpcTarget.Others, panelType);
+    }
+
+    [PunRPC]
+    void RPC_ShowPanel(LobbyPanelType panelType)
+    {
+        TurnOffPanels();
+
+        if(panelType == LobbyPanelType.NotCorrectTeams) notCorrectTeamPanel.SetActive(true);
+        
+        if(panelType == LobbyPanelType.StartingGame) startingGamePanel.SetActive(true);
+    }
+
+    void TurnOffPanels()
+    {
+        notCorrectTeamPanel.SetActive(false);
+        startingGamePanel.SetActive(false);
+    }
+    
+    public enum LobbyPanelType
+    {
+        NotCorrectTeams,
+        StartingGame
+    }
 }
