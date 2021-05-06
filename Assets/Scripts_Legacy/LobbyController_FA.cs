@@ -9,7 +9,7 @@ public class LobbyController_FA : MonoBehaviourPun
 {
     public CharSelect_FA[] characterSelections;
 
-    //Dictionary<int, Player> playerRegistry = new Dictionary<int, Player>();
+    Dictionary<int, Player> playerRegistry = new Dictionary<int, Player>();
 
     private void Start()
     {
@@ -33,6 +33,108 @@ public class LobbyController_FA : MonoBehaviourPun
         }
     }
 
+    #region NewTry
+
+    void RequestChangeCharacterData(int index)
+    {
+        photonView.RPC("RPC_ChangeCharacterData", MyServer_FA.Instance.GetServer,
+            index, PhotonNetwork.LocalPlayer);
+    }
+    
+    
+    [PunRPC]
+    void RPC_ChangeCharacterData(int index, Player player)
+    {
+        MyServer_FA.Instance.RefreshPlayerLobbyData(player);
+        RefreshAllClientsViews();
+    }
+    
+    [PunRPC]
+    void RPC_SetNextCharacter(int index)
+    {
+        characterSelections[index].ChangeCharacter();
+    }
+    
+    public void RegisterLocalData(Player player, int playerIndex)
+    {
+        playerRegistry.Add(playerIndex, player);
+        
+        photonView.RPC("RPC_InitializeLocalLobby", player, playerIndex);
+
+        for (int i = 0; i < MyServer_FA.Instance.PlayersConnected; i++)
+        {
+            if(i.Equals(playerIndex)) continue;
+
+            var data = MyServer_FA.Instance.GetCharacterLobbyDataDictionary[playerRegistry[i]];
+
+            for (int j = 0; j < MyServer_FA.Instance.lobySelectorDatas.Count; j++)
+            {
+                if (MyServer_FA.Instance.lobySelectorDatas[j].Equals(data))
+                {
+                    photonView.RPC("RPC_RefreshOtherClientsViews", player, i, j, player.NickName);
+                    break;
+                }
+            }
+        }
+
+        
+    }
+
+    public void RefreshAllClientsViews()
+    {
+        for (int i = 0; i < MyServer_FA.Instance.PlayersConnected; i++)
+        {
+            Player player = playerRegistry[i];
+
+            for (int j = 0; j < MyServer_FA.Instance.PlayersConnected; j++)
+            {
+                //if(j.Equals(i)) continue;
+                
+                var data = MyServer_FA.Instance.GetCharacterLobbyDataDictionary[playerRegistry[j]];
+
+                for (int k = 0; k < MyServer_FA.Instance.lobySelectorDatas.Count; k++)
+                {
+                    if (MyServer_FA.Instance.lobySelectorDatas[k].Equals(data))
+                    {
+                        bool playerIsReady = MyServer_FA.Instance.GetPlayersReadyDictionary[playerRegistry[k]];
+                        
+                        photonView.RPC("RPC_UpdateView", player, j, k, playerRegistry[j].NickName, playerIsReady);
+                        break;
+                    }
+                }
+            }
+            
+        }
+        
+        
+    }
+
+    [PunRPC]
+    void RPC_UpdateView(int playerIndex, int dataIndex, string playerName, bool isReady)
+    {
+        characterSelections[playerIndex].UpdateView(dataIndex, playerName, isReady);
+    }
+    
+    [PunRPC]
+    void RPC_InitializeLocalLobby(int playerIndex)
+    {
+        characterSelections[playerIndex].SetInitialParams(playerIndex);
+        characterSelections[playerIndex].SetInitialView(PhotonNetwork.LocalPlayer.NickName, playerIndex);
+        
+        characterSelections[playerIndex].ToggleTeamButton(true);
+        characterSelections[playerIndex].ToggleReadyButton(true);
+    }
+
+    [PunRPC]
+    void RPC_RefreshOtherClientsViews(int playerViewIndex, int playerData, string playerName)
+    {
+        characterSelections[playerViewIndex].SetInitialView(playerName, playerData);
+    }
+    
+
+    #endregion
+    
+    
     void OnPressReadyButton(int index)
     {
         MyServer_FA.Instance.RequestReadyToPlay(PhotonNetwork.LocalPlayer);
@@ -47,23 +149,10 @@ public class LobbyController_FA : MonoBehaviourPun
 
     }
 
-    void RequestChangeCharacterData(int index)
-    {
-        photonView.RPC("RPC_ChangeCharacterData", MyServer_FA.Instance.GetServer, index, PhotonNetwork.LocalPlayer);
-    }
+    
 
-    [PunRPC]
-    void RPC_ChangeCharacterData(int index, Player player)
-    {
-        MyServer_FA.Instance.RefreshPlayerLobbyData(player);
-        photonView.RPC("RPC_SetNextCharacter", RpcTarget.OthersBuffered, index);
-    }
 
-    [PunRPC]
-    void RPC_SetNextCharacter(int index)
-    {
-        characterSelections[index].ChangeCharacter();
-    }
+    
     
     public void SetInitialParams(Player player, int index)
     {
@@ -74,7 +163,6 @@ public class LobbyController_FA : MonoBehaviourPun
     [PunRPC]
     public void RPCRegisterButtons(int index, Player player)
     {
-        
         characterSelections[index].SetInitialParams(index);
     }
 

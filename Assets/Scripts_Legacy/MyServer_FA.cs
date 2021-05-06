@@ -142,12 +142,16 @@ public class MyServer_FA : MonoBehaviourPun
     void RPCEnterLobby(Player player)
     {
         Debug.Log("registre a un jugador");
+
+        lobby.RegisterLocalData(player, playersConnected);
         
-        lobby.SetInitialParams(player, playersConnected);
+        //lobby.SetInitialParams(player, playersConnected);
         _dicPlayersReadyToPlay.Add(player, false);
         _dicCharacterLobbyData.Add(player, lobySelectorDatas[playersConnected]);
 
         playersConnected++;
+        
+        lobby.RefreshAllClientsViews();
     }
 
     [PunRPC]

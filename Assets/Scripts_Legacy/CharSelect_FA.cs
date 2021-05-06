@@ -41,11 +41,18 @@ public class CharSelect_FA : MonoBehaviour
     void OnPressed_changeTeam(int index) {onPressed_ChangeTeam_btt?.Invoke(index);}
     void OnPressed_ready(int index) => onPressed_Ready_btt?.Invoke(index);
 
-    public void SetInitialView(string playerName, int indexPlayer)
+    public void SetInitialView(string playerName, int indexPlayerData)
     {
         nickname_text.text = playerName;
-        portrait_img.sprite = MyServer_FA.Instance.lobySelectorDatas[indexPlayer].portrait;
+        portrait_img.sprite = MyServer_FA.Instance.lobySelectorDatas[indexPlayerData].portrait;
         ChangeReadyButtonColor(false);
+    }
+
+    public void UpdateView(int indexPlayerData, string playerName, bool isReady)
+    {
+        nickname_text.text = playerName;
+        portrait_img.sprite = MyServer_FA.Instance.lobySelectorDatas[indexPlayerData].portrait;
+        ChangeReadyButtonColor(isReady);
     }
 
     public void ToggleReadyButton(bool value)
