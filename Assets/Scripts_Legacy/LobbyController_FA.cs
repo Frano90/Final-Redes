@@ -41,7 +41,6 @@ public class LobbyController_FA : MonoBehaviourPun
             index, PhotonNetwork.LocalPlayer);
     }
     
-    
     [PunRPC]
     void RPC_ChangeCharacterData(int index, Player player)
     {
@@ -55,17 +54,18 @@ public class LobbyController_FA : MonoBehaviourPun
         characterSelections[index].ChangeCharacter();
     }
     
+    //Esto es del lado del server
     public void RegisterLocalData(Player player, int playerIndex)
     {
-        playerRegistry.Add(playerIndex, player);
+        playerRegistry.Add(playerIndex, player); //registro al jugador recien conectado 
         
-        photonView.RPC("RPC_InitializeLocalLobby", player, playerIndex);
+        photonView.RPC("RPC_InitializeLocalLobby", player, playerIndex);//registro local
 
-        for (int i = 0; i < MyServer_FA.Instance.PlayersConnected; i++)
+        for (int i = 0; i < MyServer_FA.Instance.PlayersConnected; i++)//por cada jugador conectado
         {
             if(i.Equals(playerIndex)) continue;
 
-            var data = MyServer_FA.Instance.GetCharacterLobbyDataDictionary[playerRegistry[i]];
+            var data = MyServer_FA.Instance.GetCharacterLobbyDataDictionary[playerRegistry[i]];//consigo la data del jugador
 
             for (int j = 0; j < MyServer_FA.Instance.lobySelectorDatas.Count; j++)
             {
@@ -88,25 +88,20 @@ public class LobbyController_FA : MonoBehaviourPun
 
             for (int j = 0; j < MyServer_FA.Instance.PlayersConnected; j++)
             {
-                //if(j.Equals(i)) continue;
-                
                 var data = MyServer_FA.Instance.GetCharacterLobbyDataDictionary[playerRegistry[j]];
 
                 for (int k = 0; k < MyServer_FA.Instance.lobySelectorDatas.Count; k++)
                 {
                     if (MyServer_FA.Instance.lobySelectorDatas[k].Equals(data))
                     {
-                        bool playerIsReady = MyServer_FA.Instance.GetPlayersReadyDictionary[playerRegistry[k]];
+                        bool playerIsReady = MyServer_FA.Instance.GetPlayersReadyDictionary[playerRegistry[j]];
                         
                         photonView.RPC("RPC_UpdateView", player, j, k, playerRegistry[j].NickName, playerIsReady);
                         break;
                     }
                 }
             }
-            
         }
-        
-        
     }
 
     [PunRPC]
@@ -131,47 +126,17 @@ public class LobbyController_FA : MonoBehaviourPun
         characterSelections[playerViewIndex].SetInitialView(playerName, playerData);
     }
     
-
-    #endregion
-    
-    
     void OnPressReadyButton(int index)
     {
         MyServer_FA.Instance.RequestReadyToPlay(PhotonNetwork.LocalPlayer);
         photonView.RPC("RPC_RefreshView",MyServer_FA.Instance.GetServer, index, PhotonNetwork.LocalPlayer);
-        
     }
     
-    public void SetInitialView(int selectionMenu, Player player)
-    {
-        photonView.RPC("RPCSetInitialView", RpcTarget.OthersBuffered, selectionMenu, player);
-        photonView.RPC("RPCEnableButtons", player, selectionMenu);
-
-    }
-
-    
-
-
-    
-    
-    public void SetInitialParams(Player player, int index)
-    {
-        photonView.RPC("RPCRegisterButtons", RpcTarget.OthersBuffered, index, player);
-        SetInitialView(index, player);
-    }
-
-    [PunRPC]
-    public void RPCRegisterButtons(int index, Player player)
-    {
-        characterSelections[index].SetInitialParams(index);
-    }
 
     [PunRPC]
     public void RPC_RefreshView(int index, Player player)
     {
-        Debug.Log("que es esto?" + MyServer_FA.Instance.GetPlayersReadyDictionary[player]);
-        photonView.RPC("RPC_RefreshReadyButton", RpcTarget.OthersBuffered, index, MyServer_FA.Instance.GetPlayersReadyDictionary[player]);
-        
+        photonView.RPC("RPC_RefreshReadyButton", RpcTarget.Others, index, MyServer_FA.Instance.GetPlayersReadyDictionary[player]);
     }
 
     [PunRPC]
@@ -179,19 +144,6 @@ public class LobbyController_FA : MonoBehaviourPun
     {
         characterSelections[index].ChangeReadyButtonColor(playerReady);
     }
-    
-    [PunRPC]
-    public void RPCSetInitialView(int index, Player player)
-    {
-        Debug.Log("el index es " + index + " y el nombre del player es " + player.NickName);
-        characterSelections[index].SetInitialView(player.NickName, index);
-    }
 
-    [PunRPC]
-    public void RPCEnableButtons(int index)
-    {
-        characterSelections[index].ToggleReadyButton(true);
-        characterSelections[index].ToggleTeamButton(true);
-    }
-    
+    #endregion
 }
