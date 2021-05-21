@@ -12,20 +12,20 @@ public class Character_FA : MonoBehaviourPun
     public Player _owner{ get; private set;}
     
     UIController_FA uiController;
-    [SerializeField] private CharacterController controller;
-    private ImpactReceiver _impactRecivier;
+    [SerializeField] protected CharacterController controller;
+    protected ImpactReceiver _impactRecivier;
     public float speed;
-    [SerializeField] private Camera myCam;
-    [SerializeField] private Transform groundCheck;
+    [SerializeField] protected Camera myCam;
+
+    [SerializeField] protected Transform groundCheck;
     
     private bool _imDashing;
     bool movementLocked = false;
     public bool grounded;
-    [SerializeField] float groundDistance;
-    [SerializeField] private LayerMask groundMask;
+    [SerializeField] protected float groundDistance;
+    [SerializeField] protected LayerMask groundMask;
 
-    private GameItem_DATA itemCarrying;
-    
+    private GameItem_DATA itemCarrying;    
 
     [SerializeField]private ItemPickerView pickerContainer;
 
@@ -74,14 +74,14 @@ public class Character_FA : MonoBehaviourPun
     }
 
     [PunRPC]
-    void RPC_SetItemPickerViewer()
+    protected void RPC_SetItemPickerViewer()
     {
         pickerContainer = new ItemPickerView(transform);
         pickerContainer.SetItemRegistry(FindObjectOfType<GameController_FA>());
     }
     
     [PunRPC]
-    void SetLocalParams()
+    protected void SetLocalParams()
     {
         myCam.gameObject.SetActive(true);
         uiController = FindObjectOfType<UIController_FA>();
