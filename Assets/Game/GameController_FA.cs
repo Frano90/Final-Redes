@@ -54,7 +54,7 @@ public class GameController_FA : MonoBehaviourPun
 
     public void OnTrapTrigger(Player player)
     {
-        _dicModels[player].ResetCharacter(Vector3.zero);
+        _dicModels[player].ResetCharacter();
         UI_controller.RatTrapped(player);
     }
     

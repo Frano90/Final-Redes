@@ -25,6 +25,8 @@ public class Character_FA : MonoBehaviourPun
     [SerializeField] protected float groundDistance;
     [SerializeField] protected LayerMask groundMask;
 
+    private Vector3 startPosition;
+    
     private GameItem_DATA itemCarrying;    
 
     [SerializeField]private ItemPickerView pickerContainer;
@@ -54,19 +56,21 @@ public class Character_FA : MonoBehaviourPun
         transform.Rotate(Vector3.up * mouseX);
     }
 
-    public void ResetCharacter(Vector3 initialPos)
+    public void ResetCharacter()
     {
         controller.enabled = false;
-        transform.position = initialPos;
+        transform.position = startPosition;
         controller.enabled = true;
     }
     
-    public Character_FA SetInitialParameters(Player localPlayer)
+    public Character_FA SetInitialParameters(Player localPlayer, Vector3 startingPos)
     {
         _owner = localPlayer;
         controller = GetComponent<CharacterController>();
         _impactRecivier = GetComponent<ImpactReceiver>();
 
+        startPosition = startingPos;
+        
         photonView.RPC("SetLocalParams", localPlayer);
         photonView.RPC("RPC_SetItemPickerViewer", RpcTarget.OthersBuffered);
         return this;

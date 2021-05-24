@@ -19,6 +19,11 @@ public class CatCharacter_FA : Character_FA
     [SerializeField] float jumpHeight = 3f;
     public float jumpForce = 5;
 
+    [Header("RatHunter")] 
+    [SerializeField] private float checkRadius;
+
+    [SerializeField] private LayerMask targetToHunt;
+    
     public bool isWaitingJump;
     float timer = 0;
 
@@ -42,6 +47,9 @@ public class CatCharacter_FA : Character_FA
         if (!isWaitingJump)
             Move();
 
+        
+        CheckIfRatIsClose();
+        
         grounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
         camFollow.ChangeCamPos(timer / 2);
@@ -55,8 +63,6 @@ public class CatCharacter_FA : Character_FA
 
     public void Move()
     {
-        //float horizontal = Input.GetAxis("Horizontal");
-
         Vector3 dir = new Vector3(0, 0, 1);
 
         if (dir.magnitude >= 0.1f)
@@ -109,6 +115,19 @@ public class CatCharacter_FA : Character_FA
             timer -= 3 * Time.deltaTime;
 
             if (timer <= 0) camInPlace = true;
+        }
+    }
+
+    void CheckIfRatIsClose()
+    {
+        var ratsClose = Physics.OverlapSphere(transform.position, checkRadius, targetToHunt);
+
+        if (ratsClose.Length > 0)
+        {
+            for (int i = 0; i < ratsClose.Length; i++)
+            {
+                ratsClose[i].GetComponent<RatCharacter_FA>().ResetCharacter();
+            }
         }
     }
 

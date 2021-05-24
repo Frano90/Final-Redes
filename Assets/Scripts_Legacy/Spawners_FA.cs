@@ -32,12 +32,12 @@ public class Spawners_FA : MonoBehaviourPun
         
         if (playerData.team == LobbySelectorData.Team.cat)
         {
-            newModel = PhotonNetwork.Instantiate("CatChar", catStartingPosition.position, Quaternion.identity).GetComponent<CatCharacter_FA>().SetInitialParameters(localPlayer);
+            newModel = PhotonNetwork.Instantiate("CatChar", catStartingPosition.position, Quaternion.identity).GetComponent<CatCharacter_FA>().SetInitialParameters(localPlayer, catStartingPosition.position);
             photonView.RPC("CreateController", localPlayer, "cat");
         }
         else
         {
-            newModel = PhotonNetwork.Instantiate("RatTest", ratStartingPosition.position, Quaternion.identity).GetComponent<RatCharacter_FA>().SetInitialParameters(localPlayer);
+            newModel = PhotonNetwork.Instantiate("RatTest", ratStartingPosition.position, Quaternion.identity).GetComponent<RatCharacter_FA>().SetInitialParameters(localPlayer, ratStartingPosition.position);
             photonView.RPC("CreateController", localPlayer, "rat");
         }
 

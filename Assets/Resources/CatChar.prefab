@@ -1524,6 +1524,10 @@ MonoBehaviour:
   turnSmoothVelocity: 0
   jumpHeight: 3
   jumpForce: 5
+  checkRadius: 5
+  targetToHunt:
+    serializedVersion: 2
+    m_Bits: 512
   isWaitingJump: 0
   gravityScaler: 1
   velocity: {x: 0, y: 0, z: 0}

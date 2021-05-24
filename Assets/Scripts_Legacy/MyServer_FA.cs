@@ -29,7 +29,7 @@ public class MyServer_FA : MonoBehaviourPun
 
     int playersConnected = 0;
     int playersReadyToPlay = 0;
-    int playersNeededToPlay = 1;
+    int playersNeededToPlay = 2;
 
     public int PlayersConnected
     {
@@ -323,7 +323,7 @@ public class MyServer_FA : MonoBehaviourPun
     
     public void OnTouchedTrap(Player player)
     {
-        _dicModels[player].ResetCharacter(Vector3.zero);
+        _dicModels[player].ResetCharacter();
     }
     
     public void RequestMove(Player player, Vector3 dir)
@@ -359,9 +359,9 @@ public class MyServer_FA : MonoBehaviourPun
     {
         //chequear de que equipo es antes de spawnear
         
-        _dicModels[player] = PhotonNetwork.Instantiate("RatTest", spawner.transform.position, Quaternion.identity).GetComponent<Character_FA>().SetInitialParameters(player);
-        gameController.AddModel(player, _dicModels[player]); // lo agrego al controlador del juego
-        UI_controller.RegisterPlayerUI(player);
+        //_dicModels[player] = PhotonNetwork.Instantiate("RatTest", spawner.transform.position, Quaternion.identity).GetComponent<Character_FA>(), ;
+        //gameController.AddModel(player, _dicModels[player]); // lo agrego al controlador del juego
+        //UI_controller.RegisterPlayerUI(player);
     }
     
     [PunRPC]
