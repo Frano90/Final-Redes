@@ -14,7 +14,7 @@ public class MyServer_FA : MonoBehaviourPun
     Player _server;
     
     public LobbyController_FA lobby;
-    public Controller_FA controller_pf;
+    //public ControllerBase_FA controllerBasePf;
     public Spawners_FA spawner;
     public UIController_FA UI_controller;
     public GameController_FA gameController;
@@ -29,7 +29,7 @@ public class MyServer_FA : MonoBehaviourPun
 
     int playersConnected = 0;
     int playersReadyToPlay = 0;
-    int playersNeededToPlay = 4;
+    int playersNeededToPlay = 1;
 
     public int PlayersConnected
     {
@@ -40,6 +40,7 @@ public class MyServer_FA : MonoBehaviourPun
     public int PackagePerSecond { get; private set; }
     public Player GetServer => _server;
 
+    public Dictionary<Player, Character_FA> GetModels => _dicModels;
     public Dictionary<Player, LobbySelectorData> GetCharacterLobbyDataDictionary => _dicCharacterLobbyData;
     public Dictionary<Player, bool> GetPlayersReadyDictionary => _dicPlayersReadyToPlay;
     
@@ -215,6 +216,9 @@ public class MyServer_FA : MonoBehaviourPun
             if (playerTeam.team == LobbySelectorData.Team.rat) rats++;
         }
 
+        Debug.Log("hay " + cats + " gatos");
+        Debug.Log("hay " + rats + " ratas");
+        
         if (cats != 1 && rats != 3)
         {
             lobby.ShowPanel(LobbyController_FA.LobbyPanelType.NotCorrectTeams);
@@ -353,6 +357,8 @@ public class MyServer_FA : MonoBehaviourPun
     [PunRPC]
     void CreatePlayerModel(Player player)
     {
+        //chequear de que equipo es antes de spawnear
+        
         _dicModels[player] = PhotonNetwork.Instantiate("RatTest", spawner.transform.position, Quaternion.identity).GetComponent<Character_FA>().SetInitialParameters(player);
         gameController.AddModel(player, _dicModels[player]); // lo agrego al controlador del juego
         UI_controller.RegisterPlayerUI(player);
@@ -402,4 +408,78 @@ public class MyServer_FA : MonoBehaviourPun
     
     
     #endregion
+
+    public void RequestJump(Player localPlayer)
+    {
+        photonView.RPC("RCP_StartJump", _server, localPlayer);
+    }
+
+    [PunRPC]
+    void RCP_StartJump(Player localPlayer)
+    {
+        if (_dicModels.ContainsKey(localPlayer))
+        {
+            //Aca solo deberia entrar el gato, asi que casteo tranqui
+            var catPlayerModel = _dicModels[localPlayer] as CatCharacter_FA;
+
+            if(!catPlayerModel.grounded) return;
+            
+            catPlayerModel.StartJump();
+        }
+    }
+
+    public void RequestMoveCameraOnWait(Player localPlayer, float value)
+    {
+        photonView.RPC("RCP_MoveCameraOnWait", _server, localPlayer, value);
+    }
+    
+    [PunRPC]
+    void RCP_MoveCameraOnWait(Player localPlayer, float value)
+    {
+        if (_dicModels.ContainsKey(localPlayer))
+        {
+            //Aca solo deberia entrar el gato, asi que casteo tranqui
+            var catPlayerModel = _dicModels[localPlayer] as CatCharacter_FA;
+
+            if(!catPlayerModel.isWaitingJump) return;
+            
+            catPlayerModel.MoveCameraOnWait(value);
+        }
+    }
+
+    public void RequestCamBackToPos(Player localPlayer)
+    {
+        photonView.RPC("RCP_CamBackToPos", _server, localPlayer);
+    }
+    
+    [PunRPC]
+    void RCP_CamBackToPos(Player localPlayer)
+    {
+        if (_dicModels.ContainsKey(localPlayer))
+        {
+            //Aca solo deberia entrar el gato, asi que casteo tranqui
+            var catPlayerModel = _dicModels[localPlayer] as CatCharacter_FA;
+
+            catPlayerModel.CamBackToPos();
+        }
+    }
+
+    public void RequestReleaseJump(Player localPlayer)
+    {
+        photonView.RPC("RCP_ReleaseJump", _server, localPlayer);
+    }
+    
+    [PunRPC]
+    void RCP_ReleaseJump(Player localPlayer)
+    {
+        if (_dicModels.ContainsKey(localPlayer))
+        {
+            //Aca solo deberia entrar el gato, asi que casteo tranqui
+            var catPlayerModel = _dicModels[localPlayer] as CatCharacter_FA;
+
+            if(!catPlayerModel.isWaitingJump) return;
+            
+            catPlayerModel.ReleaseJump();
+        }
+    }
 }

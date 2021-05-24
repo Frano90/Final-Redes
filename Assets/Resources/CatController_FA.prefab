@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1735746281835871866}
   - component: {fileID: 5086166106604454945}
-  - component: {fileID: 8651489961225182942}
+  - component: {fileID: 2688289254001272311}
   m_Layer: 0
-  m_Name: Controller_FA
+  m_Name: CatController_FA
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -54,7 +54,7 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &8651489961225182942
+--- !u!114 &2688289254001272311
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -63,7 +63,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 9175944786518653171}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a48eba74a8b19641a721a9a8e0293cb, type: 3}
+  m_Script: {fileID: 11500000, guid: fba1370cfc3826647b5d4315daabf490, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   mouseSensitivity: 200

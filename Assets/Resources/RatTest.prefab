@@ -157,7 +157,7 @@ GameObject:
   - component: {fileID: 3155389659625070577}
   - component: {fileID: 3155389659625070589}
   - component: {fileID: 3155389659625070588}
-  - component: {fileID: 1046158952671294652}
+  - component: {fileID: 8071625152709586767}
   m_Layer: 9
   m_Name: RatTest
   m_TagString: Untagged
@@ -270,7 +270,7 @@ MonoBehaviour:
   sceneViewId: 4
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &1046158952671294652
+--- !u!114 &8071625152709586767
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -279,7 +279,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3155389659625070583}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30179153d0a200244bf3c1cf59154740, type: 3}
+  m_Script: {fileID: 11500000, guid: 42d367947a1896c4cab05bafbeb94793, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 0}

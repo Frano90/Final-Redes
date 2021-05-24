@@ -66,8 +66,7 @@ public class Character_FA : MonoBehaviourPun
         _owner = localPlayer;
         controller = GetComponent<CharacterController>();
         _impactRecivier = GetComponent<ImpactReceiver>();
-        //pickerContainer = new ItemPickerView(this.transform);
-        
+
         photonView.RPC("SetLocalParams", localPlayer);
         photonView.RPC("RPC_SetItemPickerViewer", RpcTarget.OthersBuffered);
         return this;

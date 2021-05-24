@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1994998746571964942
+--- !u!1 &9175944786518653171
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,58 +8,37 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3016366712857406974}
-  - component: {fileID: -8712401188164254029}
-  - component: {fileID: 3534587359375516104}
+  - component: {fileID: 1735746281835871866}
+  - component: {fileID: 5086166106604454945}
+  - component: {fileID: 7670412469930041900}
   m_Layer: 0
-  m_Name: FA_Server
+  m_Name: RatController_FA
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3016366712857406974
+--- !u!4 &1735746281835871866
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1994998746571964942}
+  m_GameObject: {fileID: 9175944786518653171}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -1.8409343, y: -0.320146, z: -53.21289}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-8712401188164254029
+--- !u!114 &5086166106604454945
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1994998746571964942}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a9bcb74e387180444902a8c831cb4554, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lobby: {fileID: 0}
-  spawner: {fileID: 0}
-  UI_controller: {fileID: 0}
-  gameController: {fileID: 0}
-  lobySelectorDatas:
-  - {fileID: 11400000, guid: 42c9ba9181c822b4783e2f6ddd8b9385, type: 2}
-  - {fileID: 11400000, guid: 27f2c7b3d081ec34b8a1667ce59c6167, type: 2}
-  - {fileID: 11400000, guid: 53536975a33241a47b067dd661f61d6e, type: 2}
-  - {fileID: 11400000, guid: 2e532305e039cc743859d02d9eb2e0c7, type: 2}
---- !u!114 &3534587359375516104
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1994998746571964942}
+  m_GameObject: {fileID: 9175944786518653171}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
@@ -75,3 +54,16 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &7670412469930041900
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9175944786518653171}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c92094cf05b3a6b4f9d5f3306993c3e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mouseSensitivity: 200

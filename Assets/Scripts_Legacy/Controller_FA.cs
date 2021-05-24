@@ -22,18 +22,21 @@ public class Controller_FA : MonoBehaviourPun
     {
         while(true)
         {
-            HandleMovementInput();
-
-            HandleRotationInput();
-
-            HandleDashInput();
-
-            HanldleStopMovement();
-            
+            HandleInputs();
+                        
             yield return new WaitForSeconds(1 / MyServer_FA.Instance.PackagePerSecond);
         }
     }
 
+    protected virtual void HandleInputs()
+    {
+        HandleMovementInput();
+
+        HandleRotationInput();
+        
+        HanldleStopMovement();
+    }
+    
     private void HanldleStopMovement()
     {
         if (Input.GetKeyDown(KeyCode.Space))
@@ -47,18 +50,10 @@ public class Controller_FA : MonoBehaviourPun
         }
     }
 
-    private void HandleDashInput()
-    {
-        if (Input.GetKeyDown(KeyCode.LeftShift))
-        {
-            MyServer_FA.Instance.RequestDash(PhotonNetwork.LocalPlayer);
-        }
-    }
-
     private void HandleMovementInput()
     {
         var h = Input.GetAxis("Horizontal");
-        var v = Input.GetAxis("Vertical");
+        var v = 1f;//Input.GetAxis("Vertical");
 
         //Lo deje para probar y que me quede el ejemplo
 
@@ -68,10 +63,10 @@ public class Controller_FA : MonoBehaviourPun
             Vector3 move = transform.right * h + transform.forward * v;
             MyServer_FA.Instance.RequestMove(PhotonNetwork.LocalPlayer, move.normalized);
         }
-        else
-        {
-            MyServer_FA.Instance.RequestMove(PhotonNetwork.LocalPlayer, Vector3.zero);
-        }
+        // else
+        // {
+        //     MyServer_FA.Instance.RequestMove(PhotonNetwork.LocalPlayer, Vector3.zero);
+        // }
     }
 
     private void HandleRotationInput()
