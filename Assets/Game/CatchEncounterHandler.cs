@@ -34,21 +34,40 @@ public class CatchEncounterHandler : MonoBehaviourPun
       
    }
 
-   public void ActiveCatchEncounter(Player ratPlayer, Player catplayer)
+   public void ActiveCatchEncounter(Player ratPlayer, Player catPlayer)
    {
-      photonView.RPC("RPC_SetPortraits", ratPlayer, catplayer);
-      photonView.RPC("RPC_SetPortraits", catplayer, ratPlayer);
+      int ratDataIndex = GetIndexPortraitData(ratPlayer);
+      int catDataIndex = GetIndexPortraitData(catPlayer);
+      
+      photonView.RPC("RPC_SetPortraits", ratPlayer, catDataIndex, ratDataIndex);
+      photonView.RPC("RPC_SetPortraits", catPlayer, ratDataIndex, catDataIndex);
    }
 
    [PunRPC]
-   void RPC_SetPortraits(Player otherPlayer)
+   void RPC_SetPortraits(int otherPlayerIndexData, int myDataIndex)
    {
       panel.SetActive(true);
       
-      Sprite otherPortrait = MyServer_FA.Instance.GetCharacterLobbyDataDictionary[otherPlayer].portrait;
-      Sprite myPortrait = MyServer_FA.Instance.GetCharacterLobbyDataDictionary[PhotonNetwork.LocalPlayer].portrait;
+      Sprite otherPortrait = MyServer_FA.Instance.lobySelectorDatas[otherPlayerIndexData].portrait;
+      Sprite myPortrait = MyServer_FA.Instance.lobySelectorDatas[myDataIndex].portrait;
 
       otherSideSprite.sprite = otherPortrait;
       mySideSprite.sprite = myPortrait;
+   }
+
+   int GetIndexPortraitData(Player player)
+   {
+      var desiredPortrait = MyServer_FA.Instance.GetCharacterLobbyDataDictionary[player].portrait;
+      var index = -1;
+      for (int i = 0; i < MyServer_FA.Instance.lobySelectorDatas.Count; i++)
+      {
+         if (MyServer_FA.Instance.lobySelectorDatas[i].portrait.Equals(desiredPortrait))
+         {
+            index = i;
+            break;
+         }
+      }
+
+      return index;
    }
 }
