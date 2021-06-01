@@ -1514,11 +1514,6 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 256
-  pickerContainer:
-    _container: {fileID: 0}
-    renderer: {fileID: 0}
-    filter: {fileID: 0}
-    itemsData: []
   camFollow: {fileID: 1037602962}
   turnSmoothTime: 0.1
   turnSmoothVelocity: 0

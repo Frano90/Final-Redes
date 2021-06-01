@@ -6,8 +6,6 @@ using UnityEngine;
 public class ItemPickerView
 {
     private Transform _t;
-    //private Mesh _currentModel;
-    //private Material _currentMaterial;
 
     [SerializeField] private GameObject _container;
 
@@ -15,18 +13,6 @@ public class ItemPickerView
     [SerializeField] private MeshFilter filter;
 
     [SerializeField] private List<GameItem_DATA> itemsData = new List<GameItem_DATA>();
-
-    public ItemPickerView(Transform transform)
-    {
-        _t = transform;
-        _container = new GameObject("PickUpContainer");
-        _container.transform.SetParent(_t);
-        _container.transform.position = Vector3.zero + Vector3.up;
-        _container.transform.rotation = Quaternion.identity;
-
-        renderer = _container.AddComponent<MeshRenderer>();
-        filter = _container.AddComponent<MeshFilter>();
-    }
 
     public void SetCurrentModel(GameItem_DATA.ItemType itemdata)
     {

@@ -16,7 +16,7 @@ public class Trap_FA : GameItem_FA
 
     void OnRatTouchedTrap(Player player)
     {
+        Debug.Log("Trap class");
         MyServer_FA.Instance.gameController.OnTrapTrigger(player);
-        //MyServer_FA.Instance.OnTouchedTrap(player);
     }
 }

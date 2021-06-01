@@ -25,13 +25,8 @@ public class RatUIViewer : MonoBehaviour
         IsOcupied = true;
     }
 
-    public void GainLife()
+    public void RefreshLifeUI(int lifeCount)
     {
-        
-    }
-
-    public void LoseLife()
-    {
-        
+        lifeRemain.text = $"x {lifeCount}";
     }
 }

@@ -15,7 +15,7 @@ public class ItemReceiver_FA : MonoBehaviourPun
 
         if ((triggerLayers.value & (1 << other.gameObject.layer)) > 0)
         {
-            Character_FA player = other.gameObject.GetComponent<Character_FA>();
+            RatCharacter_FA player = other.gameObject.GetComponent<RatCharacter_FA>();
 
             if (player.IsCarryingItem)
             {

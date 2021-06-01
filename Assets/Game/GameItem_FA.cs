@@ -13,8 +13,11 @@ public class GameItem_FA : MonoBehaviourPun
     
     private void OnTriggerEnter(Collider other)
     {
+        if(!photonView.IsMine) return;
+        
         if ((triggerLayers.value & (1 << other.gameObject.layer)) > 0)
         {
+            Debug.Log("gameItem class");
             OnTriggerItem?.Invoke(other.gameObject.GetComponent<Character_FA>()._owner);
         }
     }

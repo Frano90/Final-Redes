@@ -26,15 +26,7 @@ public class Character_FA : MonoBehaviourPun
     [SerializeField] protected LayerMask groundMask;
 
     private Vector3 startPosition;
-    
-    private GameItem_DATA itemCarrying;    
 
-    [SerializeField]private ItemPickerView pickerContainer;
-
-    private bool _carryngItem;
-
-    public bool IsCarryingItem => _carryngItem;
-    
     public void Move(Vector3 dir, float speed)
     {
         if (movementLocked) return;
@@ -56,6 +48,8 @@ public class Character_FA : MonoBehaviourPun
         transform.Rotate(Vector3.up * mouseX);
     }
 
+    
+    
     public void ResetCharacter()
     {
         controller.enabled = false;
@@ -63,7 +57,7 @@ public class Character_FA : MonoBehaviourPun
         controller.enabled = true;
     }
     
-    public Character_FA SetInitialParameters(Player localPlayer, Vector3 startingPos)
+    public virtual Character_FA SetInitialParameters(Player localPlayer, Vector3 startingPos)
     {
         _owner = localPlayer;
         controller = GetComponent<CharacterController>();
@@ -72,16 +66,9 @@ public class Character_FA : MonoBehaviourPun
         startPosition = startingPos;
         
         photonView.RPC("SetLocalParams", localPlayer);
-        photonView.RPC("RPC_SetItemPickerViewer", RpcTarget.OthersBuffered);
         return this;
     }
-
-    [PunRPC]
-    protected void RPC_SetItemPickerViewer()
-    {
-        pickerContainer = new ItemPickerView(transform);
-        pickerContainer.SetItemRegistry(FindObjectOfType<GameController_FA>());
-    }
+    
     
     [PunRPC]
     protected void SetLocalParams()
@@ -124,31 +111,5 @@ public class Character_FA : MonoBehaviourPun
     public void ResumeMovement()
     {
         movementLocked = false;
-    }
-
-    public void PickUpItem(GameItem_DATA itemData)
-    {
-        _carryngItem = true;
-        itemCarrying = itemData;
-        photonView.RPC("RPC_PickItemView", RpcTarget.Others, itemData.type);
-    }
-
-    [PunRPC]
-    void RPC_PickItemView(GameItem_DATA.ItemType itemData)
-    {
-        pickerContainer.SetCurrentModel(itemData);
-    }
-
-    public void ReleaseItem()
-    {
-        _carryngItem = false;
-        itemCarrying = null;
-        photonView.RPC("RCP_ReleaseItemView", RpcTarget.Others);
-    }
-
-    [PunRPC]
-    void RCP_ReleaseItemView()
-    {
-        pickerContainer.ReleaseItem();
     }
 }

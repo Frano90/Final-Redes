@@ -118,7 +118,31 @@ public class UIController_FA : MonoBehaviourPun
 
     public void RatTrapped(Player player)
     {
+        int playerUIIndex = -1;
         
+        for (int i = 0; i < playerUIs.Count; i++)
+        {
+            if (playerUIs[i].Equals(_dicPlayerUis[player]))
+            {
+                playerUIIndex = i;
+                break;
+            }
+        }
+
+        if (playerUIIndex < 0)
+        {
+            Debug.LogError("NO ENCONTRO UNA UI");
+            return;
+        }
+        
+        var ratChar = MyServer_FA.Instance.gameController.GetCharactersDic[player].GetComponent<RatCharacter_FA>();
+        photonView.RPC("RCP_RefreshMouseLife", RpcTarget.Others, playerUIIndex, ratChar.lives);
+    }
+
+    [PunRPC]
+    void RCP_RefreshMouseLife(int uiIndex, int ratLives)
+    {
+        playerUIs[uiIndex].RefreshLifeUI(ratLives);
     }
     
     public void RegisterPlayerUI(Player player)
@@ -149,9 +173,13 @@ public class UIController_FA : MonoBehaviourPun
             playerUIs[i].SetOcupied();
             photonView.RPC("RPC_SetPlayerUI", RpcTarget.OthersBuffered, i, index, player);
             Debug.Log("el jugador " + player.NickName + " tiene el i en " + i + " y el index en " + index);
+            
+            _dicPlayerUis.Add(player, playerUIs[i]); 
             break;
         }
 
+        
+        
     }
 
     [PunRPC]

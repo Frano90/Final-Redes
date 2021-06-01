@@ -21,6 +21,7 @@ public class GameController_FA : MonoBehaviourPun
     [SerializeField] private List<GameItem_DATA> gameItems = new List<GameItem_DATA>();
 
     public List<GameItem_DATA> GetGameItems => gameItems;
+    public Dictionary<Player, Character_FA> GetCharactersDic => _dicModels;
     public int CheeseAmountToWin { get; set; }
 
 
@@ -54,12 +55,13 @@ public class GameController_FA : MonoBehaviourPun
 
     public void OnTrapTrigger(Player player)
     {
-        _dicModels[player].ResetCharacter();
+        Debug.Log("controller");
+        var capturedRat = _dicModels[player].GetComponent<RatCharacter_FA>();
+        capturedRat.GetTrapped();
         UI_controller.RatTrapped(player);
     }
     
     private void Update()
-
     {
         if (!photonView.IsMine) return;
         
@@ -83,7 +85,7 @@ public class GameController_FA : MonoBehaviourPun
         {
             if (gameItems[i].type.Equals(item.itemType))
             {
-                _dicModels[player].PickUpItem(gameItems[i]);
+                _dicModels[player].GetComponent<RatCharacter_FA>().PickUpItem(gameItems[i]);
                 break;
             }
         }
@@ -93,7 +95,7 @@ public class GameController_FA : MonoBehaviourPun
     {
         CheeseRecoveredAmount++;
         MyServer_FA.Instance.eventManager.TriggerEvent(GameEvent.cheeeseDelivered);
-        _dicModels[owner].ReleaseItem();
+        _dicModels[owner].GetComponent<RatCharacter_FA>().ReleaseItem();
 
         OnCheeseDelivered();
     }
