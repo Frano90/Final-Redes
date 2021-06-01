@@ -16,8 +16,9 @@ public class GameController_FA : MonoBehaviourPun
     public int CheeseRecoveredAmount { get; private set; }  
     
     Dictionary<Player, Character_FA> _dicModels = new Dictionary<Player, Character_FA>();
-    //Dictionary<Player, GameItem_DATA> _dicCarryItems = new Dictionary<Player, GameItem_DATA>();
 
+    [SerializeField] private CatchEncounterHandler _catchEncounterHandler;
+    
     [SerializeField] private List<GameItem_DATA> gameItems = new List<GameItem_DATA>();
 
     public List<GameItem_DATA> GetGameItems => gameItems;
@@ -32,9 +33,12 @@ public class GameController_FA : MonoBehaviourPun
 
     private void Awake()
     {
+        _catchEncounterHandler = GetComponent<CatchEncounterHandler>();
+        
         if (!photonView.IsMine) return;
         
         UI_controller = FindObjectOfType<UIController_FA>();
+        
     }
 
     private void Start()
@@ -53,9 +57,8 @@ public class GameController_FA : MonoBehaviourPun
         }
     }
 
-    public void OnTrapTrigger(Player player)
+    public void RatTrapped(Player player)
     {
-        Debug.Log("controller");
         var capturedRat = _dicModels[player].GetComponent<RatCharacter_FA>();
         capturedRat.GetTrapped();
         UI_controller.RatTrapped(player);
@@ -108,5 +111,24 @@ public class GameController_FA : MonoBehaviourPun
             MyServer_FA.Instance.ReloadLobby();
         }
             
+    }
+
+    public void PlayerWithoutLives(Player owner)
+    {
+        //algo aca que le levante un cartel de perdiste al jugador
+    }
+
+    public void StartCatchEncounter(Player ratPlayer, Player catplayer)
+    {
+        _dicModels[ratPlayer].StopMovement();
+        _dicModels[ratPlayer].SetEncounter(true);
+        _dicModels[catplayer].StopMovement();
+        _dicModels[catplayer].SetEncounter(true);
+        
+        //UI_controller.OpenEncounterWindow(catplayer, ratPlayer);
+
+        _catchEncounterHandler.ActiveCatchEncounter(ratPlayer, catplayer);
+
+        //poner alguna particula que tape el encounter
     }
 }

@@ -1509,6 +1509,7 @@ MonoBehaviour:
   speed: 2
   myCam: {fileID: 2062184115}
   groundCheck: {fileID: 9197767537112243464}
+  movementLocked: 0
   grounded: 0
   groundDistance: 0.4
   groundMask:

@@ -10,16 +10,13 @@ using TMPro;
 public class UIController_FA : MonoBehaviourPun
 {
     [SerializeField] TMP_Text time;
-    //[SerializeField] Text b_score;
-    //[SerializeField] Text y_score;
     [SerializeField] FinishPanel_UI finishPanel;
-    //[SerializeField] Text winnerTeam;
-    //[SerializeField] Button lobbyButton;
-    //[SerializeField] Text mineAmmo;
     [SerializeField] private Transform playerUIContainer;
     [SerializeField] private List<RatUIViewer> playerUIs = new List<RatUIViewer>();
     [SerializeField] private Dictionary<Player, RatUIViewer> _dicPlayerUis = new Dictionary<Player, RatUIViewer>();
     [SerializeField] private CheeseScoreHandler _cheeseScoreHandler;
+
+    //[SerializeField] private GameObject encounterResolverPanel;
     
     private void Start()
     {
@@ -33,6 +30,29 @@ public class UIController_FA : MonoBehaviourPun
         StartCoroutine(InitSettings());
     }
 
+    public void OpenEncounterWindow(Player catPlayer, Player ratPlayer)
+    {
+        photonView.RPC("RPC_OpenEncounterWindow", catPlayer);
+        photonView.RPC("RPC_OpenEncounterWindow", ratPlayer);
+    }
+
+    // [PunRPC]
+    // void RPC_OpenEncounterWindow()
+    // {
+    //     encounterResolverPanel.SetActive(true);
+    // }
+    //
+    // [PunRPC]
+    // void RPC_CloseEncounterWindow()
+    // {
+    //     encounterResolverPanel.SetActive(false);
+    // }
+    //
+    // public void CloseEncounterWindow()
+    // {
+    //     
+    // }
+    
     private void FetchPlayerUI()
     {
         foreach (Transform v in playerUIContainer)
@@ -52,9 +72,7 @@ public class UIController_FA : MonoBehaviourPun
             yield return new WaitForEndOfFrame();
         }
         photonView.RPC("RPC_RefreshCheeseScore", RpcTarget.Others, 0, MyServer_FA.Instance.gameController.CheeseAmountToWin);
-        
-        
-        
+
         MyServer_FA.Instance.eventManager.SubscribeToEvent(GameEvent.cheeeseDelivered, RefreshCheeseScore);
         MyServer_FA.Instance.eventManager.SubscribeToEvent(GameEvent.gameFinished, OnFinishGame);
     }
@@ -160,8 +178,6 @@ public class UIController_FA : MonoBehaviourPun
             if (MyServer_FA.Instance.lobySelectorDatas[i].Equals(data))
             {
                 index = i;
-                Debug.Log("la data de la lista es " + MyServer_FA.Instance.lobySelectorDatas[i].name);
-                Debug.Log("la data del player es " + data.name);
                 break;
             }
         }
@@ -172,8 +188,7 @@ public class UIController_FA : MonoBehaviourPun
             
             playerUIs[i].SetOcupied();
             photonView.RPC("RPC_SetPlayerUI", RpcTarget.OthersBuffered, i, index, player);
-            Debug.Log("el jugador " + player.NickName + " tiene el i en " + i + " y el index en " + index);
-            
+
             _dicPlayerUis.Add(player, playerUIs[i]); 
             break;
         }

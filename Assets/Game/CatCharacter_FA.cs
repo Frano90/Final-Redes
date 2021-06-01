@@ -47,8 +47,8 @@ public class CatCharacter_FA : Character_FA
         if (!isWaitingJump)
             Move();
 
-        
-        CheckIfRatIsClose();
+        if(!inEncunter)
+            CheckIfRatIsClose();
         
         grounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
@@ -124,10 +124,7 @@ public class CatCharacter_FA : Character_FA
 
         if (ratsClose.Length > 0)
         {
-            for (int i = 0; i < ratsClose.Length; i++)
-            {
-                ratsClose[i].GetComponent<RatCharacter_FA>().ResetCharacter();
-            }
+            MyServer_FA.Instance.gameController.StartCatchEncounter(ratsClose[0].GetComponent<RatCharacter_FA>()._owner, _owner);
         }
     }
 

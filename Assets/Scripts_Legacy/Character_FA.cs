@@ -20,13 +20,15 @@ public class Character_FA : MonoBehaviourPun
     [SerializeField] protected Transform groundCheck;
     
     private bool _imDashing;
-    bool movementLocked = false;
+    [SerializeField] bool movementLocked = false;
     public bool grounded;
     [SerializeField] protected float groundDistance;
     [SerializeField] protected LayerMask groundMask;
 
     private Vector3 startPosition;
 
+    public bool inEncunter { get; private set; }
+    
     public void Move(Vector3 dir, float speed)
     {
         if (movementLocked) return;
@@ -35,6 +37,11 @@ public class Character_FA : MonoBehaviourPun
         controller.Move(dir * speed * Time.deltaTime);
     }
 
+    public void SetEncounter(bool inCombat)
+    {
+        inEncunter = inCombat;
+    }
+    
     private void Update()
     {
         if (!photonView.IsMine) return;
