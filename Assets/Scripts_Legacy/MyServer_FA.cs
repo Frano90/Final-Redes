@@ -24,6 +24,7 @@ public class MyServer_FA : MonoBehaviourPun
     Dictionary<Player, bool> _dicPlayersReadyToPlay = new Dictionary<Player, bool>();
     Dictionary<Player, bool> _dicEnterLobby = new Dictionary<Player, bool>();
     Dictionary<Player, LobbySelectorData> _dicCharacterLobbyData = new Dictionary<Player, LobbySelectorData>();
+    //Dictionary<Player, Controller_FA> _dicControllers = new Dictionary<Player, Controller_FA>();
 
     public List<LobbySelectorData> lobySelectorDatas = new List<LobbySelectorData>();
 
@@ -42,6 +43,7 @@ public class MyServer_FA : MonoBehaviourPun
 
     public Dictionary<Player, Character_FA> GetModels => _dicModels;
     public Dictionary<Player, LobbySelectorData> GetCharacterLobbyDataDictionary => _dicCharacterLobbyData;
+    //public Dictionary<Player, Controller_FA> GetControllerDictionary => _dicControllers;
     public Dictionary<Player, bool> GetPlayersReadyDictionary => _dicPlayersReadyToPlay;
     
     #region ServerInitializer
@@ -422,7 +424,7 @@ public class MyServer_FA : MonoBehaviourPun
             //Aca solo deberia entrar el gato, asi que casteo tranqui
             var catPlayerModel = _dicModels[localPlayer] as CatCharacter_FA;
 
-            if(!catPlayerModel.grounded) return;
+            if(!catPlayerModel.grounded || catPlayerModel.IsMovementLocked) return;
             
             catPlayerModel.StartJump();
         }

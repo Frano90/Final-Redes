@@ -9,11 +9,13 @@ public class Spawners_FA : MonoBehaviourPun
     public RatController_FA ratController_pf;
     public CatController_FA catController_pf;
 
-    Controller_FA currentController;
+    public Controller_FA currentController;
 
     [SerializeField] private Transform catStartingPosition;
     [SerializeField] private Transform ratStartingPosition;
 
+    public Controller_FA GetLocalController => currentController;
+    
     private void Start()
     {
         if (!photonView.IsMine)
@@ -53,10 +55,11 @@ public class Spawners_FA : MonoBehaviourPun
         if (controllerType == "cat")
         {
             currentController = PhotonNetwork.Instantiate(catController_pf.name, Vector3.zero, Quaternion.identity).GetComponent<CatController_FA>();
+            
         }
         else if(controllerType == "rat")
         {
-            currentController = PhotonNetwork.Instantiate(ratController_pf.name, Vector3.zero, Quaternion.identity).GetComponent<CatController_FA>();
+            currentController = PhotonNetwork.Instantiate(ratController_pf.name, Vector3.zero, Quaternion.identity).GetComponent<RatController_FA>();
         }
         else
         {

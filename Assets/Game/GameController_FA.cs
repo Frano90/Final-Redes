@@ -12,7 +12,7 @@ public class GameController_FA : MonoBehaviourPun
     private float currentTime = 300f;
     private UIController_FA UI_controller;
 
-
+    [SerializeField] private Spawners_FA spawner;
     public int CheeseRecoveredAmount { get; private set; }  
     
     Dictionary<Player, Character_FA> _dicModels = new Dictionary<Player, Character_FA>();
@@ -24,7 +24,6 @@ public class GameController_FA : MonoBehaviourPun
     public List<GameItem_DATA> GetGameItems => gameItems;
     public Dictionary<Player, Character_FA> GetCharactersDic => _dicModels;
     public int CheeseAmountToWin { get; set; }
-
 
     public bool IsGameFinished()
     {
@@ -127,8 +126,22 @@ public class GameController_FA : MonoBehaviourPun
         
         //UI_controller.OpenEncounterWindow(catplayer, ratPlayer);
 
+        photonView.RPC("RPC_DisableLocalController", catplayer);
+        photonView.RPC("RPC_DisableLocalController", ratPlayer);
+        
         _catchEncounterHandler.ActiveCatchEncounter(ratPlayer, catplayer);
 
         //poner alguna particula que tape el encounter
+    }
+
+    [PunRPC]
+    public void RPC_DisableLocalController()
+    {
+        spawner.GetLocalController.DisableInputs();
+    }
+    [PunRPC]
+    public void RPC_EnableLocalController()
+    {
+        spawner.GetLocalController.EnableInputs();
     }
 }

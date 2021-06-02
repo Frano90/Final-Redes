@@ -63,6 +63,9 @@ public class CatCharacter_FA : Character_FA
 
     public void Move()
     {
+
+        if (movementLocked) return;
+        
         Vector3 dir = new Vector3(0, 0, 1);
 
         if (dir.magnitude >= 0.1f)

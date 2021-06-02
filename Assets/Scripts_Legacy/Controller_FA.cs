@@ -9,6 +9,8 @@ public class Controller_FA : MonoBehaviourPun
     [SerializeField] private float mouseSensitivity;
     private float xRotation;
 
+    private bool activeInputs = true;
+    
     private void Start()
     {
         
@@ -22,7 +24,8 @@ public class Controller_FA : MonoBehaviourPun
     {
         while(true)
         {
-            HandleInputs();
+            if(activeInputs)
+                HandleInputs();
                         
             yield return new WaitForSeconds(1 / MyServer_FA.Instance.PackagePerSecond);
         }
@@ -53,20 +56,13 @@ public class Controller_FA : MonoBehaviourPun
     private void HandleMovementInput()
     {
         var h = Input.GetAxis("Horizontal");
-        var v = 1f;//Input.GetAxis("Vertical");
-
-        //Lo deje para probar y que me quede el ejemplo
-
+        var v = 1f;
 
         if (h != 0 || v != 0)
         {
             Vector3 move = transform.right * h + transform.forward * v;
             MyServer_FA.Instance.RequestMove(PhotonNetwork.LocalPlayer, move.normalized);
         }
-        // else
-        // {
-        //     MyServer_FA.Instance.RequestMove(PhotonNetwork.LocalPlayer, Vector3.zero);
-        // }
     }
 
     private void HandleRotationInput()
@@ -79,4 +75,15 @@ public class Controller_FA : MonoBehaviourPun
 
         MyServer_FA.Instance.RequestRotation(PhotonNetwork.LocalPlayer, xRotation, mouseX);
     }
+    
+    public void DisableInputs()
+    {
+        activeInputs = false;
+    }
+    
+    public void EnableInputs()
+    {
+        activeInputs = true;
+    }
+    
 }

@@ -20,7 +20,7 @@ public class Character_FA : MonoBehaviourPun
     [SerializeField] protected Transform groundCheck;
     
     private bool _imDashing;
-    [SerializeField] bool movementLocked = false;
+    [SerializeField] protected bool movementLocked = false;
     public bool grounded;
     [SerializeField] protected float groundDistance;
     [SerializeField] protected LayerMask groundMask;
@@ -28,8 +28,10 @@ public class Character_FA : MonoBehaviourPun
     private Vector3 startPosition;
 
     public bool inEncunter { get; private set; }
+
+    public bool IsMovementLocked => movementLocked;
     
-    public void Move(Vector3 dir, float speed)
+    public virtual void Move(Vector3 dir, float speed)
     {
         if (movementLocked) return;
         
