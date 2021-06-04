@@ -144,4 +144,35 @@ public class GameController_FA : MonoBehaviourPun
     {
         spawner.GetLocalController.EnableInputs();
     }
+
+
+    IEnumerator WaitToMouseFlee(Player cat)
+    {
+        yield return new WaitForSeconds(2);
+        ExitEncounter(cat);
+    }
+    
+    public void EncounterFeedbackResult(bool catCatchMouse, Player cat, Player mouse)
+    {
+        Debug.Log("el gato atrapa? " + catCatchMouse);
+        
+        if (catCatchMouse)
+        {
+            RatTrapped(mouse);
+            ExitEncounter(cat);
+        }
+        else
+        {
+            StartCoroutine(WaitToMouseFlee(cat));
+        }
+        
+        ExitEncounter(mouse);
+    }
+
+    void ExitEncounter(Player player)
+    {
+        _dicModels[player].ResumeMovement();
+        _dicModels[player].SetEncounter(false);
+        photonView.RPC("RPC_EnableLocalController", player);
+    }
 }
