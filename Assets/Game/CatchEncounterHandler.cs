@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
 using Photon.Realtime;
@@ -21,35 +22,69 @@ public class CatchEncounterHandler : MonoBehaviourPun
    private Player cat, mouse;
 
    private Dictionary<Player, int> _dicPlayerPath = new Dictionary<Player, int>();
-   
-   //public Dictionary<Player, ChosenPath> GetDicPlayerPath
+
+   private Vector3 leftBttPos, rightBttPos, centerBttPos;
 
    void Start()
    {
+
       if (photonView.IsMine) return;
       
       left_btt.onClick.AddListener(ChooseLeft);  
       center_btt.onClick.AddListener(ChooseCenter);  
-      right_btt.onClick.AddListener(ChooseRight);  
+      right_btt.onClick.AddListener(ChooseRight);
+
+      leftBttPos = left_btt.transform.position;
+      centerBttPos = center_btt.transform.position;
+      rightBttPos = right_btt.transform.position;
+   }
+
+   void ResetButtonPositions()
+   {
+      left_btt.transform.position = leftBttPos;
+      center_btt.transform.position = centerBttPos;
+      right_btt.transform.position = rightBttPos;
    }
 
    void ChooseLeft()
    {
       SendRequest_ChosenPath(left);
+      StartCoroutine(MovePortraitForward(left_btt));
    }
    
    void ChooseRight()
    {
       SendRequest_ChosenPath(right);
+      StartCoroutine(MovePortraitForward(right_btt));
    }
    
    void ChooseCenter()
    {
       SendRequest_ChosenPath(center);
+      StartCoroutine(MovePortraitForward(center_btt));
+   }
+
+   void SetButtons(bool value)
+   {
+      center_btt.interactable = right_btt.interactable = left_btt.interactable = value;
+   }
+   
+   IEnumerator MovePortraitForward(Button selectedBtt)
+   {
+      float time = 0;
+      do
+      {
+         time += Time.deltaTime;
+         selectedBtt.transform.position += 12 * selectedBtt.transform.right * Time.deltaTime;
+
+         yield return new WaitForEndOfFrame();
+      } while (time < 3);
+
    }
    
    void SendRequest_ChosenPath(int path)
    {
+      SetButtons(false);
       photonView.RPC("RPC_SavePathChosen", RpcTarget.MasterClient, PhotonNetwork.LocalPlayer,path);
    }
 
@@ -58,70 +93,64 @@ public class CatchEncounterHandler : MonoBehaviourPun
    {
       if (!_dicPlayerPath.ContainsKey(player))
       {
-         Debug.Log("agrego a la k " + player.NickName + " y value " + path);
          _dicPlayerPath.Add(player, path);
       }
       
-      var playerData = MyServer_FA.Instance.GetCharacterLobbyDataDictionary[player];
-      Debug.Log(playerData.team);
-      var playerTeam = playerData.team;
+      RegisterPlayerChoice(player);
 
-      Debug.Log("el personaje " + playerTeam + " eligio " + path);
-      
-      
-      //Ver que el error esta aca creo
-      if (playerTeam == LobbySelectorData.Team.cat) cat = player;
-      else mouse = player;
-      
-      
-      
       if (cat == null || mouse == null) return;
 
-       Debug.Log(cat);
-       Debug.Log(mouse);
-      
       ResolveEncounter();
+   }
+
+   private void RegisterPlayerChoice(Player player)
+   {
+      var playerData = MyServer_FA.Instance.GetCharacterLobbyDataDictionary[player];
+      var playerTeam = playerData.team;
+
+      if (playerTeam == LobbySelectorData.Team.cat) cat = player;
+      else mouse = player;
    }
 
    private void ResolveEncounter()
    {
-      
-      Debug.Log(cat);
-      Debug.Log(mouse);
       var catDir = _dicPlayerPath[cat];
       var mouseDir = _dicPlayerPath[mouse];
       
       bool catCatchMouse;
-      //TODO estan dando 0 los dos aunque no sea lo elegido. De parte del local esta bien
-      Debug.Log("la dir de gato es " + catDir);
-      Debug.Log("la dir de raton es " + mouseDir);
-      
+
       if (catDir == center && mouseDir == center)
       {
-         Debug.Log("entra en center");
          catCatchMouse = true;
       }else if (catDir == left && mouseDir == right || catDir == right && mouseDir == left)
       {
-         Debug.Log("entra en misma no centro");
          catCatchMouse = true;
       }
       else
       {
-         Debug.Log("entra en resto");
          catCatchMouse = false;
       }
 
+      StartCoroutine(WaitToExecutEventResult(catCatchMouse));
+
+   }
+
+   IEnumerator WaitToExecutEventResult(bool catCatchMouse)
+   {
+      yield return new WaitForSeconds(3);
+      
       MyServer_FA.Instance.gameController.EncounterFeedbackResult(catCatchMouse, cat, mouse);
       photonView.RPC("RPC_SetPanel", cat, false);
       photonView.RPC("RPC_SetPanel", mouse, false);
 
       cat = mouse = null;
-
    }
 
    public void ActiveCatchEncounter(Player ratPlayer, Player catPlayer)
    {
+      StopAllCoroutines();
       _dicPlayerPath.Clear();
+      ;
       int ratDataIndex = GetIndexPortraitData(ratPlayer);
       int catDataIndex = GetIndexPortraitData(catPlayer);
       
@@ -138,8 +167,9 @@ public class CatchEncounterHandler : MonoBehaviourPun
    [PunRPC]
    void RPC_SetPortraits(int otherPlayerIndexData, int myDataIndex)
    {
+      ResetButtonPositions();
       panel.SetActive(true);
-      
+      SetButtons(true);
       Sprite otherPortrait = MyServer_FA.Instance.lobySelectorDatas[otherPlayerIndexData].portrait;
       Sprite myPortrait = MyServer_FA.Instance.lobySelectorDatas[myDataIndex].portrait;
 
