@@ -56,10 +56,14 @@ public class CatchEncounterHandler : MonoBehaviourPun
    [PunRPC]
    void RPC_SavePathChosen(Player player, int path)
    {
-      if(!_dicPlayerPath.ContainsKey(player))
+      if (!_dicPlayerPath.ContainsKey(player))
+      {
+         Debug.Log("agrego a la k " + player.NickName + " y value " + path);
          _dicPlayerPath.Add(player, path);
-
+      }
+      
       var playerData = MyServer_FA.Instance.GetCharacterLobbyDataDictionary[player];
+      Debug.Log(playerData.team);
       var playerTeam = playerData.team;
 
       Debug.Log("el personaje " + playerTeam + " eligio " + path);
@@ -70,32 +74,40 @@ public class CatchEncounterHandler : MonoBehaviourPun
       else mouse = player;
       
       
+      
       if (cat == null || mouse == null) return;
 
+       Debug.Log(cat);
+       Debug.Log(mouse);
+      
       ResolveEncounter();
    }
 
    private void ResolveEncounter()
    {
       
-      
+      Debug.Log(cat);
+      Debug.Log(mouse);
       var catDir = _dicPlayerPath[cat];
       var mouseDir = _dicPlayerPath[mouse];
       
       bool catCatchMouse;
       //TODO estan dando 0 los dos aunque no sea lo elegido. De parte del local esta bien
       Debug.Log("la dir de gato es " + catDir);
-      Debug.Log("la dir de raton es " + catDir);
+      Debug.Log("la dir de raton es " + mouseDir);
       
       if (catDir == center && mouseDir == center)
       {
+         Debug.Log("entra en center");
          catCatchMouse = true;
-      }else if (catDir != mouseDir)
+      }else if (catDir == left && mouseDir == right || catDir == right && mouseDir == left)
       {
+         Debug.Log("entra en misma no centro");
          catCatchMouse = true;
       }
       else
       {
+         Debug.Log("entra en resto");
          catCatchMouse = false;
       }
 
