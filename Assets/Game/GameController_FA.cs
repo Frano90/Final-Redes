@@ -123,8 +123,6 @@ public class GameController_FA : MonoBehaviourPun
         _dicModels[ratPlayer].SetEncounter(true);
         _dicModels[catplayer].StopMovement();
         _dicModels[catplayer].SetEncounter(true);
-        
-        //UI_controller.OpenEncounterWindow(catplayer, ratPlayer);
 
         photonView.RPC("RPC_DisableLocalController", catplayer);
         photonView.RPC("RPC_DisableLocalController", ratPlayer);

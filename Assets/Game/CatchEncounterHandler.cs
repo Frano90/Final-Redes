@@ -23,7 +23,9 @@ public class CatchEncounterHandler : MonoBehaviourPun
 
    private Dictionary<Player, int> _dicPlayerPath = new Dictionary<Player, int>();
 
-   private Vector3 leftBttPos, rightBttPos, centerBttPos;
+   private Vector3 mySide_pos, oppositeSide_pos;
+
+   [SerializeField] private Text feedbackText;
 
    void Start()
    {
@@ -34,52 +36,70 @@ public class CatchEncounterHandler : MonoBehaviourPun
       center_btt.onClick.AddListener(ChooseCenter);  
       right_btt.onClick.AddListener(ChooseRight);
 
-      leftBttPos = left_btt.transform.position;
-      centerBttPos = center_btt.transform.position;
-      rightBttPos = right_btt.transform.position;
+      mySide_pos = mySideSprite.transform.position;
+      oppositeSide_pos = otherSideSprite.transform.position;
    }
 
    void ResetButtonPositions()
    {
-      left_btt.transform.position = leftBttPos;
-      center_btt.transform.position = centerBttPos;
-      right_btt.transform.position = rightBttPos;
+      otherSideSprite.transform.position = oppositeSide_pos;
+      mySideSprite.transform.position = mySide_pos;
    }
 
    void ChooseLeft()
    {
       SendRequest_ChosenPath(left);
-      StartCoroutine(MovePortraitForward(left_btt));
+      StartCoroutine(MoveMyPortraitToSelectedPosition(mySideSprite.transform, left));
    }
    
    void ChooseRight()
    {
       SendRequest_ChosenPath(right);
-      StartCoroutine(MovePortraitForward(right_btt));
+      StartCoroutine(MoveMyPortraitToSelectedPosition(mySideSprite.transform, right));
    }
    
    void ChooseCenter()
    {
       SendRequest_ChosenPath(center);
-      StartCoroutine(MovePortraitForward(center_btt));
+      StartCoroutine(MoveMyPortraitToSelectedPosition(mySideSprite.transform, center));
    }
 
    void SetButtons(bool value)
    {
       center_btt.interactable = right_btt.interactable = left_btt.interactable = value;
+      center_btt.gameObject.SetActive(value);
+      left_btt.gameObject.SetActive(value);
+      right_btt.gameObject.SetActive(value);
    }
-   
-   IEnumerator MovePortraitForward(Button selectedBtt)
+
+   IEnumerator MoveOppositePortraitToSelectedPosition(Transform objectToMove ,int chosenPos)
    {
-      float time = 0;
+      float time = 0;                                      
+      Vector3 dirToMove = ((-objectToMove.up) + chosenPos * objectToMove.right).normalized;  
+      
       do
       {
          time += Time.deltaTime;
-         selectedBtt.transform.position += 12 * selectedBtt.transform.right * Time.deltaTime;
+         objectToMove.position += 45 * dirToMove * Time.deltaTime;
 
          yield return new WaitForEndOfFrame();
       } while (time < 3);
+      
+   }
+   
+   IEnumerator MoveMyPortraitToSelectedPosition(Transform objectToMove ,int chosenPos)
+   {
+      float time = 0;                                      
+      Vector3 dirToMove = ((objectToMove.up) + chosenPos * objectToMove.right).normalized;  
+      
+      do
+      {
+         time += Time.deltaTime;
+         objectToMove.position += 45 * dirToMove * Time.deltaTime;
 
+         yield return new WaitForEndOfFrame();
+      } while (time < 3);
+      
    }
    
    void SendRequest_ChosenPath(int path)
@@ -131,13 +151,26 @@ public class CatchEncounterHandler : MonoBehaviourPun
          catCatchMouse = false;
       }
 
+      photonView.RPC("RPC_MoveOppositePortrait", cat, mouseDir, catCatchMouse);
+      photonView.RPC("RPC_MoveOppositePortrait", mouse, catDir, catCatchMouse);
       StartCoroutine(WaitToExecutEventResult(catCatchMouse));
 
    }
 
+   [PunRPC]
+   void RPC_MoveOppositePortrait(int chosenPos, bool catCatchesMouse)
+   {
+      StartCoroutine(MoveOppositePortraitToSelectedPosition(otherSideSprite.transform, (-chosenPos)));
+      
+      feedbackText.text = catCatchesMouse ? "ATRAPADO" : "ESCAPO";
+   }
+
    IEnumerator WaitToExecutEventResult(bool catCatchMouse)
    {
-      yield return new WaitForSeconds(3);
+      
+      
+      
+      yield return new WaitForSeconds(6);
       
       MyServer_FA.Instance.gameController.EncounterFeedbackResult(catCatchMouse, cat, mouse);
       photonView.RPC("RPC_SetPanel", cat, false);
@@ -168,8 +201,10 @@ public class CatchEncounterHandler : MonoBehaviourPun
    void RPC_SetPortraits(int otherPlayerIndexData, int myDataIndex)
    {
       ResetButtonPositions();
+      feedbackText.text = "";
       panel.SetActive(true);
       SetButtons(true);
+      
       Sprite otherPortrait = MyServer_FA.Instance.lobySelectorDatas[otherPlayerIndexData].portrait;
       Sprite myPortrait = MyServer_FA.Instance.lobySelectorDatas[myDataIndex].portrait;
 
