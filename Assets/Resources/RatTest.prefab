@@ -293,6 +293,7 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 256
+  myMeshRenderer: {fileID: 4326736089452988268}
   pickerContainer:
     _container: {fileID: 5129104300083451869}
     renderer: {fileID: 7542095855537862269}
@@ -486,6 +487,12 @@ PrefabInstance:
 --- !u!4 &3188701712104471555 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: fe480d3bfc754bd419a3bf24c5ea14cb,
+    type: 3}
+  m_PrefabInstance: {fileID: 3155389659695537128}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &4326736089452988268 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: fe480d3bfc754bd419a3bf24c5ea14cb,
     type: 3}
   m_PrefabInstance: {fileID: 3155389659695537128}
   m_PrefabAsset: {fileID: 0}

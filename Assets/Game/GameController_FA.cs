@@ -133,6 +133,12 @@ public class GameController_FA : MonoBehaviourPun
     }
 
     [PunRPC]
+    public void RPC_SetRenderModel(bool value)
+    {
+        
+    }
+    
+    [PunRPC]
     public void RPC_DisableLocalController()
     {
         spawner.GetLocalController.DisableInputs();

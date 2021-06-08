@@ -25,6 +25,8 @@ public class Character_FA : MonoBehaviourPun
     [SerializeField] protected float groundDistance;
     [SerializeField] protected LayerMask groundMask;
 
+    [SerializeField] private MeshRenderer myMeshRenderer;
+
     private Vector3 startPosition;
 
     public bool inEncunter { get; private set; }
@@ -121,4 +123,6 @@ public class Character_FA : MonoBehaviourPun
     {
         movementLocked = false;
     }
+    
+    
 }

@@ -183,7 +183,7 @@ public class CatchEncounterHandler : MonoBehaviourPun
    {
       StopAllCoroutines();
       _dicPlayerPath.Clear();
-      ;
+      
       int ratDataIndex = GetIndexPortraitData(ratPlayer);
       int catDataIndex = GetIndexPortraitData(catPlayer);
       
