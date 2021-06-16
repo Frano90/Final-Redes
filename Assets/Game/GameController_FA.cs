@@ -129,8 +129,14 @@ public class GameController_FA : MonoBehaviourPun
         
         _catchEncounterHandler.ActiveCatchEncounter(ratPlayer, catplayer);
 
+        
+
         //poner alguna particula que tape el encounter
     }
+
+  
+
+   
 
     [PunRPC]
     public void RPC_SetRenderModel(bool value)
@@ -158,8 +164,6 @@ public class GameController_FA : MonoBehaviourPun
     
     public void EncounterFeedbackResult(bool catCatchMouse, Player cat, Player mouse)
     {
-        Debug.Log("el gato atrapa? " + catCatchMouse);
-        
         if (catCatchMouse)
         {
             RatTrapped(mouse);

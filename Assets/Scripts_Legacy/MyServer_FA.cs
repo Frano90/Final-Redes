@@ -25,18 +25,21 @@ public class MyServer_FA : MonoBehaviourPun
     Dictionary<Player, bool> _dicEnterLobby = new Dictionary<Player, bool>();
     Dictionary<Player, LobbySelectorData> _dicCharacterLobbyData = new Dictionary<Player, LobbySelectorData>();
     //Dictionary<Player, Controller_FA> _dicControllers = new Dictionary<Player, Controller_FA>();
+    private List<Player> allPlayers = new List<Player>();
 
     public List<LobbySelectorData> lobySelectorDatas = new List<LobbySelectorData>();
 
     int playersConnected = 0;
     int playersReadyToPlay = 0;
-    int playersNeededToPlay = 2;
+    int playersNeededToPlay = 3;
 
     public int PlayersConnected
     {
         get => playersConnected;
         set => playersConnected = value;
     }
+
+    public List<Player> GetAllPlayers => allPlayers;
 
     public int PackagePerSecond { get; private set; }
     public Player GetServer => _server;
@@ -145,7 +148,7 @@ public class MyServer_FA : MonoBehaviourPun
     void RPCEnterLobby(Player player)
     {
         Debug.Log("registre a un jugador");
-
+        allPlayers.Add(player);
         lobby.RegisterLocalData(player, playersConnected);
 
         _dicPlayersReadyToPlay.Add(player, false);
@@ -184,6 +187,7 @@ public class MyServer_FA : MonoBehaviourPun
         playersReadyToPlay = 0;
         _dicCharacterLobbyData.Clear();
         _dicEnterLobby.Clear();
+        allPlayers.Clear();
     }
     
     #endregion

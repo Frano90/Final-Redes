@@ -27,6 +27,9 @@ public class CatchEncounterHandler : MonoBehaviourPun
 
    [SerializeField] private Text feedbackText;
 
+   [SerializeField] private ParticleSystem particle_fb;
+   List<Player> notInvolvedPlayers = new List<Player>();
+
    void Start()
    {
 
@@ -175,6 +178,11 @@ public class CatchEncounterHandler : MonoBehaviourPun
       MyServer_FA.Instance.gameController.EncounterFeedbackResult(catCatchMouse, cat, mouse);
       photonView.RPC("RPC_SetPanel", cat, false);
       photonView.RPC("RPC_SetPanel", mouse, false);
+      
+      foreach (var p in notInvolvedPlayers)
+      {
+         photonView.RPC("RPC_StopParticlesInCatchEventSpot", p);
+      }
 
       cat = mouse = null;
    }
@@ -189,8 +197,45 @@ public class CatchEncounterHandler : MonoBehaviourPun
       
       photonView.RPC("RPC_SetPortraits", ratPlayer, catDataIndex, ratDataIndex);
       photonView.RPC("RPC_SetPortraits", catPlayer, ratDataIndex, catDataIndex);
+      
+      
+      GetPlayersThatDontAreInCatchEvent(new Player[] {catPlayer, ratPlayer});
+      
+      
+      foreach (var p in notInvolvedPlayers)
+      {
+         photonView.RPC("RPC_PlayParticlesInCatchEventSpot", p, MyServer_FA.Instance.GetModels[catPlayer].transform.position);
+      }
    }
 
+   
+   [PunRPC]
+   void RPC_PlayParticlesInCatchEventSpot(Vector3 position)
+   {
+      particle_fb.transform.position = position;
+      particle_fb.Play();
+   }
+   
+   [PunRPC]
+   void RPC_StopParticlesInCatchEventSpot()
+   {
+      particle_fb.Stop();
+   }
+   
+   
+   void GetPlayersThatDontAreInCatchEvent(Player[] playersInvolved)
+   {
+      notInvolvedPlayers.Clear();
+
+      foreach (var p in MyServer_FA.Instance.GetAllPlayers)
+      {
+         var isInvolved = playersInvolved[0].Equals(p) || playersInvolved[1].Equals(p);
+         if(!isInvolved)
+            notInvolvedPlayers.Add(p);
+      }
+   }
+   
+   
    [PunRPC]
    void RPC_SetPanel(bool on)
    {

@@ -33,7 +33,7 @@ public class Character_FA : MonoBehaviourPun
 
     public bool IsMovementLocked => movementLocked;
     
-    public virtual void Move(Vector3 dir, float speed)
+    public void Move(Vector3 dir, float speed)
     {
         if (movementLocked) return;
         
@@ -44,6 +44,7 @@ public class Character_FA : MonoBehaviourPun
     public void SetEncounter(bool inCombat)
     {
         inEncunter = inCombat;
+        //photonView.RPC("RPC_SetModelRender", player, inCombat);
     }
     
     private void Update()
@@ -123,6 +124,11 @@ public class Character_FA : MonoBehaviourPun
     {
         movementLocked = false;
     }
-    
+
+    [PunRPC]
+    void RPC_SetModelRender(bool value)
+    {
+        
+    }
     
 }
