@@ -665,6 +665,7 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 256
+  delayGrounded: 0
   myMeshRenderer: {fileID: 0}
   camFollow: {fileID: 1037602962}
   turnSmoothTime: 0.1

@@ -61,8 +61,32 @@ public class GameController_FA : MonoBehaviourPun
         var capturedRat = _dicModels[player].GetComponent<RatCharacter_FA>();
         capturedRat.GetTrapped();
         UI_controller.RatTrapped(player);
+
+        bool result = AreRatsAlive();
     }
-    
+
+    private bool AreRatsAlive()
+    {
+        bool value = false;
+
+        foreach (var player in GetCharactersDic.Keys)
+        {
+            var posibleRatPlayer = GetCharactersDic[player].GetComponent<RatCharacter_FA>();
+
+            if (posibleRatPlayer != null)
+            {
+                if (posibleRatPlayer.lives > 0)
+                {
+                    Debug.Log("todavia quedan vivas");
+                    value = true;
+                    return value;    
+                }
+            }
+        }
+        Debug.Log("se murieron todas");
+        return value;
+    }
+
     private void Update()
     {
         if (!photonView.IsMine) return;
@@ -112,9 +136,16 @@ public class GameController_FA : MonoBehaviourPun
             
     }
 
-    public void PlayerWithoutLives(Player owner)
+    public void PlayerWithoutLives(Player player)
     {
-        //algo aca que le levante un cartel de perdiste al jugador
+        photonView.RPC("RPC_SetNoLivesPanel", player);
+        
+    }
+
+    [PunRPC]
+    void RPC_SetNoLivesPanel(bool value)
+    {
+        UI_controller.SetNoLivesPanel(true);
     }
 
     public void StartCatchEncounter(Player ratPlayer, Player catplayer)

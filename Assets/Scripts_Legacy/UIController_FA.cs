@@ -15,9 +15,8 @@ public class UIController_FA : MonoBehaviourPun
     [SerializeField] private List<RatUIViewer> playerUIs = new List<RatUIViewer>();
     [SerializeField] private Dictionary<Player, RatUIViewer> _dicPlayerUis = new Dictionary<Player, RatUIViewer>();
     [SerializeField] private CheeseScoreHandler _cheeseScoreHandler;
+    [SerializeField] private GameObject noLivesPanel;
 
-    //[SerializeField] private GameObject encounterResolverPanel;
-    
     private void Start()
     {
         finishPanel.AddEventToContinueButton(OnLocalPlayerPressContinueButton);
@@ -36,23 +35,11 @@ public class UIController_FA : MonoBehaviourPun
         photonView.RPC("RPC_OpenEncounterWindow", ratPlayer);
     }
 
-    // [PunRPC]
-    // void RPC_OpenEncounterWindow()
-    // {
-    //     encounterResolverPanel.SetActive(true);
-    // }
-    //
-    // [PunRPC]
-    // void RPC_CloseEncounterWindow()
-    // {
-    //     encounterResolverPanel.SetActive(false);
-    // }
-    //
-    // public void CloseEncounterWindow()
-    // {
-    //     
-    // }
-    
+    public void SetNoLivesPanel(bool value)
+    {
+        noLivesPanel.SetActive(value);
+    }
+
     private void FetchPlayerUI()
     {
         foreach (Transform v in playerUIContainer)
@@ -93,6 +80,7 @@ public class UIController_FA : MonoBehaviourPun
     [PunRPC]
     void RPC_OnFinishGame()
     {
+        SetNoLivesPanel(false);
         finishPanel.gameObject.SetActive(true);
     }
 
