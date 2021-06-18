@@ -293,6 +293,7 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 256
+  delayGrounded: 2
   myMeshRenderer: {fileID: 4326736089452988268}
   pickerContainer:
     _container: {fileID: 5129104300083451869}

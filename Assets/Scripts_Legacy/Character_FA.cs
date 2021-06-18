@@ -24,7 +24,8 @@ public class Character_FA : MonoBehaviourPun
     public bool grounded;
     [SerializeField] protected float groundDistance;
     [SerializeField] protected LayerMask groundMask;
-
+    [SerializeField] private float delayGrounded;
+    
     [SerializeField] private MeshRenderer myMeshRenderer;
 
     private Vector3 startPosition;
@@ -49,6 +50,7 @@ public class Character_FA : MonoBehaviourPun
     
     private void Update()
     {
+        
         if (!photonView.IsMine) return;
         
         ApplyGravity();
@@ -91,11 +93,12 @@ public class Character_FA : MonoBehaviourPun
 
     public void Dash()
     {
-        if(_imDashing || movementLocked) return;
+        if (_imDashing || movementLocked) return;
 
         _imDashing = true;
-        _impactRecivier.AddImpact(transform.forward, 50);
-        
+        _impactRecivier.AddImpact(transform.forward, 20);
+        _impactRecivier.AddImpact(transform.up, 10);
+
         Invoke("ResetDashCD", 2f);
     }
 
@@ -105,7 +108,7 @@ public class Character_FA : MonoBehaviourPun
     {
         Vector3 vel = Vector3.zero;
 
-        grounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+        CheckGrounded();
 
         if (grounded && vel.y < 0)
         {
@@ -114,7 +117,29 @@ public class Character_FA : MonoBehaviourPun
         
         Gravity.ApplyDefault(vel, controller);
     }
+    
+    private float auxCount;
+    private void CheckGrounded()
+    {
+        if (Physics.CheckSphere(groundCheck.position, groundDistance, groundMask))
+        {
+            auxCount = 0;
+            grounded = true;
+        }
+        else
+        {
+            auxCount += Time.deltaTime;
 
+            if (auxCount >= 0)
+            {
+                if(grounded)
+                    _impactRecivier.AddImpact((Vector3.up + transform.forward).normalized, 20);
+                
+                grounded = false;
+            }
+        }
+    }
+    
     public void StopMovement()
     {
         movementLocked = true;

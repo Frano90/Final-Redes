@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using FranoW;
@@ -43,8 +44,13 @@ public class RatSingle : MonoBehaviour
         else
             jumptimer += Time.deltaTime;
 
+        
+    }
+
+    private void FixedUpdate()
+    {
         ApplyGravity();
-    }   
+    }
 
     private void HandleDashInput()
     {
@@ -120,27 +126,64 @@ public class RatSingle : MonoBehaviour
         if (_imDashing || movementLocked) return;
 
         _imDashing = true;
-        _impactRecivier.AddImpact(transform.forward, 50);
+        _impactRecivier.AddImpact(transform.forward, 20);
+        _impactRecivier.AddImpact(transform.up, 10);
 
         Invoke("ResetDashCD", 2f);
     }
 
     void ResetDashCD() => _imDashing = false;
 
+    // public void ApplyGravity()
+    // {
+    //     Vector3 vel = Vector3.zero;
+    //
+    //     grounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+    //
+    //     if (jumptimer > 1f)
+    //     {
+    //         vel.y = -10f;
+    //     }
+    //     else
+    //         vel.y = -10 * jumptimer;
+    //
+    //     Gravity.ApplyDefault(vel, controller);
+    // }
+    
     public void ApplyGravity()
     {
         Vector3 vel = Vector3.zero;
 
-        grounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+        CheckGrounded();
 
-        if (jumptimer > 1f)
+        if (grounded && vel.y < 0)
         {
-            vel.y = -10f;
+            vel.y = -2f;
+        }
+        
+        Gravity.ApplyDefault(vel, controller);
+    }
+    
+    private float auxCount;
+    private void CheckGrounded()
+    {
+        if (Physics.CheckSphere(groundCheck.position, groundDistance, groundMask))
+        {
+            auxCount = 0;
+            grounded = true;
         }
         else
-            vel.y = -10 * jumptimer;
+        {
+            auxCount += Time.deltaTime;
 
-        Gravity.ApplyDefault(vel, controller);
+            if (auxCount >= 0)
+            {
+                if(grounded)
+                    _impactRecivier.AddImpact((Vector3.up + transform.forward).normalized, 20);
+                
+                grounded = false;
+            }
+        }
     }
 
 
