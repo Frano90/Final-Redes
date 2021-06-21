@@ -33,6 +33,7 @@ public class RatCharacter_FA : Character_FA
         {
             lives = 0;
             MyServer_FA.Instance.gameController.PlayerWithoutLives(_owner);
+            return;
         }
         
         ResetCharacter();

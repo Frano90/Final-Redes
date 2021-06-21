@@ -21,6 +21,8 @@ public class GameController_FA : MonoBehaviourPun
     
     [SerializeField] private List<GameItem_DATA> gameItems = new List<GameItem_DATA>();
 
+    public LobbySelectorData.Team WinnerTeam { get; private set; }
+    
     public List<GameItem_DATA> GetGameItems => gameItems;
     public Dictionary<Player, Character_FA> GetCharactersDic => _dicModels;
     public int CheeseAmountToWin { get; set; }
@@ -34,7 +36,7 @@ public class GameController_FA : MonoBehaviourPun
     {
         _catchEncounterHandler = GetComponent<CatchEncounterHandler>();
         
-        if (!photonView.IsMine) return;
+        //if (!photonView.IsMine) return;
         
         UI_controller = FindObjectOfType<UIController_FA>();
         
@@ -63,6 +65,14 @@ public class GameController_FA : MonoBehaviourPun
         UI_controller.RatTrapped(player);
 
         bool result = AreRatsAlive();
+
+        if (!result)
+        {
+            //Terminar el juego, gano el gato
+            WinnerTeam = LobbySelectorData.Team.cat;
+            MyServer_FA.Instance.eventManager.TriggerEvent(GameEvent.gameFinished);
+            MyServer_FA.Instance.ReloadLobby();
+        }
     }
 
     private bool AreRatsAlive()
@@ -103,6 +113,13 @@ public class GameController_FA : MonoBehaviourPun
 
         if (UI_controller != null)
             UI_controller.RefreshTime(string.Format("Time: {0:0}:{1:00}", minutes, seconds));
+
+        if (currentTime <= 0)
+        {
+            WinnerTeam = LobbySelectorData.Team.undefined;
+            MyServer_FA.Instance.eventManager.TriggerEvent(GameEvent.gameFinished);
+            MyServer_FA.Instance.ReloadLobby();
+        }
     }
 
     public void OnPickUpGameItem(Player player, GameItem_FA item)
@@ -130,6 +147,7 @@ public class GameController_FA : MonoBehaviourPun
     {
         if(CheeseRecoveredAmount >= CheeseAmountToWin)
         {
+            WinnerTeam = LobbySelectorData.Team.rat;
             MyServer_FA.Instance.eventManager.TriggerEvent(GameEvent.gameFinished);
             MyServer_FA.Instance.ReloadLobby();
         }
@@ -138,14 +156,8 @@ public class GameController_FA : MonoBehaviourPun
 
     public void PlayerWithoutLives(Player player)
     {
-        photonView.RPC("RPC_SetNoLivesPanel", player);
-        
-    }
+        UI_controller.SetNoLivesPanel(player,true);
 
-    [PunRPC]
-    void RPC_SetNoLivesPanel(bool value)
-    {
-        UI_controller.SetNoLivesPanel(true);
     }
 
     public void StartCatchEncounter(Player ratPlayer, Player catplayer)

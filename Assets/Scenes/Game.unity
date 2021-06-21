@@ -6439,6 +6439,7 @@ MonoBehaviour:
   playerUIs: []
   _cheeseScoreHandler: {fileID: 1627454338}
   noLivesPanel: {fileID: 2144109848}
+  winningText: {fileID: 52715137}
 --- !u!4 &698585404
 Transform:
   m_ObjectHideFlags: 0

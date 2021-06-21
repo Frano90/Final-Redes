@@ -301,7 +301,7 @@ MonoBehaviour:
     filter: {fileID: 5809142270461371499}
     itemsData:
     - {fileID: 11400000, guid: 1bbdae4bfbb84364abf10189463149a3, type: 2}
-  startingLifes: 3
+  startingLifes: 1
 --- !u!1 &5129104300083451869
 GameObject:
   m_ObjectHideFlags: 0

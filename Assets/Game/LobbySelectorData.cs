@@ -11,6 +11,7 @@ public class LobbySelectorData : ScriptableObject
     public enum Team
     {
         cat,
-        rat
+        rat,
+        undefined
     }
 }

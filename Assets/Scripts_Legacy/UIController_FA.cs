@@ -17,6 +17,12 @@ public class UIController_FA : MonoBehaviourPun
     [SerializeField] private CheeseScoreHandler _cheeseScoreHandler;
     [SerializeField] private GameObject noLivesPanel;
 
+    private const string ratWinsText = "Ratas ganan";  
+    private const string catWinsText = "Gatos ganan";  
+    private const string undefinedWinText = "Se acabo el tiempo. Nadie gana";
+
+    [SerializeField] private TMP_Text winningText;
+
     private void Start()
     {
         finishPanel.AddEventToContinueButton(OnLocalPlayerPressContinueButton);
@@ -35,11 +41,17 @@ public class UIController_FA : MonoBehaviourPun
         photonView.RPC("RPC_OpenEncounterWindow", ratPlayer);
     }
 
-    public void SetNoLivesPanel(bool value)
+    public void SetNoLivesPanel(Player player, bool value)
+    {
+        photonView.RPC("RPC_SetNoLivesPanel", player, value);
+    }
+
+    [PunRPC]
+    void RPC_SetNoLivesPanel(bool value)
     {
         noLivesPanel.SetActive(value);
     }
-
+    
     private void FetchPlayerUI()
     {
         foreach (Transform v in playerUIContainer)
@@ -66,7 +78,6 @@ public class UIController_FA : MonoBehaviourPun
 
     void OnLocalPlayerPressContinueButton()
     {
-        Debug.Log("apreto boton");
         MyServer_FA.Instance.RequestEnterLobbyAgain(PhotonNetwork.LocalPlayer);
     }
     
@@ -74,13 +85,26 @@ public class UIController_FA : MonoBehaviourPun
     {
         MyServer_FA.Instance.eventManager.UnsubscribeToEvent(GameEvent.cheeeseDelivered, RefreshCheeseScore);
         MyServer_FA.Instance.eventManager.UnsubscribeToEvent(GameEvent.gameFinished, OnFinishGame);
-        photonView.RPC("RPC_OnFinishGame", RpcTarget.Others);
+
+        string winMesssage = "";
+
+        if (MyServer_FA.Instance.gameController.WinnerTeam == LobbySelectorData.Team.cat)
+        {
+            winMesssage = catWinsText;
+        }else if (MyServer_FA.Instance.gameController.WinnerTeam == LobbySelectorData.Team.rat)
+        {
+            winMesssage = ratWinsText;
+        }else
+            winMesssage = undefinedWinText;
+        
+        photonView.RPC("RPC_OnFinishGame", RpcTarget.Others, winMesssage);
     }
 
     [PunRPC]
-    void RPC_OnFinishGame()
+    void RPC_OnFinishGame(string winMessage)
     {
-        SetNoLivesPanel(false);
+        noLivesPanel.SetActive(false);
+        winningText.text = winMessage;
         finishPanel.gameObject.SetActive(true);
     }
 

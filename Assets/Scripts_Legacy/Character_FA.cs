@@ -45,7 +45,6 @@ public class Character_FA : MonoBehaviourPun
     public void SetEncounter(bool inCombat)
     {
         inEncunter = inCombat;
-        //photonView.RPC("RPC_SetModelRender", player, inCombat);
     }
     
     private void Update()
