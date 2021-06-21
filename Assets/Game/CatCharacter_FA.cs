@@ -1,7 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using FranoW;
+using Photon.Pun;
 
 public class CatCharacter_FA : Character_FA
 {
@@ -25,7 +27,7 @@ public class CatCharacter_FA : Character_FA
     [SerializeField] private LayerMask targetToHunt;
     
     public bool isWaitingJump;
-    float timer = 0;
+    public float timer = 0;
 
     float gravity = -9.81f;
     [SerializeField] float gravityScaler = 1;
@@ -44,8 +46,14 @@ public class CatCharacter_FA : Character_FA
     {
         if (!photonView.IsMine) return;
 
-        if (!isWaitingJump)
+        if (isWaitingJump)
+        {
+            timer += Time.deltaTime;
+        }
+        else
+        {
             Move();
+        }
 
         if(!inEncunter)
             CheckIfRatIsClose();
@@ -55,6 +63,17 @@ public class CatCharacter_FA : Character_FA
         camFollow.ChangeCamPos(timer / 2);
     }
 
+    // public override void SetModelRender(bool value)
+    // {
+    //     photonView.RPC("RPC_SetModelRender", _owner, value);
+    // }
+    //
+    // [PunRPC]
+    // void RPC_SetModelRender(bool value)
+    // {
+    //     myMeshRenderer.enabled = value;
+    // }
+    
 
     public void MoveCameraOnWait(float val)
     {
@@ -83,9 +102,7 @@ public class CatCharacter_FA : Character_FA
 
         if (!grounded) velocity = Gravity.Apply(velocity, gravity, gravityScaler, controller);
         else velocity = new Vector3(velocity.x, 0, velocity.z);
-
-
-        //if (!isJumping) controller.Move(new Vector3(0, -0.1f, 0));
+        
     }
 
     public void StartJump()
@@ -99,12 +116,13 @@ public class CatCharacter_FA : Character_FA
     public void Jump(Vector3 dir)
     {
         isWaitingJump = false;
-        _impactRecivier.AddImpact(dir, 20);
+        _impactRecivier.AddImpact(dir, 10 * jumpForce);
     }
 
+    Vector3 dir = Vector3.zero;
     public void ReleaseJump()
     {
-        Vector3 dir = Vector3.Lerp(transform.forward * 2 + Vector3.up, transform.forward + Vector3.up * jumpForce, timer / 2).normalized;
+        dir = Vector3.Lerp(transform.forward * 2 + Vector3.up, transform.forward + Vector3.up * jumpForce, timer / 2).normalized;
 
         Jump(dir);
     }
@@ -130,5 +148,6 @@ public class CatCharacter_FA : Character_FA
             MyServer_FA.Instance.gameController.StartCatchEncounter(ratsClose[0].GetComponent<RatCharacter_FA>()._owner, _owner);
         }
     }
+    
 
 }

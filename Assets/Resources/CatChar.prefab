@@ -656,7 +656,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 8404858945650658776}
-  speed: 2
+  speed: 6
   myCam: {fileID: 2062184115}
   groundCheck: {fileID: 9197767537112243464}
   movementLocked: 0
@@ -666,17 +666,18 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   delayGrounded: 0
-  myMeshRenderer: {fileID: 0}
+  myMeshRenderer: {fileID: 8618562407870083115}
   camFollow: {fileID: 1037602962}
   turnSmoothTime: 0.1
   turnSmoothVelocity: 0
   jumpHeight: 3
-  jumpForce: 5
+  jumpForce: 6
   checkRadius: 5
   targetToHunt:
     serializedVersion: 2
     m_Bits: 512
   isWaitingJump: 0
+  timer: 0
   gravityScaler: 1
   velocity: {x: 0, y: 0, z: 0}
 --- !u!1001 &6943105287725460655
@@ -771,6 +772,12 @@ PrefabInstance:
 --- !u!4 &7480588951145564996 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 627353123a1cc274ebbe29da799be88a,
+    type: 3}
+  m_PrefabInstance: {fileID: 6943105287725460655}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &8618562407870083115 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 627353123a1cc274ebbe29da799be88a,
     type: 3}
   m_PrefabInstance: {fileID: 6943105287725460655}
   m_PrefabAsset: {fileID: 0}

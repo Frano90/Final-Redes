@@ -25,6 +25,17 @@ public class RatCharacter_FA : Character_FA
         return this;
     }
     
+    // public override void SetModelRender(bool value)
+    // {
+    //     photonView.RPC("RPC_SetModelRender", _owner, value);
+    // }
+    //
+    // [PunRPC]
+    // void RPC_SetModelRender(bool value)
+    // {
+    //     myMeshRenderer.enabled = value;
+    // }
+    
     public void GetTrapped()
     {
         lives--;

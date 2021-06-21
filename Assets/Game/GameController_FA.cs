@@ -35,9 +35,7 @@ public class GameController_FA : MonoBehaviourPun
     private void Awake()
     {
         _catchEncounterHandler = GetComponent<CatchEncounterHandler>();
-        
-        //if (!photonView.IsMine) return;
-        
+
         UI_controller = FindObjectOfType<UIController_FA>();
         
     }
@@ -160,33 +158,23 @@ public class GameController_FA : MonoBehaviourPun
 
     }
 
-    public void StartCatchEncounter(Player ratPlayer, Player catplayer)
+    public void StartCatchEncounter(Player ratPlayer, Player catPlayer)
     {
         _dicModels[ratPlayer].StopMovement();
         _dicModels[ratPlayer].SetEncounter(true);
-        _dicModels[catplayer].StopMovement();
-        _dicModels[catplayer].SetEncounter(true);
+        //_dicModels[ratPlayer].SetModelRender(false);
+        _dicModels[catPlayer].StopMovement();
+        _dicModels[catPlayer].SetEncounter(true);
+        //_dicModels[catPlayer].SetModelRender(false);
+        
 
-        photonView.RPC("RPC_DisableLocalController", catplayer);
+        photonView.RPC("RPC_DisableLocalController", catPlayer);
         photonView.RPC("RPC_DisableLocalController", ratPlayer);
         
-        _catchEncounterHandler.ActiveCatchEncounter(ratPlayer, catplayer);
-
-        
-
-        //poner alguna particula que tape el encounter
-    }
-
-  
-
-   
-
-    [PunRPC]
-    public void RPC_SetRenderModel(bool value)
-    {
+        _catchEncounterHandler.ActiveCatchEncounter(ratPlayer, catPlayer);
         
     }
-    
+
     [PunRPC]
     public void RPC_DisableLocalController()
     {
@@ -222,6 +210,7 @@ public class GameController_FA : MonoBehaviourPun
 
     void ExitEncounter(Player player)
     {
+        _dicModels[player].SetModelRender(player,true);
         _dicModels[player].ResumeMovement();
         _dicModels[player].SetEncounter(false);
         photonView.RPC("RPC_EnableLocalController", player);

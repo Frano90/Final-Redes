@@ -179,9 +179,14 @@ public class CatchEncounterHandler : MonoBehaviourPun
       photonView.RPC("RPC_SetPanel", cat, false);
       photonView.RPC("RPC_SetPanel", mouse, false);
       
+      MyServer_FA.Instance.gameController.GetCharactersDic[mouse].SetModelRender(mouse,true);
+      MyServer_FA.Instance.gameController.GetCharactersDic[cat].SetModelRender(cat,true);
+      
+      
       foreach (var p in notInvolvedPlayers)
       {
          photonView.RPC("RPC_StopParticlesInCatchEventSpot", p);
+         //photonView.RPC("RPC_SetRenders", p, mouse, cat, true);
       }
 
       cat = mouse = null;
@@ -198,6 +203,9 @@ public class CatchEncounterHandler : MonoBehaviourPun
       photonView.RPC("RPC_SetPortraits", ratPlayer, catDataIndex, ratDataIndex);
       photonView.RPC("RPC_SetPortraits", catPlayer, ratDataIndex, catDataIndex);
       
+      MyServer_FA.Instance.gameController.GetCharactersDic[ratPlayer].SetModelRender(ratPlayer, false);
+      MyServer_FA.Instance.gameController.GetCharactersDic[catPlayer].SetModelRender(catPlayer ,false);
+      
       
       GetPlayersThatDontAreInCatchEvent(new Player[] {catPlayer, ratPlayer});
       
@@ -205,7 +213,16 @@ public class CatchEncounterHandler : MonoBehaviourPun
       foreach (var p in notInvolvedPlayers)
       {
          photonView.RPC("RPC_PlayParticlesInCatchEventSpot", p, MyServer_FA.Instance.GetModels[catPlayer].transform.position);
+         //photonView.RPC("RPC_SetRenders", p, ratPlayer, catPlayer, false); 
       }
+   }
+
+   [PunRPC]
+   void RPC_SetRenders(Player ratPlayer, Player catPlayer, bool value)
+   {
+      //falla porque no debe encontrar en el diccionario al jugador porque esta en local
+      MyServer_FA.Instance.gameController.GetCharactersDic[ratPlayer].SetModelRender(ratPlayer, value);
+      MyServer_FA.Instance.gameController.GetCharactersDic[catPlayer].SetModelRender(catPlayer, value);
    }
 
    

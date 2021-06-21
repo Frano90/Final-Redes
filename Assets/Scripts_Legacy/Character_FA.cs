@@ -26,7 +26,7 @@ public class Character_FA : MonoBehaviourPun
     [SerializeField] protected LayerMask groundMask;
     [SerializeField] private float delayGrounded;
     
-    [SerializeField] private MeshRenderer myMeshRenderer;
+    [SerializeField] protected MeshRenderer myMeshRenderer;
 
     private Vector3 startPosition;
 
@@ -149,10 +149,22 @@ public class Character_FA : MonoBehaviourPun
         movementLocked = false;
     }
 
+    public void SetModelRender(Player player, bool value)
+    {
+        photonView.RPC("RPC_SetModelRender", player, value);
+    }
+    
     [PunRPC]
     void RPC_SetModelRender(bool value)
     {
+        photonView.RPC("RPC_SetRender", RpcTarget.Others, value);
         
+    }
+
+    [PunRPC]
+    void RPC_SetRender(bool value)
+    {
+        myMeshRenderer.enabled = value;
     }
     
 }
