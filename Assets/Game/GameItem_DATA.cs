@@ -11,6 +11,7 @@ public class GameItem_DATA : ScriptableObject
     
     public enum ItemType
     {
-        cheese
+        cheese,
+        fire
     }
 }
