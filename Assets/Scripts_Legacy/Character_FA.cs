@@ -96,7 +96,7 @@ public class Character_FA : MonoBehaviourPun
 
         _imDashing = true;
         _impactRecivier.AddImpact(transform.forward, 20);
-        _impactRecivier.AddImpact(transform.up, 10);
+        //_impactRecivier.AddImpact(transform.up, 10);
 
         Invoke("ResetDashCD", 2f);
     }
@@ -132,7 +132,7 @@ public class Character_FA : MonoBehaviourPun
             if (auxCount >= 0)
             {
                 if(grounded)
-                    _impactRecivier.AddImpact((Vector3.up + transform.forward).normalized, 20);
+                    //_impactRecivier.AddImpact((Vector3.up + transform.forward).normalized, 20);
                 
                 grounded = false;
             }

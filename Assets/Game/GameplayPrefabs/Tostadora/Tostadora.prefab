@@ -248,9 +248,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myCol: {fileID: 0}
-  myjumpPad: {fileID: 4761580312095519111}
-  palanquita: {fileID: 0}
-  rats: []
+  myjumpPad: {fileID: 7901924328422331888}
+  palanquita: {fileID: 5701750938753433203}
   triggerLayers:
     serializedVersion: 2
     m_Bits: 512
@@ -649,6 +648,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5701750938753433203}
     m_Modifications:
+    - target: {fileID: 1161091027014825559, guid: 75d65934c1cff4340a26a98c1ed9c812,
+        type: 3}
+      propertyPath: dir.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4584884857901912608, guid: 75d65934c1cff4340a26a98c1ed9c812,
         type: 3}
       propertyPath: dir.y
@@ -761,15 +765,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 75d65934c1cff4340a26a98c1ed9c812, type: 3}
---- !u!114 &4761580312095519111 stripped
+--- !u!114 &7901924328422331888 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4584884857901912608, guid: 75d65934c1cff4340a26a98c1ed9c812,
+  m_CorrespondingSourceObject: {fileID: 1161091027014825559, guid: 75d65934c1cff4340a26a98c1ed9c812,
     type: 3}
   m_PrefabInstance: {fileID: 9057935584571286439}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70a5f7a6057a55e4aba24230c8f22794, type: 3}
+  m_Script: {fileID: 11500000, guid: d9e58d46b70f40d69b5039946807710d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

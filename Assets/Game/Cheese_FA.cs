@@ -15,6 +15,8 @@ public class Cheese_FA : GameItem_FA
 
     void OnRatTouchedCheese(Player player)
     {
+        if(MyServer_FA.Instance.gameController.GetCharactersDic[player].GetComponent<RatCharacter_FA>().IsCarryingItem) return;
+        
         MyServer_FA.Instance.gameController.OnPickUpGameItem(player, this);
         
         gameObject.SetActive(false);

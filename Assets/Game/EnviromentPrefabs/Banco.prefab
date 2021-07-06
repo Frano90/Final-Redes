@@ -52,6 +52,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8070043924593934042}
     m_Modifications:
+    - target: {fileID: 1161091027014825559, guid: 75d65934c1cff4340a26a98c1ed9c812,
+        type: 3}
+      propertyPath: useObjectForward
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1161091027014825559, guid: 75d65934c1cff4340a26a98c1ed9c812,
+        type: 3}
+      propertyPath: dir.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1161091027014825559, guid: 75d65934c1cff4340a26a98c1ed9c812,
+        type: 3}
+      propertyPath: force
+      value: 60
+      objectReference: {fileID: 0}
     - target: {fileID: 4584884857901912608, guid: 75d65934c1cff4340a26a98c1ed9c812,
         type: 3}
       propertyPath: useObjectForward

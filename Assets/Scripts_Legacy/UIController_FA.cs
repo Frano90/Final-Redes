@@ -103,6 +103,9 @@ public class UIController_FA : MonoBehaviourPun
     [PunRPC]
     void RPC_OnFinishGame(string winMessage)
     {
+        Debug.Log("termina el juego");
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
         noLivesPanel.SetActive(false);
         winningText.text = winMessage;
         finishPanel.gameObject.SetActive(true);

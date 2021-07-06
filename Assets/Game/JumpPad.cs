@@ -18,7 +18,7 @@ public class JumpPad : MonoBehaviour//GameItem_FA
             var rat = other.GetComponent<ImpactReceiver>();
             
             if(useObjectForward)
-                rat.AddImpact((other.transform.forward + Vector3.up * 2).normalized, force);
+                rat.AddImpact((other.transform.forward + dir).normalized, force);
             else
                 rat.AddImpact((dir).normalized, force);
             

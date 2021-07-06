@@ -31,7 +31,7 @@ public class MyServer_FA : MonoBehaviourPun
 
     int playersConnected = 0;
     int playersReadyToPlay = 0;
-    int playersNeededToPlay = 3;
+    int playersNeededToPlay = 2;
 
     public int PlayersConnected
     {
@@ -224,6 +224,8 @@ public class MyServer_FA : MonoBehaviourPun
 
         Debug.Log("hay " + cats + " gatos");
         Debug.Log("hay " + rats + " ratas");
+        
+        //Saque esto para probar las ratas solas
         
         if (cats != 1 && rats != 3)
         {

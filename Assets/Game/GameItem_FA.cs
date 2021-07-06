@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class GameItem_FA : MonoBehaviourPun
 {
-    public event Action<Player> OnTriggerItem;
+    protected Action<Player> OnTriggerItem;
     [SerializeField] private LayerMask triggerLayers;
     public GameItem_DATA.ItemType itemType;
     

@@ -16,7 +16,7 @@ public class Trap_FA : GameItem_FA
 
     void OnRatTouchedTrap(Player player)
     {
-        _anim.Play("closeTrap");
+        if(_anim != null) _anim.Play("closeTrap");
 
         MyServer_FA.Instance.gameController.RatTrapped(player);
     }

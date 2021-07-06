@@ -6,13 +6,11 @@ using UnityEngine;
 public class Tostadora : MonoBehaviour
 {
     [SerializeField] private Collider myCol;
-    [SerializeField] private JumpPad myjumpPad;
+    [SerializeField] private JumpPad_FA myjumpPad;
     private Animator _anim;
 
     [SerializeField] private Transform palanquita;
-    
-    [SerializeField] private List<Transform> rats = new List<Transform>();
- 
+
     private bool active;
     
     
@@ -29,24 +27,12 @@ public class Tostadora : MonoBehaviour
         if ((triggerLayers.value & (1 << other.gameObject.layer)) > 0)
         {
             if(active) return;
-
-            //rats.Add(other.transform);
             
-            //other.transform.parent = palanquita;
             myCol.enabled = false;
             _anim.Play("OffToster");
             active = true;
         }
     }
-    
-    // private void OnTriggerExit(Collider other)
-    // {
-    //     if ((triggerLayers.value & (1 << other.gameObject.layer)) > 0)
-    //     {
-    //         rats.Remove(other.transform);
-    //         other.transform.parent = null;
-    //     }
-    // }
 
     private float _count;
     [SerializeField] private float timeToExpulse;

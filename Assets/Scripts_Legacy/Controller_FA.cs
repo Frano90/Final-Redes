@@ -17,6 +17,9 @@ public class Controller_FA : MonoBehaviourPun
         if (!photonView.IsMine)
             return;
 
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
         StartCoroutine(SendPackage());
     }
 
