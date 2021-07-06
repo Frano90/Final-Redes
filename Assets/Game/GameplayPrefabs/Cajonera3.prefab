@@ -142,6 +142,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: CajonGrande3
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 357dcb51cd753a64fa49105d5c8bf106,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 357dcb51cd753a64fa49105d5c8bf106, type: 3}
 --- !u!1 &2774356068508809185 stripped
@@ -237,6 +242,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: BaseCajon3
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: a1889668928bd394c84ca2c6f7b66e10,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a1889668928bd394c84ca2c6f7b66e10, type: 3}

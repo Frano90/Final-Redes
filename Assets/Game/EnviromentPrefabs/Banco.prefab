@@ -52,6 +52,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8070043924593934042}
     m_Modifications:
+    - target: {fileID: 4584884857901912608, guid: 75d65934c1cff4340a26a98c1ed9c812,
+        type: 3}
+      propertyPath: useObjectForward
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4584884857901912610, guid: 75d65934c1cff4340a26a98c1ed9c812,
         type: 3}
       propertyPath: m_LocalPosition.x

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using FranoW;
+using UnityEditor;
 
 public class RatSingle : MonoBehaviour
 {
@@ -30,6 +31,8 @@ public class RatSingle : MonoBehaviour
 
     private void Start()
     {
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked; 
         controller = GetComponent<CharacterController>();
         _impactRecivier = GetComponent<ImpactReceiver>();
     }

@@ -48,11 +48,6 @@ public class Spawners_FA : MonoBehaviourPun
         MyServer_FA.Instance.UI_controller.RegisterPlayerUI(localPlayer);
     }
 
-    void OnPhotonInstantiate()
-    {
-        
-    }
-
     [PunRPC]
 
     void CreateController(string controllerType)
