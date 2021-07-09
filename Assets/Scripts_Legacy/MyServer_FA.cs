@@ -14,7 +14,6 @@ public class MyServer_FA : MonoBehaviourPun
     Player _server;
     
     public LobbyController_FA lobby;
-    //public ControllerBase_FA controllerBasePf;
     public Spawners_FA spawner;
     public UIController_FA UI_controller;
     public GameController_FA gameController;
@@ -24,14 +23,13 @@ public class MyServer_FA : MonoBehaviourPun
     Dictionary<Player, bool> _dicPlayersReadyToPlay = new Dictionary<Player, bool>();
     Dictionary<Player, bool> _dicEnterLobby = new Dictionary<Player, bool>();
     Dictionary<Player, LobbySelectorData> _dicCharacterLobbyData = new Dictionary<Player, LobbySelectorData>();
-    //Dictionary<Player, Controller_FA> _dicControllers = new Dictionary<Player, Controller_FA>();
     private List<Player> allPlayers = new List<Player>();
 
     public List<LobbySelectorData> lobySelectorDatas = new List<LobbySelectorData>();
 
     int playersConnected = 0;
     int playersReadyToPlay = 0;
-    int playersNeededToPlay = 2;
+    int playersNeededToPlay = 1;
 
     public int PlayersConnected
     {
@@ -46,7 +44,6 @@ public class MyServer_FA : MonoBehaviourPun
 
     public Dictionary<Player, Character_FA> GetModels => _dicModels;
     public Dictionary<Player, LobbySelectorData> GetCharacterLobbyDataDictionary => _dicCharacterLobbyData;
-    //public Dictionary<Player, Controller_FA> GetControllerDictionary => _dicControllers;
     public Dictionary<Player, bool> GetPlayersReadyDictionary => _dicPlayersReadyToPlay;
     
     #region ServerInitializer
@@ -121,11 +118,6 @@ public class MyServer_FA : MonoBehaviourPun
         StartCoroutine(WaitForLevelSettings(() => spawner != null, () => photonView.RPC("StartGame", RpcTarget.Others)));
     }
 
-    public void RequestCreateModelPlayer(Player player)
-    {
-        photonView.RPC("CreatePlayerModel", _server, player);
-    }
-    
     IEnumerator WaitForLevelSettings(Func<bool> condition, Action callback)
     {
         while (!condition())
@@ -205,7 +197,11 @@ public class MyServer_FA : MonoBehaviourPun
 
         _dicPlayersReadyToPlay[player] = true;
         
-        if (playersConnected != playersNeededToPlay) return;
+        Debug.Log("jugadores conectados antes de iniciar partida" + playersConnected);
+        
+        if (playersConnected < playersNeededToPlay) return;
+        
+        Debug.Log("Los jugadores conectados son los necesarios para jugar");
         
         foreach (bool pValue in _dicPlayersReadyToPlay.Values)
         {
@@ -227,11 +223,11 @@ public class MyServer_FA : MonoBehaviourPun
         
         //Saque esto para probar las ratas solas
         
-        if (cats != 1 && rats != 3)
-        {
-            lobby.ShowPanel(LobbyController_FA.LobbyPanelType.NotCorrectTeams);
-            return;
-        }
+        // if (cats != 1 && rats != 3)
+        // {
+        //     lobby.ShowPanel(LobbyController_FA.LobbyPanelType.NotCorrectTeams);
+        //     return;
+        // }
         
         lobby.ShowPanel(LobbyController_FA.LobbyPanelType.StartingGame);
         StartCoroutine(WaitAndStartGame(player));
@@ -360,16 +356,6 @@ public class MyServer_FA : MonoBehaviourPun
         {
             _dicModels[player].Rotate(xRotation, mouseX);
         }
-    }
-    
-    [PunRPC]
-    void CreatePlayerModel(Player player)
-    {
-        //chequear de que equipo es antes de spawnear
-        
-        //_dicModels[player] = PhotonNetwork.Instantiate("RatTest", spawner.transform.position, Quaternion.identity).GetComponent<Character_FA>(), ;
-        //gameController.AddModel(player, _dicModels[player]); // lo agrego al controlador del juego
-        //UI_controller.RegisterPlayerUI(player);
     }
     
     [PunRPC]

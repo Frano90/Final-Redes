@@ -696,7 +696,7 @@ MonoBehaviour:
     ExtrapolateNumberOfStoredPositions: 1
   m_RotationModel:
     SynchronizeEnabled: 1
-    InterpolateOption: 1
+    InterpolateOption: 0
     InterpolateRotateTowardsSpeed: 180
     InterpolateLerpSpeed: 5
   m_ScaleModel:
@@ -741,7 +741,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controller: {fileID: 8404858945650658776}
   speed: 6
-  myCam: {fileID: 2062184115}
+  myCam: {fileID: 2357960926633744983}
   groundCheck: {fileID: 9197767537112243464}
   movementLocked: 0
   grounded: 0
