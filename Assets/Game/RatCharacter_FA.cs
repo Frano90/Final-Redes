@@ -82,4 +82,17 @@ public class RatCharacter_FA : Character_FA
         pickerContainer.ReleaseItem();
     }
     
+    [PunRPC]
+    protected override void RPC_SetModelRender(bool value)
+    {
+        photonView.RPC("RPC_SetRender", RpcTarget.Others, value);
+        
+    }
+
+    [PunRPC]
+    protected override void RPC_SetRender(bool value)
+    {
+        myMeshRenderer.enabled = value;
+    }
+    
 }

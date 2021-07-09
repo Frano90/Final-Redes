@@ -81,11 +81,15 @@ public class Controller_FA : MonoBehaviourPun
     
     public void DisableInputs()
     {
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.Confined;
         activeInputs = false;
     }
     
     public void EnableInputs()
     {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
         activeInputs = true;
     }
     

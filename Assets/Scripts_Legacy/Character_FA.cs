@@ -155,14 +155,14 @@ public class Character_FA : MonoBehaviourPun
     }
     
     [PunRPC]
-    void RPC_SetModelRender(bool value)
+    protected virtual void RPC_SetModelRender(bool value)
     {
         photonView.RPC("RPC_SetRender", RpcTarget.Others, value);
         
     }
 
-    [PunRPC]
-    void RPC_SetRender(bool value)
+     [PunRPC]
+    protected virtual void RPC_SetRender(bool value)
     {
         myMeshRenderer.enabled = value;
     }
