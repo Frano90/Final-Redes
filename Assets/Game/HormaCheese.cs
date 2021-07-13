@@ -12,6 +12,8 @@ public class HormaCheese : MonoBehaviourPun
     private GameObject cheese;
     private void Start()
     {
+        if(!photonView.IsMine) return;
+        
         SpawnCheese();
     }
 
