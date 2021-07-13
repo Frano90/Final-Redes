@@ -47,7 +47,7 @@ public class Character_FA : MonoBehaviourPun
         inEncunter = inCombat;
     }
     
-    private void Update()
+    protected virtual void Update()
     {
         
         if (!photonView.IsMine) return;

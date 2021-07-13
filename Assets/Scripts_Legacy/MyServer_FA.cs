@@ -393,15 +393,10 @@ public class MyServer_FA : MonoBehaviourPun
 
     #endregion
 
-    #region UI
-
     void FinishGame()
     {
         ClearSettings();
     }
-    
-    
-    #endregion
 
     public void RequestJump(Player localPlayer)
     {
@@ -421,42 +416,6 @@ public class MyServer_FA : MonoBehaviourPun
             catPlayerModel.StartJump();
         }
     }
-
-    // public void RequestMoveCameraOnWait(Player localPlayer, float value)
-    // {
-    //     photonView.RPC("RCP_MoveCameraOnWait", _server, localPlayer, value);
-    // }
-    //
-    // [PunRPC]
-    // void RCP_MoveCameraOnWait(Player localPlayer, float value)
-    // {
-    //     if (_dicModels.ContainsKey(localPlayer))
-    //     {
-    //         //Aca solo deberia entrar el gato, asi que casteo tranqui
-    //         var catPlayerModel = _dicModels[localPlayer] as CatCharacter_FA;
-    //
-    //         if(!catPlayerModel.isWaitingJump) return;
-    //         
-    //         catPlayerModel.MoveCameraOnWait(value);
-    //     }
-    // }
-
-    // public void RequestCamBackToPos(Player localPlayer)
-    // {
-    //     photonView.RPC("RCP_CamBackToPos", _server, localPlayer);
-    // }
-    //
-    // [PunRPC]
-    // void RCP_CamBackToPos(Player localPlayer)
-    // {
-    //     if (_dicModels.ContainsKey(localPlayer))
-    //     {
-    //         //Aca solo deberia entrar el gato, asi que casteo tranqui
-    //         var catPlayerModel = _dicModels[localPlayer] as CatCharacter_FA;
-    //
-    //         catPlayerModel.CamBackToPos();
-    //     }
-    // }
 
     public void RequestReleaseJump(Player localPlayer)
     {

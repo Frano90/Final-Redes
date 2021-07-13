@@ -17,10 +17,10 @@ public class CatController : MonoBehaviour
 
         if (Input.GetKey(KeyCode.Space) && cat.isWaitingJump)
         {
-            cat.MoveCameraOnWait(Input.GetAxis("Mouse Y") * MouseVertSens * Time.deltaTime);
+            //cat.MoveCameraOnWait(Input.GetAxis("Mouse Y") * MouseVertSens * Time.deltaTime);
         }else
         {
-            cat.CamBackToPos();
+            //cat.CamBackToPos();
         }
 
         if (Input.GetKeyUp(KeyCode.Space) && cat.isWaitingJump)
