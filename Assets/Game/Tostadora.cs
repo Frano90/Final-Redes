@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 
-public class Tostadora : MonoBehaviour
+public class Tostadora : MonoBehaviourPun
 {
     [SerializeField] private Collider myCol;
     [SerializeField] private JumpPad_FA myjumpPad;
@@ -29,7 +30,7 @@ public class Tostadora : MonoBehaviour
             if(active) return;
             
             myCol.enabled = false;
-            _anim.Play("OffToster");
+            //_anim.Play("OffToster");
             active = true;
         }
     }
@@ -45,9 +46,15 @@ public class Tostadora : MonoBehaviour
         if (_count >= timeToExpulse)
         {
             active = false;
-            _anim.Play("OnToster");
+            //_anim.Play("OnToster");
             StartCoroutine(WaitToAnimation());
             _count = 0;
+        }
+        
+        
+        if (photonView.IsMine)
+        {
+            if(_anim != null) _anim.SetBool("triggered", active);
         }
     }
 

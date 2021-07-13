@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 
-public class FireTimerHandler : MonoBehaviour
+public class FireTimerHandler : MonoBehaviourPun
 {
     private Collider myCol;
     [SerializeField] private float timeBurning;
@@ -12,6 +13,8 @@ public class FireTimerHandler : MonoBehaviour
     [SerializeField] private ParticleSystem fireEffect;
     void Awake()
     {
+        if (!photonView.IsMine) return;
+
         myCol = GetComponent<Collider>();
 
         timeOff = Random.Range(2, 10);
@@ -19,6 +22,9 @@ public class FireTimerHandler : MonoBehaviour
 
     void Update()
     {
+
+        if (!photonView.IsMine) return;
+        
         if (myCol.enabled)
         {
             _count += Time.deltaTime;
@@ -27,7 +33,8 @@ public class FireTimerHandler : MonoBehaviour
             {
                 _count = 0;
                 myCol.enabled = false;
-                TurnOffFire();
+                //TurnOffFire();
+                photonView.RPC("RPC_TurnOffFire", RpcTarget.Others);
             }
         }
         else
@@ -38,7 +45,8 @@ public class FireTimerHandler : MonoBehaviour
             {
                 _count = 0;
                 myCol.enabled = true;
-                TurnOnFire();
+                photonView.RPC("RPC_TurnOnFire", RpcTarget.Others);
+                //TurnOnFire();
                 timeOff = Random.Range(2, 10);
             }
         }
@@ -46,15 +54,17 @@ public class FireTimerHandler : MonoBehaviour
         
     }
 
-    void TurnOnFire()
+    [PunRPC]
+    void RPC_TurnOnFire()
     {
-        if(!fireEffect.isPlaying)
+        //if(!fireEffect.isPlaying)
             fireEffect.Play();
     }
     
-    void TurnOffFire()
+    [PunRPC]
+    void RPC_TurnOffFire()
     {
-        if(fireEffect.isPlaying)
+        //if(fireEffect.isPlaying)
             fireEffect.Stop();
     }
 }

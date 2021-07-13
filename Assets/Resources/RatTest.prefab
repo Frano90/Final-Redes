@@ -345,7 +345,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 0}
-  speed: 10
+  speed: 0
   myCam: {fileID: 3155389657825179644}
   groundCheck: {fileID: 3155389658120753159}
   movementLocked: 0

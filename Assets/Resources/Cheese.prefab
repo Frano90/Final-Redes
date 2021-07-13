@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 7722507907023958054}
   - component: {fileID: 7722507907023958053}
   - component: {fileID: 7722507907023958048}
+  - component: {fileID: 666583871320594994}
+  - component: {fileID: 8574216735599946197}
   m_Layer: 0
   m_Name: Cheese
   m_TagString: Untagged
@@ -63,6 +65,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   itemType: 0
+  xAngle: 0
+  yAngle: 1
+  zAngle: 0
 --- !u!114 &7722507907023958048
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -81,10 +86,48 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 8574216735599946197}
   sceneViewId: 2
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!95 &666583871320594994
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7722507907023958052}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 1d037219316979045bb49e98f387465e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &8574216735599946197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7722507907023958052}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowLayerWeightsInspector: 1
+  ShowParameterInspector: 1
+  m_SynchronizeParameters: []
+  m_SynchronizeLayers:
+  - SynchronizeType: 0
+    LayerIndex: 0
 --- !u!1 &7722507907064545111
 GameObject:
   m_ObjectHideFlags: 0
