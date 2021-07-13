@@ -9,15 +9,8 @@ public class HormaCheese : MonoBehaviourPun
 
     [SerializeField] private Transform cheeseSpawn_pos;
 
-    private GameObject cheese;
-    private void Start()
-    {
-        if(!photonView.IsMine) return;
-        
-        SpawnCheese();
-    }
-
-
+    public GameObject cheese;
+    
     public float _count = 0; 
     
     private void Update()

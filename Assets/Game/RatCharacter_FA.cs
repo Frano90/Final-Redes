@@ -28,7 +28,7 @@ public class RatCharacter_FA : Character_FA
     public void GetTrapped()
     {
         lives--;
-
+        ReleaseItem();
         if (lives <= 0)
         {
             lives = 0;

@@ -44,7 +44,7 @@ public class GameController_FA : MonoBehaviourPun
     {
         if (!photonView.IsMine) return;
 
-        CheeseAmountToWin = 1;
+        CheeseAmountToWin = 15;
         currentTime = 300f;
     }
 

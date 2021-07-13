@@ -292,18 +292,18 @@ MonoBehaviour:
     SynchronizeEnabled: 1
     TeleportEnabled: 1
     TeleportIfDistanceGreaterThan: 3
-    InterpolateOption: 4
+    InterpolateOption: 2
     InterpolateMoveTowardsSpeed: 1
-    InterpolateLerpSpeed: 10
-    ExtrapolateOption: 2
+    InterpolateLerpSpeed: 1
+    ExtrapolateOption: 0
     ExtrapolateSpeed: 1
     ExtrapolateIncludingRoundTripTime: 1
     ExtrapolateNumberOfStoredPositions: 1
   m_RotationModel:
     SynchronizeEnabled: 1
     InterpolateOption: 0
-    InterpolateRotateTowardsSpeed: 180
-    InterpolateLerpSpeed: 5
+    InterpolateRotateTowardsSpeed: 270
+    InterpolateLerpSpeed: 100
   m_ScaleModel:
     SynchronizeEnabled: 0
     InterpolateOption: 0
@@ -345,7 +345,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 0}
-  speed: 0
+  speed: 10
   myCam: {fileID: 3155389657825179644}
   groundCheck: {fileID: 3155389658120753159}
   movementLocked: 0
@@ -355,6 +355,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   delayGrounded: 0.9
+  gravityScaler: 20
   myMeshRenderer: {fileID: 4326736089452988268}
   pickerContainer:
     _container: {fileID: 5129104300083451869}

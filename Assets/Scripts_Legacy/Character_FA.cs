@@ -25,6 +25,7 @@ public class Character_FA : MonoBehaviourPun
     [SerializeField] protected float groundDistance;
     [SerializeField] protected LayerMask groundMask;
     [SerializeField] private float delayGrounded;
+    [SerializeField] private float gravityScaler;
     
     [SerializeField] protected MeshRenderer myMeshRenderer;
 
@@ -96,7 +97,6 @@ public class Character_FA : MonoBehaviourPun
 
         _imDashing = true;
         _impactRecivier.AddImpact(transform.forward, 20);
-        //_impactRecivier.AddImpact(transform.up, 10);
 
         Invoke("ResetDashCD", 2f);
     }
@@ -112,6 +112,10 @@ public class Character_FA : MonoBehaviourPun
         if (grounded && vel.y < 0)
         {
             vel.y = -2f;
+        }
+        else
+        {
+            vel.y += Time.deltaTime * gravityScaler;
         }
         
         Gravity.ApplyDefault(vel, controller);
@@ -131,9 +135,6 @@ public class Character_FA : MonoBehaviourPun
 
             if (auxCount >= 0)
             {
-                if(grounded)
-                    //_impactRecivier.AddImpact((Vector3.up + transform.forward).normalized, 20);
-                
                 grounded = false;
             }
         }

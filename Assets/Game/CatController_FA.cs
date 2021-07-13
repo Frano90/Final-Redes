@@ -16,12 +16,12 @@ public class CatController_FA : Controller_FA
 
     void HandleJumpInput()
     {
-        if (Input.GetKeyDown(KeyCode.Space))// && cat.grounded)
+        if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             MyServer_FA.Instance.RequestJump(PhotonNetwork.LocalPlayer);
         }
 
-        if (Input.GetKeyUp(KeyCode.Space))// && cat.isWaitingJump)
+        if (Input.GetKeyUp(KeyCode.LeftShift))
         {
             MyServer_FA.Instance.RequestReleaseJump(PhotonNetwork.LocalPlayer);
         }

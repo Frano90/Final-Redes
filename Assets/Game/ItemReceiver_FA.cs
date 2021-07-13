@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class ItemReceiver_FA : MonoBehaviourPun
 {
-    
+    [SerializeField] private RecolectedCheeses _recolectedCheeses;
     [SerializeField] private LayerMask triggerLayers;
     private void OnTriggerEnter(Collider other)
     {
@@ -20,6 +20,7 @@ public class ItemReceiver_FA : MonoBehaviourPun
             if (player.IsCarryingItem)
             {
                 MyServer_FA.Instance.gameController.CashItemFromPlayer(player._owner);
+                _recolectedCheeses.ShowNextCheese();
             }
                 
         }
