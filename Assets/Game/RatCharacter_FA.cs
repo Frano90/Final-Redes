@@ -11,6 +11,8 @@ public class RatCharacter_FA : Character_FA
     [SerializeField]private ItemPickerView pickerContainer;
     
     private bool _carryngItem;
+
+    
     
     public bool IsCarryingItem => _carryngItem;
     
@@ -32,8 +34,10 @@ public class RatCharacter_FA : Character_FA
         if (lives <= 0)
         {
             lives = 0;
+            isDead = true;
             MyServer_FA.Instance.gameController.PlayerWithoutLives(_owner);
-            return;
+            //speed = 0;
+            //return;
         }
         
         ResetCharacter();

@@ -29,6 +29,8 @@ public class Character_FA : MonoBehaviourPun
     
     [SerializeField] protected MeshRenderer myMeshRenderer;
 
+    protected bool isDead;
+    
     private Vector3 startPosition;
 
     public bool inEncunter { get; private set; }
@@ -37,6 +39,8 @@ public class Character_FA : MonoBehaviourPun
     
     public void Move(Vector3 dir, float speed)
     {
+        if (isDead) return;
+        
         if (movementLocked) return;
         
         dir = (transform.forward * dir.z).normalized;
@@ -93,6 +97,8 @@ public class Character_FA : MonoBehaviourPun
 
     public void Dash()
     {
+        if (isDead) return;
+        
         if (_imDashing || movementLocked) return;
 
         _imDashing = true;

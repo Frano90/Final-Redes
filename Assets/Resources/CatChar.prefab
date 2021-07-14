@@ -745,14 +745,14 @@ MonoBehaviour:
   groundCheck: {fileID: 9197767537112243464}
   movementLocked: 0
   grounded: 0
-  groundDistance: 0.4
+  groundDistance: 1
   groundMask:
     serializedVersion: 2
     m_Bits: 256
   delayGrounded: 0
-  gravityScaler: 10
+  gravityScaler: -3800
   myMeshRenderer: {fileID: 8618562407870083115}
-  jumpForce: 7
+  jumpForce: 14
   checkRadius: 5
   targetToHunt:
     serializedVersion: 2

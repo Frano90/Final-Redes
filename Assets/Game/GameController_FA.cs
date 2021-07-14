@@ -45,7 +45,7 @@ public class GameController_FA : MonoBehaviourPun
         if (!photonView.IsMine) return;
 
         CheeseAmountToWin = 15;
-        currentTime = 300f;
+        currentTime = 600f;
     }
 
     public void AddModel(Player player, Character_FA character)
@@ -155,7 +155,7 @@ public class GameController_FA : MonoBehaviourPun
     public void PlayerWithoutLives(Player player)
     {
         UI_controller.SetNoLivesPanel(player,true);
-
+        
     }
 
     public void StartCatchEncounter(Player ratPlayer, Player catPlayer)

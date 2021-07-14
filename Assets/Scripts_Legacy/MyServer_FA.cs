@@ -29,7 +29,7 @@ public class MyServer_FA : MonoBehaviourPun
 
     int playersConnected = 0;
     int playersReadyToPlay = 0;
-    int playersNeededToPlay = 1;
+    int playersNeededToPlay = 4;
 
     public int PlayersConnected
     {
@@ -223,11 +223,11 @@ public class MyServer_FA : MonoBehaviourPun
         
         //Saque esto para probar las ratas solas
         
-        // if (cats != 1 && rats != 3)
-        // {
-        //     lobby.ShowPanel(LobbyController_FA.LobbyPanelType.NotCorrectTeams);
-        //     return;
-        // }
+        if (cats != 1 && rats != 3)
+        {
+            lobby.ShowPanel(LobbyController_FA.LobbyPanelType.NotCorrectTeams);
+            return;
+        }
         
         lobby.ShowPanel(LobbyController_FA.LobbyPanelType.StartingGame);
         StartCoroutine(WaitAndStartGame(player));
