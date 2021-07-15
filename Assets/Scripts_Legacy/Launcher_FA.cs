@@ -9,9 +9,6 @@ public class Launcher_FA : MonoBehaviourPunCallbacks
 {
     public MyServer_FA server_pf;
     
-
-
-
     public void BtnConnect()
     {
         PhotonNetwork.ConnectUsingSettings();

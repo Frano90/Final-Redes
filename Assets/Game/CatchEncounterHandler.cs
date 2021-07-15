@@ -36,7 +36,7 @@ public class CatchEncounterHandler : MonoBehaviourPun
       if (photonView.IsMine) return;
       
       left_btt.onClick.AddListener(ChooseLeft);  
-      center_btt.onClick.AddListener(ChooseCenter);  
+      //center_btt.onClick.AddListener(ChooseCenter);  
       right_btt.onClick.AddListener(ChooseRight);
 
       mySide_pos = mySideSprite.transform.position;
@@ -70,7 +70,7 @@ public class CatchEncounterHandler : MonoBehaviourPun
    void SetButtons(bool value)
    {
       center_btt.interactable = right_btt.interactable = left_btt.interactable = value;
-      center_btt.gameObject.SetActive(value);
+      //center_btt.gameObject.SetActive(value);
       left_btt.gameObject.SetActive(value);
       right_btt.gameObject.SetActive(value);
    }
@@ -170,9 +170,6 @@ public class CatchEncounterHandler : MonoBehaviourPun
 
    IEnumerator WaitToExecutEventResult(bool catCatchMouse)
    {
-      
-      
-      
       yield return new WaitForSeconds(6);
       
       MyServer_FA.Instance.gameController.EncounterFeedbackResult(catCatchMouse, cat, mouse);
