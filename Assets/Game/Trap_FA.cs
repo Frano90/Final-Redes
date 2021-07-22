@@ -1,4 +1,5 @@
 ﻿using System;
+using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
 
@@ -6,6 +7,8 @@ public class Trap_FA : GameItem_FA
 {
     private Animator _anim;
 
+    [SerializeField] private ParticleSystem getTrappedRat;
+    
     private bool triggered;
     
     private void Start()
@@ -32,8 +35,16 @@ public class Trap_FA : GameItem_FA
         //if(_anim != null) _anim.Play("closeTrap");
 
         Invoke("DelayTrapReset", 3f);
-
+        
+        photonView.RPC("RPC_TrappedRatFeedback", RpcTarget.Others);
+        
         MyServer_FA.Instance.gameController.RatTrapped(player);
+    }
+
+    [PunRPC]
+    void RPC_TrappedRatFeedback()
+    {
+        getTrappedRat.Play();
     }
 
     void DelayTrapReset()
