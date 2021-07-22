@@ -53,6 +53,7 @@ public class CatCharacter_FA : Character_FA
     {
         isWaitingJump = false;
         _impactRecivier.AddImpact(dir, 10 * jumpForce);
+        photonView.RPC("RCP_DashFeedback", RpcTarget.Others);
     }
 
     Vector3 dir = Vector3.zero;

@@ -18,6 +18,8 @@ public class Character_FA : MonoBehaviourPun
     [SerializeField] protected Camera myCam;
 
     [SerializeField] protected Transform groundCheck;
+
+    [SerializeField] private ParticleSystem dashParticle;
     
     private bool _imDashing;
     [SerializeField] protected bool movementLocked = false;
@@ -104,7 +106,15 @@ public class Character_FA : MonoBehaviourPun
         _imDashing = true;
         _impactRecivier.AddImpact(transform.forward, 20);
 
+        photonView.RPC("RCP_DashFeedback", RpcTarget.Others);
+        
         Invoke("ResetDashCD", 2f);
+    }
+
+    [PunRPC]
+    protected void RCP_DashFeedback()
+    {
+        dashParticle.Play();
     }
 
     void ResetDashCD() => _imDashing = false;
