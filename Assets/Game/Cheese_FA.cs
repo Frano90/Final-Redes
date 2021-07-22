@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class Cheese_FA : GameItem_FA
 {
-    
+    [SerializeField] private ParticleSystem cheeseParticles;
     public float xAngle, yAngle, zAngle;
 
 
@@ -29,8 +29,7 @@ public class Cheese_FA : GameItem_FA
     {
         if(MyServer_FA.Instance.gameController.GetCharactersDic[player].GetComponent<RatCharacter_FA>().IsCarryingItem) return;
 
-        //var cheeseRecolected = Resources.Load<ParticleSystem>("CheeseRecolected.prefab");
-        PhotonNetwork.Instantiate("CheeseRecolected", transform.position, Quaternion.identity).GetComponent<ParticleSystem>();
+        
 
 
         MyServer_FA.Instance.gameController.OnPickUpGameItem(player, this);
@@ -45,6 +44,8 @@ public class Cheese_FA : GameItem_FA
     [PunRPC]
     void RPC_OnTouchedCheese()
     {
+        cheeseParticles.transform.parent = null;
+        cheeseParticles.Play();
         gameObject.SetActive(false);
     }
 }
