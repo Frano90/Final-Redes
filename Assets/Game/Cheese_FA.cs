@@ -20,7 +20,6 @@ public class Cheese_FA : GameItem_FA
 
     private void Start()
     {
-
         if (!photonView.IsMine) return;
         
         AddEventOnTrigger(OnRatTouchedCheese);
@@ -29,7 +28,11 @@ public class Cheese_FA : GameItem_FA
     void OnRatTouchedCheese(Player player)
     {
         if(MyServer_FA.Instance.gameController.GetCharactersDic[player].GetComponent<RatCharacter_FA>().IsCarryingItem) return;
-        
+
+        //var cheeseRecolected = Resources.Load<ParticleSystem>("CheeseRecolected.prefab");
+        PhotonNetwork.Instantiate("CheeseRecolected", transform.position, Quaternion.identity).GetComponent<ParticleSystem>();
+
+
         MyServer_FA.Instance.gameController.OnPickUpGameItem(player, this);
         
         gameObject.SetActive(false);
