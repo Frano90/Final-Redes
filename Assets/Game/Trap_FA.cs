@@ -44,7 +44,7 @@ public class Trap_FA : GameItem_FA
     [PunRPC]
     void RPC_TrappedRatFeedback()
     {
-        getTrappedRat.Play();
+        if(getTrappedRat != null) getTrappedRat.Play();
     }
 
     void DelayTrapReset()

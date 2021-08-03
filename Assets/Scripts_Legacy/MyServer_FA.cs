@@ -29,7 +29,7 @@ public class MyServer_FA : MonoBehaviourPun
 
     int playersConnected = 0;
     int playersReadyToPlay = 0;
-    int playersNeededToPlay = 2;
+    int playersNeededToPlay = 4;
 
     public int PlayersConnected
     {
